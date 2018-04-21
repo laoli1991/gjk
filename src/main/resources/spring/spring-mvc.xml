@@ -19,8 +19,7 @@
     <mvc:default-servlet-handler/>
     <context:component-scan base-package="com.saosao"/>
 
-    <bean
-            class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix" value="/view/"/>
         <property name="suffix" value=".html"/>
     </bean>

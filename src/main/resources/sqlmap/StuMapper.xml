@@ -1,82 +1,101 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.saosao.dao.StuDao">
-  <resultMap id="BaseResultMap" type="com.saosao.po.Stu">
-    <id column="Id" jdbcType="INTEGER" property="id" />
-    <result column="Score" jdbcType="INTEGER" property="score" />
-    <result column="Name" jdbcType="VARCHAR" property="name" />
-    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime" />
-  </resultMap>
-  <sql id="Base_Column_List">
+    <resultMap id="BaseResultMap" type="com.saosao.po.Stu">
+        <id column="Id" jdbcType="INTEGER" property="id"/>
+        <result column="Score" jdbcType="INTEGER" property="score"/>
+        <result column="Name" jdbcType="VARCHAR" property="name"/>
+        <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime"/>
+    </resultMap>
+    <sql id="Base_Column_List">
     Id, Score, Name, UpdateTime
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select 
-    <include refid="Base_Column_List" />
-    from stu
-    where Id = #{id,jdbcType=INTEGER}
-  </select>
-  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from stu
+        where Id = #{id,jdbcType=INTEGER}
+    </select>
+
+
+    <select id="selectList" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from stu
+    </select>
+
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from stu
     where Id = #{id,jdbcType=INTEGER}
   </delete>
-  <insert id="insert" parameterType="com.saosao.po.Stu">
-    insert into stu (Id, Score, Name, 
-      UpdateTime)
-    values (#{id,jdbcType=INTEGER}, #{score,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
-      #{updateTime,jdbcType=TIMESTAMP})
-  </insert>
-  <insert id="insertSelective" parameterType="com.saosao.po.Stu" keyProperty="id" useGeneratedKeys="true">
-    insert into stu
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        Id,
-      </if>
-      <if test="score != null">
-        Score,
-      </if>
-      <if test="name != null">
-        Name,
-      </if>
-      <if test="updateTime != null">
-        UpdateTime,
-      </if>
-    </trim>
-    <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="score != null">
-        #{score,jdbcType=INTEGER},
-      </if>
-      <if test="name != null">
-        #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </trim>
-  </insert>
-  <update id="updateByPrimaryKeySelective" parameterType="com.saosao.po.Stu">
-    update stu
-    <set>
-      <if test="score != null">
-        Score = #{score,jdbcType=INTEGER},
-      </if>
-      <if test="name != null">
-        Name = #{name,jdbcType=VARCHAR},
-      </if>
-      <if test="updateTime != null">
-        UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
-      </if>
-    </set>
-    where Id = #{id,jdbcType=INTEGER}
-  </update>
-  <update id="updateByPrimaryKey" parameterType="com.saosao.po.Stu">
+
+    <insert id="insertSelective" parameterType="com.saosao.po.Stu" keyProperty="id" useGeneratedKeys="true">
+        insert into stu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                Id,
+            </if>
+            <if test="score != null">
+                Score,
+            </if>
+            <if test="name != null">
+                Name,
+            </if>
+            <if test="updateTime != null">
+                UpdateTime,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="score != null">
+                #{score,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.saosao.po.Stu">
+        update stu
+        <set>
+            <if test="score != null">
+                Score = #{score,jdbcType=INTEGER},
+            </if>
+            <if test="name != null">
+                Name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="updateTime != null">
+                UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+            </if>
+        </set>
+        where Id = #{id,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.saosao.po.Stu">
     update stu
     set Score = #{score,jdbcType=INTEGER},
       Name = #{name,jdbcType=VARCHAR},
       UpdateTime = #{updateTime,jdbcType=TIMESTAMP}
     where Id = #{id,jdbcType=INTEGER}
   </update>
+
+
+    <insert id="insert" parameterType="com.saosao.po.Stu">
+       insert into stu (Id , Score, Name)
+       values (#{id,jdbcType=INTEGER},#{score,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertBatch" parameterType="java.util.List">
+        insert into stu (Id,Score, Name)
+        values
+        <foreach collection="list" item="stu" index="index" separator=",">
+            (#{stu.id,jdbcType=INTEGER},#{stu.score,jdbcType=INTEGER}, #{stu.name,jdbcType=VARCHAR})
+        </foreach>
+    </insert>
+
 </mapper>

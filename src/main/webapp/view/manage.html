@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<body>
+
+<div class="container-fluid">
+    <br>
+    <br>
+    <nav class="cm-navbar cm-navbar-default cm-navbar-slideup">
+        <div class="cm-flex">
+            <div class="nav-tabs-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="" data-toggle="tab" ng-click="tabShow(1)">入库出库录入</a></li>
+                    <li><a href="" data-toggle="tab" ng-click="tabShow(2)">操作(删除|修改|搜索)</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container-fluid">
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="insetTab" style="margin-top:20px" ng-show="insetTab">
+            <div class="panel panel-default">
+                <div class="row cm-fix-height">
+                    <div class="col-lg-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"></div>
+                            <div class="panel-body">
+                                <form class="form-horizontal">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">出入库类型</label>
+                                        <div class="col-sm-9">
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" ng-model="currency.busi" value="1" checked>
+                                                    入库
+                                                </label>
+                                            </div>
+                                            <div class="radio">
+                                                <label>
+                                                    <input type="radio" ng-model="currency.busi"  value="2">
+                                                    出库
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">货币类型</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" ng-model="currency.type"
+                                                    ng-options="currencyType for currencyType in currencyTypelis"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label  class="col-sm-3 control-label">货币版本</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" ng-model="currency.version" placeholder="">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">数量</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" ng-model="currency.count" placeholder="">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">货币单位</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control" ng-model="currency.unit"
+                                                    ng-options="currencyUnit for currencyUnit in currencyUnitlis"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-3 control-label">货币附件属性</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control"  ng-model="currency.attribute"
+                                                    ng-options="currencyAttribute for currencyAttribute in currencyAttributelis"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" style="margin-bottom:0">
+                                        <div class="text-center">
+                                            <button class="btn btn-primary btn-lg" ng-click="insertCurrency(currency)">录入</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade in active" id="operateTab" style="margin-top:20px" ng-show="operateTab">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h1 style="margin-top:0">HTML Ipsum Presents</h1>
+                    <p><strong>BBBBBBBBPellentesque habitant morbi tristique</strong> senectus et netus et malesuada
+                        fames ac
+                        turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante.
+                        Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris
+                        placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat
+                        wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit
+                        eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a
+                                href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
+                    <h2>Header Level 2</h2>
+                    <ol>
+                        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+                        <li>Aliquam tincidunt mauris eu risus.</li>
+                    </ol>
+                    <blockquote>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus magna. Cras in mi at felis
+                            aliquet congue. Ut a est eget ligula molestie gravida. Curabitur massa. Donec eleifend,
+                            libero at sagittis mollis, tellus est malesuada tellus, at luctus turpis elit sit amet quam.
+                            Vivamus pretium ornare est.</p>
+                    </blockquote>
+                    <h3>Header Level 3</h3>
+                    <ul>
+                        <li>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.</li>
+                        <li>Aliquam tincidunt mauris eu risus.</li>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" >
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+        <link rel="stylesheet" type="text/css" href="/css/bootstrap-clearmin.min.css">
+        <link rel="stylesheet" type="text/css" href="/css/roboto.css">
+        <link rel="stylesheet" type="text/css" href="/css/material-design.css">
+        <link rel="stylesheet" type="text/css" href="/css/small-n-flat.css">
+        <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+
+        <title>金库管理系统V1.0</title>
+    </head>
+    <body class="cm-no-transition cm-1-navbar" ng-app="home.controller">
+        <div id="cm-menu">
+            <nav class="cm-navbar cm-navbar-primary">
+                <div class="cm-flex"><a href="home.html" class="cm-logo"></a></div>
+                <div class="btn btn-primary md-menu-white" data-toggle="cm-menu"></div>
+            </nav>
+            <div id="cm-menu-content">
+                <div id="cm-menu-items-wrapper">
+                    <div id="cm-menu-scroller">
+                        <ul class="cm-menu-items">
+                            <li><a href="#/manage" class="sf-notepad">管理</a></li>
+                            <li><a href="#/bb" class="sf-notepad">维护</a></li>
+                            <li><a href="#/cc" class="sf-lock-open">盘点</a></li>
+                            <li><a href="#/aa" class="sf-notepad">操作日志</a></li>
+                            <li><a href="#/bb" class="sf-notepad">报表</a></li>
+                            <li><a href="#/cc" class="sf-lock-open">打印</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <header id="cm-header" ng-controller="indexCtrl">
+            <nav class="cm-navbar cm-navbar-primary">
+                <div class="btn btn-primary md-menu-white hidden-md hidden-lg" data-toggle="cm-menu"></div>
+                <div class="cm-flex">
+                    <h1>Home</h1>
+                    <form id="cm-search" action="home.html" method="get">
+                        <input type="search" name="q" autocomplete="off" placeholder="Search...">
+                    </form>
+                </div>
+                <div class="pull-right">
+                    <div id="cm-search-btn" class="btn btn-primary md-search-white" data-toggle="cm-search"></div>
+                </div>
+                <div class="dropdown pull-right">
+                    <button class="btn btn-primary md-notifications-white" data-toggle="dropdown"> <span class="label label-danger">{{msgsLen}}</span> </button>
+                    <div class="popover cm-popover bottom">
+                        <div class="arrow"></div>
+                        <div class="popover-content">
+                            <div class="list-group" ng-repeat="msg in msgs">
+                                <a href="#" class="list-group-item" ng-click="hh(msg)">
+                                    <h4 class="list-group-item-heading text-overflow">
+                                        <i class="fa fa-fw fa-envelope"></i> {{msg.xx}}
+                                    </h4>
+                                    <p class="list-group-item-text text-overflow"> {{msg.oo}}</p>
+                                </a>
+                            </div>
+                            <div style="padding:10px"><a class="btn btn-success btn-block" href="#">Show me more...</a></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="dropdown pull-right">
+                    <button class="btn btn-primary md-account-circle-white" data-toggle="dropdown"></button>
+                    <ul class="dropdown-menu">
+                        <li class="disabled text-center">
+                            <a style="cursor:default;"><strong>John Smith</strong></a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-fw fa-cog"></i> Settings</a>
+                        </li>
+                        <li>
+                            <a href="login.html"><i class="fa fa-fw fa-sign-out"></i> Sign out</a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div id="global" ng-view></div>
+        <footer class="cm-footer"><span class="pull-left"></span><span class="pull-right">技术支持：贵州新启程档案服务有限责任公司</span></footer>
+        <script src="/js/lib/angular.min.js"></script>
+        <script src="/js/lib/angular-route.min.js"></script>
+        <script src="/js/business/index-controller.js"></script>
+        <script src="/js/business/manage-controller.js"></script>
+        <script src="/js/business/home-controller.js"></script>
+        <script src="/js/lib/jquery-2.1.3.min.js"></script>
+        <script src="/js/jquery.mousewheel.min.js"></script>
+        <script src="/js/jquery.cookie.min.js"></script>
+        <script src="/js/fastclick.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/clearmin.min.js"></script>
+        <script src="/js/demo/home.js"></script>
+    </body>
+</html>
