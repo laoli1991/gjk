@@ -25,8 +25,8 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     };
 
     $scope.currencyTypelis = [{"des": "纸币100元", "idx": 1},
-        {"des": "纸币500元", "idx": 2},
-        {"des": "纸币200元", "idx": 3},
+        {"des": "纸币50元", "idx": 2},
+        {"des": "纸币20元", "idx": 3},
         {"des": "纸币10元", "idx": 4},
         {"des": "纸币5元", "idx": 5},
         {"des": "纸币1元", "idx": 6},
@@ -56,7 +56,6 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                 "attribute": currency.attribute.idx
             }
         }).success(function (req) {
-            console.log(req);
         })
     };
 
@@ -111,11 +110,11 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     };
     $scope.dbTables();
 
-    $scope.jdate = "2018-01-01" ;
+    $scope.jdate = new Date();
 
     $scope.searchCurrency = function(jdate){
         //Date d = Date.valueOf(jdate);
-        console.log(jdate.value) ;
+        console.log(jdate) ;
 
     };
 

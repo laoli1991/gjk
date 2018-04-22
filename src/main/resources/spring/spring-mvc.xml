@@ -4,6 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:task="http://www.springframework.org/schema/task"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
 	    http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
 	    http://www.springframework.org/schema/context
@@ -12,6 +13,8 @@
 	    http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
 	    http://www.springframework.org/schema/tx
 	    http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
+	    http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task-4.0.xsd
 	   http://www.springframework.org/schema/mvc
 	   http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
 
@@ -32,6 +35,10 @@
     </mvc:annotation-driven>
 
     <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"/>
+
+    <task:annotation-driven executor="annotationExecutor"/>
+    <!-- 支持 @Async 注解 -->
+    <task:executor id="annotationExecutor" pool-size="20"/>
 
 
 </beans>

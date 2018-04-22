@@ -1,4 +1,4 @@
-angular.module('home.controller', ['ngRoute', 'index.controller' , 'manage.controller'])
+angular.module('home.controller', ['ngRoute', 'index.controller', 'manage.controller'])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -9,7 +9,10 @@ angular.module('home.controller', ['ngRoute', 'index.controller' , 'manage.contr
                 templateUrl: '/view/manage.html',
                 controller: 'manageCtrl'
             })
-            .when('/bb', {templateUrl: '/view/bb.html'})
+            .when('/configure', {
+                templateUrl: '/view/configure.html',
+                controller: 'manageCtrl'
+            })
             .when('/cc', {templateUrl: '/view/cc.html'})
 
             .otherwise({redirectTo: '/'});
