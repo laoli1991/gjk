@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.saosao.dao.GjkCurrencyDao">
+  <resultMap id="BaseResultMap" type="com.saosao.po.GjkCurrency">
+    <id column="Id" jdbcType="INTEGER" property="id" />
+    <result column="Operator" jdbcType="VARCHAR" property="operator" />
+    <result column="Version" jdbcType="INTEGER" property="version" />
+    <result column="Unit" jdbcType="INTEGER" property="unit" />
+    <result column="Type" jdbcType="INTEGER" property="type" />
+    <result column="Count" jdbcType="INTEGER" property="count" />
+    <result column="Busi" jdbcType="INTEGER" property="busi" />
+    <result column="Attribute" jdbcType="INTEGER" property="attribute" />
+    <result column="CreateTime" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="UpdateTime" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    Id, Operator, Version, Unit, Type, Count, Busi, Attribute, CreateTime, UpdateTime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from gjk_currency
+    where Id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <select id="selectList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from gjk_currency order by CreateTime desc
+  </select>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from gjk_currency
+    where Id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.saosao.po.GjkCurrency">
+    insert into gjk_currency (Id, Operator, Version, 
+      Unit, Type, Count, 
+      Busi, Attribute, CreateTime, 
+      UpdateTime)
+    values (#{id,jdbcType=INTEGER}, #{operator,jdbcType=VARCHAR}, #{version,jdbcType=INTEGER}, 
+      #{unit,jdbcType=INTEGER}, #{type,jdbcType=INTEGER}, #{count,jdbcType=INTEGER}, 
+      #{busi,jdbcType=INTEGER}, #{attribute,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{updateTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.saosao.po.GjkCurrency">
+    insert into gjk_currency
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        Id,
+      </if>
+      <if test="operator != null">
+        Operator,
+      </if>
+      <if test="version != null">
+        Version,
+      </if>
+      <if test="unit != null">
+        Unit,
+      </if>
+      <if test="type != null">
+        Type,
+      </if>
+      <if test="count != null">
+        Count,
+      </if>
+      <if test="busi != null">
+        Busi,
+      </if>
+      <if test="attribute != null">
+        Attribute,
+      </if>
+      <if test="createTime != null">
+        CreateTime,
+      </if>
+      <if test="updateTime != null">
+        UpdateTime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="operator != null">
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        #{version,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        #{count,jdbcType=INTEGER},
+      </if>
+      <if test="busi != null">
+        #{busi,jdbcType=INTEGER},
+      </if>
+      <if test="attribute != null">
+        #{attribute,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.saosao.po.GjkCurrency">
+    update gjk_currency
+    <set>
+      <if test="operator != null">
+        Operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null">
+        Version = #{version,jdbcType=INTEGER},
+      </if>
+      <if test="unit != null">
+        Unit = #{unit,jdbcType=INTEGER},
+      </if>
+      <if test="type != null">
+        Type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="count != null">
+        Count = #{count,jdbcType=INTEGER},
+      </if>
+      <if test="busi != null">
+        Busi = #{busi,jdbcType=INTEGER},
+      </if>
+      <if test="attribute != null">
+        Attribute = #{attribute,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null">
+        CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        UpdateTime = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.saosao.po.GjkCurrency">
+    update gjk_currency
+    set Operator = #{operator,jdbcType=VARCHAR},
+      Version = #{version,jdbcType=INTEGER},
+      Unit = #{unit,jdbcType=INTEGER},
+      Type = #{type,jdbcType=INTEGER},
+      Count = #{count,jdbcType=INTEGER},
+      Busi = #{busi,jdbcType=INTEGER},
+      Attribute = #{attribute,jdbcType=INTEGER},
+      CreateTime = #{createTime,jdbcType=TIMESTAMP},
+      UpdateTime = #{updateTime,jdbcType=TIMESTAMP}
+    where Id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

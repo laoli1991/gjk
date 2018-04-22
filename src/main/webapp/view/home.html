@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" >
+<html lang="zh-CN" >
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
@@ -8,6 +8,8 @@
         <link rel="stylesheet" type="text/css" href="/css/material-design.css">
         <link rel="stylesheet" type="text/css" href="/css/small-n-flat.css">
         <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="/css/ng-table.css">
+        <link rel="stylesheet" type="text/css" href="/css/bootstrap-datetimepicker.min.css">
 
         <title>金库管理系统V1.0</title>
     </head>
@@ -22,11 +24,10 @@
                     <div id="cm-menu-scroller">
                         <ul class="cm-menu-items">
                             <li><a href="#/manage" class="sf-notepad">管理</a></li>
-                            <li><a href="#/bb" class="sf-notepad">维护</a></li>
-                            <li><a href="#/cc" class="sf-lock-open">盘点</a></li>
-                            <li><a href="#/aa" class="sf-notepad">操作日志</a></li>
-                            <li><a href="#/bb" class="sf-notepad">报表</a></li>
-                            <li><a href="#/cc" class="sf-lock-open">打印</a></li>
+                            <li><a href="#/bb" class="sf-wrench-screwdriver">维护</a></li>
+                            <li><a href="#/cc" class="sf-dashboard">盘点</a></li>
+                            <li><a href="#/aa" class="sf-cat">操作日志</a></li>
+                            <li><a href="#/bb" class="sf-file-excel">报表</a></li>
                         </ul>
                     </div>
                 </div>
@@ -36,13 +37,13 @@
             <nav class="cm-navbar cm-navbar-primary">
                 <div class="btn btn-primary md-menu-white hidden-md hidden-lg" data-toggle="cm-menu"></div>
                 <div class="cm-flex">
-                    <h1>Home</h1>
-                    <form id="cm-search" action="home.html" method="get">
-                        <input type="search" name="q" autocomplete="off" placeholder="Search...">
-                    </form>
+                    <h1>金库管理系统V1.0</h1>
+                    <!--<form id="cm-search" action="home.html" method="get">-->
+                        <!--<input type="search" name="q" autocomplete="off" placeholder="Search...">-->
+                    <!--</form>-->
                 </div>
                 <div class="pull-right">
-                    <div id="cm-search-btn" class="btn btn-primary md-search-white" data-toggle="cm-search"></div>
+                    <!--<div id="cm-search-btn" class="btn btn-primary md-search-white" data-toggle="cm-search"></div>-->
                 </div>
                 <div class="dropdown pull-right">
                     <button class="btn btn-primary md-notifications-white" data-toggle="dropdown"> <span class="label label-danger">{{msgsLen}}</span> </button>
@@ -57,7 +58,7 @@
                                     <p class="list-group-item-text text-overflow"> {{msg.oo}}</p>
                                 </a>
                             </div>
-                            <div style="padding:10px"><a class="btn btn-success btn-block" href="#">Show me more...</a></div>
+                            <div style="padding:10px"><a class="btn btn-success btn-block" href="#">更多...</a></div>
                         </div>
                     </div>
                 </div>
@@ -65,26 +66,22 @@
                     <button class="btn btn-primary md-account-circle-white" data-toggle="dropdown"></button>
                     <ul class="dropdown-menu">
                         <li class="disabled text-center">
-                            <a style="cursor:default;"><strong>John Smith</strong></a>
+                            <a style="cursor:default;"><strong>{{user}}</strong></a>
                         </li>
                         <li class="divider"></li>
                         <li>
-                            <a href="#"><i class="fa fa-fw fa-user"></i> Profile</a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-fw fa-cog"></i> Settings</a>
-                        </li>
-                        <li>
-                            <a href="login.html"><i class="fa fa-fw fa-sign-out"></i> Sign out</a>
+                            <a href="login.html"><i class="fa fa-fw fa-sign-out"></i>退出</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </header>
-        <div id="global" ng-view></div>
-        <footer class="cm-footer"><span class="pull-left"></span><span class="pull-right">技术支持：贵州新启程档案服务有限责任公司</span></footer>
+        <div id="global" ng-view>
+        </div>
         <script src="/js/lib/angular.min.js"></script>
         <script src="/js/lib/angular-route.min.js"></script>
+        <script src="/js/lib/ui-bootstrap-tpls.js"></script>
+        <script src="/js/lib/ng-table.js"></script>
         <script src="/js/business/index-controller.js"></script>
         <script src="/js/business/manage-controller.js"></script>
         <script src="/js/business/home-controller.js"></script>

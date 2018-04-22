@@ -40,7 +40,7 @@
             <property name="enableSubPackages" value="true"/>
         </javaClientGenerator>
 
-        <table tableName="stu" domainObjectName="Stu"
+        <table tableName="gjk_currency" domainObjectName="GjkCurrency"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

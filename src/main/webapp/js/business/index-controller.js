@@ -10,7 +10,6 @@ app.controller("indexCtrl", ["$scope", function ($scope ) {
         console.log(msg) ;
     }
 
-    console.info("sddssdds") ;
-    console.log($scope.msgs) ;
+    $scope.user = "小李子" ;
 
 }]);
