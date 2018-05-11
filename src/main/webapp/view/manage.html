@@ -9,10 +9,9 @@
         <div class="cm-flex">
             <div class="nav-tabs-container">
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="" data-toggle="tab" ng-click="tabShow(1)">入库录入</a></li>
-                    <li><a href="" data-toggle="tab" ng-click="tabShow(2)">入库操作(删除|修改|搜索)</a></li>
-                    <li><a href="" data-toggle="tab" ng-click="tabShow(3)">出库录入</a></li>
-                    <li><a href="" data-toggle="tab" ng-click="tabShow(4)">出库操作(删除|修改|搜索)</a></li>
+                    <li class="active"><a href="" data-toggle="tab" ng-click="tabShow(1)">入库记录操作(删除|修改|搜索)</a></li>
+                    <li><a href="" data-toggle="tab" ng-click="tabShow(2)">完整劵入库</a></li>
+                    <li><a href="" data-toggle="tab" ng-click="tabShow(3)">残缺劵入库</a></li>
                 </ul>
             </div>
         </div>
@@ -20,61 +19,79 @@
 </div>
 <div class="container-fluid">
     <div class="tab-content">
-        <div class="tab-pane fade in active" id="tab1" style="margin-top:20px" ng-show="tab1">
+        <div class="tab-pane fade in active" id="tab2" style="margin-top:20px" ng-show="tab2">
             <div class="panel panel-default">
                 <div class="row cm-fix-height">
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading"></div>
                             <div class="panel-body">
                                 <form class="form-horizontal">
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">货币类型</label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" ng-model="currency.currencyType"
-                                                    ng-options="currencyType.des for currencyType in currencyTypelis"></select>
+                                        <label class="col-sm-2 control-label">卷别</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" ng-model="recoder.voucher"
+                                                    ng-options="voucher.name for voucher in vouchers"></select>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">货币版本</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" ng-model="currency.version"
+                                        <label class="col-sm-2 control-label">类型</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" ng-model="recoder.type"
+                                                    ng-options="type.desc for type in types"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">箱数</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="recoder.xiangCount" ng-keyup=""
+                                                   placeholder="" ng-change="chg()">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">捆数</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="recoder.kunCount" ng-keyup=""
+                                                   placeholder="" ng-change="chg()">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">把数</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="recoder.baCount" ng-keyup=""
+                                                   placeholder="" ng-change="chg()">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">合计</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="recoder.allCount"
                                                    placeholder="">
                                         </div>
                                     </div>
+
                                     <div class="form-group">
-                                        <label class="col-sm-3 control-label">数量</label>
-                                        <div class="col-sm-9">
-                                            <input type="text" class="form-control" ng-model="currency.count"
+                                        <label class="col-sm-2 control-label">金额</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="recoder.amount"
                                                    placeholder="">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">货币单位</label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" ng-model="currency.unit"
-                                                    ng-options="currencyUnit.des for currencyUnit in currencyUnitlis"></select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-sm-3 control-label">货币附件属性</label>
-                                        <div class="col-sm-9">
-                                            <select class="form-control" ng-model="currency.attribute"
-                                                    ng-options="currencyAttribute.des for currencyAttribute in currencyAttributelis"></select>
                                         </div>
                                     </div>
 
                                     <div class="form-group" style="margin-bottom:0">
                                         <div class="text-center">
-                                            <button class="btn btn-primary btn-lg" ng-click="insertCurrency(currency)">
+                                            <button class="btn btn-primary btn-lg" ng-click="addRecoder(recoder , 1)">
                                                 录入
                                             </button>
                                         </div>
                                     </div>
+
                                 </form>
                             </div>
                         </div>
@@ -84,19 +101,19 @@
         </div>
 
 
-        <div class="tab-pane fade in active" id="tab2" style="margin-top:20px" ng-show="tab2">
+        <div class="tab-pane fade in active" id="tab1" style="margin-top:20px" ng-show="tab1">
             <div class="panel panel-default">
 
                 <div class="panel-body">
 
                     <div class="form-group">
                         <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label class="col-sm-4 control-label">筛选入库时间</label>
-                                    <div class="col-sm-8">
-                                        <input type="date" class="form-control" ng-model="jdate" value="{{jdate}}"/>
-                                    </div>
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">筛选入库时间</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control" ng-model="jdate" value="{{jdate}}"/>
                                 </div>
+                            </div>
 
                         </div>
                         <div class="col-sm-6">

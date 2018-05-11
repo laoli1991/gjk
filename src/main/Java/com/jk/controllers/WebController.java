@@ -1,4 +1,4 @@
-package com.saosao.controllers;
+package com.jk.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("")
 public class WebController {
 
-    @RequestMapping("/login")
-    public String TestString() {
-        return "login";
+    @RequestMapping("/home")
+    public String home() {
+        return "home";
     }
 }

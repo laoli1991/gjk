@@ -1,4 +1,4 @@
-angular.module('home.controller', ['ngRoute', 'index.controller', 'manage.controller'])
+angular.module('home.controller', ['ngRoute', 'index.controller', 'manage.controller',"configure.controller"])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -11,7 +11,7 @@ angular.module('home.controller', ['ngRoute', 'index.controller', 'manage.contro
             })
             .when('/configure', {
                 templateUrl: '/view/configure.html',
-                controller: 'manageCtrl'
+                controller: 'configureCtrl'
             })
             .when('/cc', {templateUrl: '/view/cc.html'})
 

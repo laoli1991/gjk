@@ -10,6 +10,7 @@
         <link rel="stylesheet" type="text/css" href="/css/font-awesome.min.css">
         <link rel="stylesheet" type="text/css" href="/css/ng-table.css">
         <link rel="stylesheet" type="text/css" href="/css/bootstrap-datetimepicker.min.css">
+        <link rel="stylesheet" type="text/css" href="/css/sweetalert.css">
 
         <title>金库管理系统V1.0</title>
     </head>
@@ -23,11 +24,9 @@
                 <div id="cm-menu-items-wrapper">
                     <div id="cm-menu-scroller">
                         <ul class="cm-menu-items">
-                            <li><a href="#/manage" class="sf-notepad">管理</a></li>
-                            <li><a href="#/configure" class="sf-wrench-screwdriver">维护</a></li>
-                            <li><a href="#/cc" class="sf-dashboard">盘点</a></li>
-                            <li><a href="#/aa" class="sf-cat">操作日志</a></li>
-                            <li><a href="#/bb" class="sf-file-excel">报表</a></li>
+                            <li><a href="#/manage" class="sf-notepad">库存管理</a></li>
+                            <li><a href="#/configure" class="sf-wrench-screwdriver">劵别管理</a></li>
+                            <li><a href="#/cc" class="sf-dashboard">屏幕管理</a></li>
                         </ul>
                     </div>
                 </div>
@@ -82,9 +81,12 @@
         <script src="/js/lib/angular-route.min.js"></script>
         <script src="/js/lib/ui-bootstrap-tpls.js"></script>
         <script src="/js/lib/ng-table.js"></script>
+        <script src="/js/lib/sweetalert-dev.js"></script>
         <script src="/js/business/index-controller.js"></script>
         <script src="/js/business/manage-controller.js"></script>
         <script src="/js/business/home-controller.js"></script>
+        <script src="/js/business/configure-controller.js"></script>
+
         <script src="/js/lib/jquery-2.1.3.min.js"></script>
         <script src="/js/jquery.mousewheel.min.js"></script>
         <script src="/js/jquery.cookie.min.js"></script>
