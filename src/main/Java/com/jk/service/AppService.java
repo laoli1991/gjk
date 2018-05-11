@@ -40,11 +40,14 @@ public class AppService {
 
 
     public List<VoucherPo> getVoucherPos(HttpServletRequest request, Integer type) {
+        if (type == null) {
+            return voucherDao.getVoucherList(request);
+        }
         return voucherDao.getVoucherPos(request, type);
     }
 
-    public List<VoucherPo> addVoucherPo(HttpServletRequest request, String name, Double amount, Integer type) {
-        VoucherPo voucherPo = new VoucherPo(AppUtils.generateUId(), name, amount, type);
+    public List<VoucherPo> addVoucherPo(HttpServletRequest request, String dec, String name, Double amount, Integer type) {
+        VoucherPo voucherPo = new VoucherPo(AppUtils.generateUId(), dec, name, amount, type);
         return voucherDao.addVoucherPo(request, voucherPo);
     }
 

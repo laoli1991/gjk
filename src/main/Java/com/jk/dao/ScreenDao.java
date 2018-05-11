@@ -25,11 +25,7 @@ public class ScreenDao {
 
     public synchronized Map<String, ScreenPo> getStockUid2ScreenPo(HttpServletRequest request) {
         try {
-            String path = AppUtils.getScreenPath(request);
-            File file = new File(path);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
+            File file = new File(AppUtils.createScreenTableIfNotExist(request));
             List<String> lines = Files.readLines(file, Charsets.UTF_8);
             String text = Joiner.on("").skipNulls().join(lines);
             if (StringUtils.isBlank(text)) {
@@ -71,8 +67,7 @@ public class ScreenDao {
         try {
             Map<String, ScreenPo> stringScreenPoMap = getStockUid2ScreenPo(request);
             stringScreenPoMap.put(screenPo.getMacAddress(), screenPo);
-            String path = AppUtils.getScreenPath(request);
-            File file = new File(path);
+            File file = new File(AppUtils.createScreenTableIfNotExist(request));
             Files.write(JSONObject.toJSONString(stringScreenPoMap), file, Charsets.UTF_8);
         } catch (Exception e) {
             ERROR.error(e.getMessage());
@@ -84,8 +79,7 @@ public class ScreenDao {
         try {
             Map<String, ScreenPo> stringScreenPoMap = getStockUid2ScreenPo(request);
             stringScreenPoMap.remove(screenPo.getMacAddress());
-            String path = AppUtils.getScreenPath(request);
-            File file = new File(path);
+            File file = new File(AppUtils.createScreenTableIfNotExist(request));
             Files.write(JSONObject.toJSONString(stringScreenPoMap), file, Charsets.UTF_8);
         } catch (Exception e) {
             ERROR.error(e.getMessage());

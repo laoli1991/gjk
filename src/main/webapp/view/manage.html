@@ -10,8 +10,9 @@
             <div class="nav-tabs-container">
                 <ul class="nav nav-tabs">
                     <li class="active"><a href="" data-toggle="tab" ng-click="tabShow(1)">入库记录操作(删除|修改|搜索)</a></li>
-                    <li><a href="" data-toggle="tab" ng-click="tabShow(2)">完整劵入库</a></li>
-                    <li><a href="" data-toggle="tab" ng-click="tabShow(3)">残缺劵入库</a></li>
+                    <li><a href="" data-toggle="tab" ng-click="tabShow(2)">纸币完整劵入库</a></li>
+                    <li><a href="" data-toggle="tab" ng-click="tabShow(3)">纸币残缺劵入库</a></li>
+                    <li><a href="" data-toggle="tab" ng-click="tabShow(3)">硬币劵入库</a></li>
                 </ul>
             </div>
         </div>
@@ -31,47 +32,51 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">卷别</label>
                                         <div class="col-sm-8">
-                                            <select class="form-control" ng-model="recoder.voucher"
-                                                    ng-options="voucher.name for voucher in vouchers"></select>
+                                            <select class="form-control" ng-model="zw.voucher"
+                                                    ng-options="row.name for row in voucherZlist" ng-change="chgZw()"></select>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">类型</label>
                                         <div class="col-sm-8">
-                                            <select class="form-control" ng-model="recoder.type"
-                                                    ng-options="type.desc for type in types"></select>
+                                            <select class="form-control" ng-model="zw.type"
+                                                    ng-options="row.desc for row in zwTypes"></select>
                                         </div>
                                     </div>
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">箱数</label>
+                                        <label class="col-sm-2 control-label">箱（袋）数</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" ng-model="recoder.xiangCount" ng-keyup=""
-                                                   placeholder="" ng-change="chg()">
+                                            <input type="text" class="form-control" ng-model="zw.xiangCount"
+                                                   ng-keyup="mustInt(zw , 'xiangCount')"
+                                                   placeholder="" ng-change="chgZw()">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">捆数</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" ng-model="recoder.kunCount" ng-keyup=""
-                                                   placeholder="" ng-change="chg()">
+                                            <input type="text" class="form-control" ng-model="zw.kunCount"
+                                                   ng-keyup="mustInt(zw , 'kunCount')"
+                                                   placeholder="" ng-change="chgZw()">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">把数</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" ng-model="recoder.baCount" ng-keyup=""
-                                                   placeholder="" ng-change="chg()">
+                                            <input type="text" class="form-control" ng-model="zw.baCount"
+                                                   ng-keyup="mustInt(zw , 'baCount')"
+                                                   placeholder="" ng-change="chgZw()">
                                         </div>
                                     </div>
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">合计</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" ng-model="recoder.allCount"
+                                            <input type="text" class="form-control" ng-model="zw.allCount"
+                                                   disabled="disabled"
                                                    placeholder="">
                                         </div>
                                     </div>
@@ -79,14 +84,15 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label">金额</label>
                                         <div class="col-sm-8">
-                                            <input type="text" class="form-control" ng-model="recoder.amount"
+                                            <input type="text" class="form-control" ng-model="zw.amount"
+                                                   disabled="disabled"
                                                    placeholder="">
                                         </div>
                                     </div>
 
                                     <div class="form-group" style="margin-bottom:0">
                                         <div class="text-center">
-                                            <button class="btn btn-primary btn-lg" ng-click="addRecoder(recoder , 1)">
+                                            <button class="btn btn-primary btn-lg" ng-click="addZwStock(zw)">
                                                 录入
                                             </button>
                                         </div>

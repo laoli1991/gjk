@@ -18,17 +18,32 @@ import java.util.UUID;
  */
 public class AppUtils {
 
-    public static String getStockPath(HttpServletRequest request) {
+    public static String createStockTableIfNotExist(HttpServletRequest request) {
+        String dir = request.getSession().getServletContext().getRealPath("/") + "datas" ;
+        File folder = new File(dir);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
         String path = request.getSession().getServletContext().getRealPath("/") + "datas" + File.separator + "stock.txt";
         return path;
     }
 
-    public static String getVoucherPath(HttpServletRequest request) {
+    public static String createVoucherTableIfNotExist(HttpServletRequest request) {
+        String dir = request.getSession().getServletContext().getRealPath("/") + "datas" ;
+        File folder = new File(dir);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
         String path = request.getSession().getServletContext().getRealPath("/") + "datas" + File.separator + "voucher.txt";
         return path;
     }
 
-    public static String getScreenPath(HttpServletRequest request) {
+    public static String createScreenTableIfNotExist(HttpServletRequest request) {
+        String dir = request.getSession().getServletContext().getRealPath("/") + "datas" ;
+        File folder = new File(dir);
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
         String path = request.getSession().getServletContext().getRealPath("/") + "datas" + File.separator + "screen.txt";
         return path;
     }

@@ -23,13 +23,9 @@ import java.util.List;
 public class VoucherDao {
     private static final Logger ERROR = Logger.getLogger(VoucherDao.class);
 
-    private synchronized List<VoucherPo> getVoucherList(HttpServletRequest request) {
+    public synchronized List<VoucherPo> getVoucherList(HttpServletRequest request) {
         try {
-            String path = AppUtils.getVoucherPath(request);
-            File file = new File(path);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
+            File file = new File(AppUtils.createVoucherTableIfNotExist(request));
             List<String> lines = Files.readLines(file, Charsets.UTF_8);
             String text = Joiner.on("").skipNulls().join(lines);
             if (StringUtils.isBlank(text)) {
@@ -47,8 +43,7 @@ public class VoucherDao {
         try {
             List<VoucherPo> vouchers = getVoucherList(request);
             vouchers.add(voucherPo);
-            String path = AppUtils.getVoucherPath(request);
-            File file = new File(path);
+            File file = new File(AppUtils.createVoucherTableIfNotExist(request));
             Files.write(JSONObject.toJSONString(vouchers), file, Charsets.UTF_8);
         } catch (Exception e) {
             ERROR.error(e.getMessage());
@@ -65,8 +60,7 @@ public class VoucherDao {
                     break;
                 }
             }
-            String path = AppUtils.getVoucherPath(request);
-            File file = new File(path);
+            File file = new File(AppUtils.createVoucherTableIfNotExist(request));
             Files.write(JSONObject.toJSONString(vouchers), file, Charsets.UTF_8);
         } catch (Exception e) {
             ERROR.error(e.getMessage());

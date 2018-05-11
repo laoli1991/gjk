@@ -2,19 +2,21 @@ var app = angular.module("configure.controller", ["ngTable", "ui.bootstrap"]);
 
 app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", function ($scope, $http, NgTableParams, $q) {
 
-    $scope.amounts = [{"desc": "100元", "amount": 100},
-        {"desc": "50元", "amount": 50},
-        {"desc": "20元", "amount": 20},
-        {"desc": "10元", "amount": 10},
-        {"desc": "5元", "amount": 50},
-        {"desc": "2元", "amount": 2},
-        {"desc": "1元", "amount": 1},
-        {"desc": "5角", "amount": 0.5},
-        {"desc": "2角", "amount": 0.2},
-        {"desc": "1角", "amount": 0.1}]
+    $scope.vouchers = [
+        {"desc": "纸币100元", "amount": 100, "type": 1, "typeDesc": "纸币"},
+        {"desc": "纸币50元", "amount": 50, "type": 1, "typeDesc": "纸币"},
+        {"desc": "纸币20元", "amount": 20, "type": 1, "typeDesc": "纸币"},
+        {"desc": "纸币10元", "amount": 10, "type": 1, "typeDesc": "纸币"},
+        {"desc": "纸币5元", "amount": 50, "type": 1, "typeDesc": "纸币"},
+        {"desc": "纸币2元", "amount": 2, "type": 1, "typeDesc": "纸币"},
+        {"desc": "纸币1元", "amount": 1, "type": 1, "typeDesc": "纸币"},
+        {"desc": "硬币1元", "amount": 1, "type": 2, "typeDesc": "硬币"},
+        {"desc": "硬币5角", "amount": 0.5, "type": 2, "typeDesc": "硬币"},
+        {"desc": "硬币2角", "amount": 0.2, "type": 2, "typeDesc": "硬币"},
+        {"desc": "硬币1角", "amount": 0.1, "type": 2, "typeDesc": "硬币"}]
 
-    $scope.addVoucher = function (voucher, amount) {
-        if (voucher == null || voucher == undefined || voucher.trim().length == 0) {
+    $scope.addVoucher = function (voucherName, voucher) {
+        if (voucherName == null || voucherName == undefined || voucherName.trim().length == 0) {
             swal({
                 title: "卷别不能为空",
                 text: "",
@@ -24,8 +26,9 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
                 confirmButtonText: "关闭",
                 closeOnConfirm: false
             });
+            return;
         }
-        if (amount == null || amount == undefined) {
+        if (voucher == null || voucher == undefined) {
             swal({
                 title: "请选择金额",
                 text: "",
@@ -35,13 +38,14 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
                 confirmButtonText: "关闭",
                 closeOnConfirm: false
             });
+            return;
         }
         else {
             var deferred = $q.defer();
-            $http.get("../api/addVoucher?voucher=" + voucher + "&amount=" + amount.amount)
+            $http.get("../api/add-voucher?desc=" + voucher.desc + "&amount=" + voucher.amount + "&type=" + voucher.type+"&name=" + voucherName)
                 .success(function (data) {
                     console.log(data);
-                    $scope.vouchers = data;
+                    $scope.voucherList = data;
                     deferred.resolve(data);
                 })
                 .error(function (data) {
@@ -64,9 +68,9 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
             },
             function () {
                 var deferred = $q.defer();
-                $http.get("../api/removeVoucher?uId=" + voucher.uId)
+                $http.get("../api/remove-voucher?uId=" + voucher.uId)
                     .success(function (data) {
-                        $scope.vouchers = data;
+                        $scope.voucherList = data;
                         deferred.resolve(data);
                         swal("删除！", "卷别【" + voucher.name + "】已经被删除", "success");
                     })
@@ -79,9 +83,9 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
 
     $scope.getVoucherList = function () {
         var deferred = $q.defer();
-        $http.get("../api/getVoucherList")
+        $http.get("../api/voucher-list")
             .success(function (data) {
-                $scope.vouchers = data;
+                $scope.voucherList = data;
                 deferred.resolve(data);
             })
             .error(function (data) {

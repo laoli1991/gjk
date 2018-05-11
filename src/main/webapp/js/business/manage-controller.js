@@ -24,11 +24,23 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
         }
     };
 
-    $scope.getVoucherList = function () {
+    $scope.getVoucher1List = function () {
         var deferred = $q.defer();
-        $http.get("../api/getVoucherList")
+        $http.get("../api/voucher-list?type=1")
             .success(function (data) {
-                $scope.vouchers = data;
+                $scope.voucherZlist = data;
+                deferred.resolve(data);
+            })
+            .error(function (data) {
+                deferred.reject(data);
+            });
+        return deferred.promise;
+    };
+    $scope.getVoucher2List = function () {
+        var deferred = $q.defer();
+        $http.get("../api/voucher-list?type=2")
+            .success(function (data) {
+                $scope.voucherYlist = data;
                 deferred.resolve(data);
             })
             .error(function (data) {
@@ -37,7 +49,9 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
         return deferred.promise;
     };
 
-    $scope.getVoucherList();
+    $scope.getVoucher1List();
+    $scope.getVoucher2List();
+
 
     $scope.types = [
         {"desc": "原封劵", idx: 1},
@@ -46,29 +60,35 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
         {"desc": "已复点", idx: 4},
         {"desc": "未复点", idx: 5}];
 
-    $scope.chg = function () {
-        console.log($scope.recoder);
-        $scope.recoder.allCount = Number(0);
-        if ($scope.recoder.xiangCount != undefined && $scope.recoder.xiangCount != null) {
-            $scope.recoder.allCount += Number($scope.recoder.xiangCount) * 20 * 100000;
+    $scope.zwTypes = [
+        {"desc": "原封劵", idx: 1},
+        {"desc": "已清分", idx: 2},
+        {"desc": "未清分", idx: 3}];
+
+
+    $scope.chgZw = function () {
+        console.log($scope.zw);
+        $scope.zw.allCount = Number(0);
+        if ($scope.zw.xiangCount != undefined && $scope.zw.xiangCount != null) {
+            $scope.zw.allCount += Number($scope.zw.xiangCount) * 20 * 100000;
         }
-        if ($scope.recoder.kunCount != undefined && $scope.recoder.kunCount != null) {
-            $scope.recoder.allCount += Number($scope.recoder.kunCount) * 100000;
+        if ($scope.zw.kunCount != undefined && $scope.zw.kunCount != null) {
+            $scope.zw.allCount += Number($scope.zw.kunCount) * 100000;
         }
-        if ($scope.recoder.baCount != undefined && $scope.recoder.baCount != null) {
-            $scope.recoder.allCount += Number($scope.recoder.baCount);
+        if ($scope.zw.baCount != undefined && $scope.zw.baCount != null) {
+            $scope.zw.allCount += Number($scope.zw.baCount);
         }
 
-        $scope.recoder.amount = Number(0);
-        if ($scope.recoder.voucher != undefined && $scope.recoder.voucher != null) {
-            $scope.recoder.amount += Number($scope.recoder.voucher.amount) * $scope.recoder.allCount;
+        $scope.zw.amount = Number(0);
+        if ($scope.zw.voucher != undefined && $scope.zw.voucher != null) {
+            $scope.zw.amount += Number($scope.zw.voucher.amount) * $scope.zw.allCount;
         }
 
     };
 
 
-    $scope.addRecoder = function (recoder, version) {
-        console.log(recoder);
+    $scope.addZwStock = function (zw) {
+        console.log(zw);
         // $http({
         //     method: 'post',
         //     url: '../api/insertGjkCurrency',
@@ -86,15 +106,16 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     };
 
 
-    $scope.clearNoNum = function () {
-        //先把非数字的都替换掉，除了数字和.
-        $scope.kk = $scope.kk.replace(/[^\d.]/g, "");
-        //必须保证第一个为数字而不是.
-        $scope.kk = $scope.kk.replace(/^\./g, "");
-        //保证只有出现一个.而没有多个.
-        $scope.kk = $scope.kk.replace(/\.{2,}/g, "");
-        //保证.只出现一次，而不能出现两次以上
-        $scope.kk = $scope.kk.replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+    $scope.mustDouble = function clearNoNum(obj , attr) {
+        obj[attr] = obj[attr].replace(/[^\d.]/g, "");  //清除“数字”和“.”以外的字符
+        obj[attr] = obj[attr].replace(/^\./g, "");  //验证第一个字符是数字而不是.
+        obj[attr] = obj[attr].replace(/\.{2,}/g, "."); //只保留第一个. 清除多余的
+        obj[attr] = obj[attr].replace(".", "$#$").replace(/\./g, "").replace("$#$", ".");
+        obj[attr] = obj[attr].replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3');//只能输入两个小数
+    }
+
+    $scope.mustInt = function clearNoNum(obj , attr) {
+        obj[attr] = obj[attr].replace(/[^\d]/g, "");  //清除“数字”和“.”以外的字符
     }
 
 

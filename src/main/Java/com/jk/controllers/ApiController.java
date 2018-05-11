@@ -25,17 +25,18 @@ public class ApiController {
 
     @RequestMapping("/voucher-list")
     @ResponseBody
-    public List<VoucherPo> voucherList(HttpServletRequest request, @RequestParam("type") Integer type) {
+    public List<VoucherPo> voucherList(HttpServletRequest request, @RequestParam(value = "type" , required = false) Integer type) {
         return appService.getVoucherPos(request, type);
     }
 
     @RequestMapping("/add-voucher")
     @ResponseBody
     public List<VoucherPo> addVoucher(HttpServletRequest request,
-                                      @RequestParam("voucher") String voucher,
+                                      @RequestParam("desc") String dec,
+                                      @RequestParam("name") String name,
                                       @RequestParam("amount") Double amount,
                                       @RequestParam("type") Integer type) {
-        return appService.addVoucherPo(request, voucher, amount, type);
+        return appService.addVoucherPo(request, dec, name, amount, type);
     }
 
     @RequestMapping("/remove-voucher")

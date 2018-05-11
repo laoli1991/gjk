@@ -16,7 +16,7 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">卷别</label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" ng-model="voucher"
+                                    <input type="text" class="form-control" ng-model="voucherName"
                                            placeholder="卷别">
                                 </div>
                             </div>
@@ -25,15 +25,15 @@
                             <div class="form-group">
                                 <label class="col-sm-2 control-label">金额</label>
                                 <div class="col-sm-10">
-                                    <select class="form-control" ng-model="amount"
-                                            ng-options="row.desc for row in amounts"></select>
+                                    <select class="form-control" ng-model="voucher"
+                                            ng-options="row.desc group by row.typeDesc for row in vouchers"></select>
                                 </div>
                             </div>
                         </div>
                         <div class="col-sm-3">
                             <div class="form-group" style="margin-bottom:0">
                                 <div class="text-center">
-                                    <button class="btn btn-primary btn-lg" ng-click="addVoucher(voucher,amount)">
+                                    <button class="btn btn-primary btn-lg" ng-click="addVoucher(voucherName,voucher)">
                                         增加
                                     </button>
                                 </div>
@@ -47,14 +47,14 @@
                         <thead>
                         <tr>
                             <th>劵别</th>
-                            <th>金额（元）</th>
+                            <th>金额</th>
                             <th>操作</th>
                         </tr>
                         </thead>
-                        <tr ng-repeat="voucher in vouchers track by $index">
-                            <td align="center"> {{voucher.name}}</td>
-                            <td align="center"> {{voucher.amount}}</td>
-                            <td align="center"><a href="" ng-click="removeVoucher(voucher)">删除</a></td>
+                        <tr ng-repeat="row in voucherList track by $index">
+                            <td align="center"> {{row.name}}</td>
+                            <td align="center"> {{row.desc}}</td>
+                            <td align="center"><a href="" ng-click="removeVoucher(row)">删除</a></td>
                         </tr>
                     </table>
                 </div>

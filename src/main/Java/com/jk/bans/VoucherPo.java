@@ -7,12 +7,14 @@ package com.jk.bans;
  */
 public class VoucherPo {
     private String uId;
+    private String desc;
     private String name;
     private Double amount;
     private Integer type;
 
-    public VoucherPo(String uId, String name, Double amount, Integer type) {
+    public VoucherPo(String uId, String desc, String name, Double amount, Integer type) {
         this.uId = uId;
+        this.desc = desc;
         this.name = name;
         this.amount = amount;
         this.type = type;
@@ -48,5 +50,13 @@ public class VoucherPo {
 
     public void setType(Integer type) {
         this.type = type;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }

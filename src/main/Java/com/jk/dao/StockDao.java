@@ -25,8 +25,7 @@ public class StockDao {
 
     public synchronized Map<String, StockPo> getStockUid2StockPo(HttpServletRequest request) {
         try {
-            String path = AppUtils.getStockPath(request);
-            File file = new File(path);
+            File file = new File(AppUtils.createStockTableIfNotExist(request));
             if (!file.exists()) {
                 file.createNewFile();
             }
@@ -71,8 +70,7 @@ public class StockDao {
         try {
             Map<String, StockPo> stringStockPoMap = getStockUid2StockPo(request);
             stringStockPoMap.put(AppUtils.getStockUid(stockPo), stockPo);
-            String path = AppUtils.getStockPath(request);
-            File file = new File(path);
+            File file = new File(AppUtils.createStockTableIfNotExist(request));
             Files.write(JSONObject.toJSONString(stringStockPoMap), file, Charsets.UTF_8);
         } catch (Exception e) {
             ERROR.error(e.getMessage());
@@ -84,8 +82,7 @@ public class StockDao {
         try {
             Map<String, StockPo> stringStockPoMap = getStockUid2StockPo(request);
             stringStockPoMap.remove(AppUtils.getStockUid(stockPo));
-            String path = AppUtils.getStockPath(request);
-            File file = new File(path);
+            File file = new File(AppUtils.createStockTableIfNotExist(request));
             Files.write(JSONObject.toJSONString(stringStockPoMap), file, Charsets.UTF_8);
         } catch (Exception e) {
             ERROR.error(e.getMessage());
