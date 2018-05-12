@@ -10,6 +10,8 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
         {"desc": "纸币5元", "amount": 50, "type": 1, "typeDesc": "纸币"},
         {"desc": "纸币2元", "amount": 2, "type": 1, "typeDesc": "纸币"},
         {"desc": "纸币1元", "amount": 1, "type": 1, "typeDesc": "纸币"},
+        {"desc": "纸币5角", "amount": 0.5, "type": 1, "typeDesc": "纸币"},
+        {"desc": "纸币1角", "amount": 0.1, "type": 1, "typeDesc": "纸币"},
         {"desc": "硬币1元", "amount": 1, "type": 2, "typeDesc": "硬币"},
         {"desc": "硬币5角", "amount": 0.5, "type": 2, "typeDesc": "硬币"},
         {"desc": "硬币2角", "amount": 0.2, "type": 2, "typeDesc": "硬币"},
@@ -44,8 +46,21 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
             var deferred = $q.defer();
             $http.get("../api/add-voucher?desc=" + voucher.desc + "&amount=" + voucher.amount + "&type=" + voucher.type+"&name=" + voucherName)
                 .success(function (data) {
-                    console.log(data);
-                    $scope.voucherList = data;
+                    if(data.code == 1){
+                        swal({
+                            title: "已存在该卷别",
+                            text: "",
+                            type: "warning",
+                            showCancelButton: false,
+                            confirmButtonColor: "#DD6B55",
+                            confirmButtonText: "关闭",
+                            closeOnConfirm: false
+                        });
+                    }
+                    else {
+                        swal("添加成功！", "卷别【" + voucherName + "】已经添加", "success");
+                    }
+                    $scope.voucherList = data.voucherPos;
                     deferred.resolve(data);
                 })
                 .error(function (data) {

@@ -6,9 +6,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Enumeration;
-import java.util.Formatter;
-import java.util.Locale;
 import java.util.UUID;
 
 /**
@@ -18,8 +18,10 @@ import java.util.UUID;
  */
 public class AppUtils {
 
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss");
+
     public static String createStockTableIfNotExist(HttpServletRequest request) {
-        String dir = request.getSession().getServletContext().getRealPath("/") + "datas" ;
+        String dir = request.getSession().getServletContext().getRealPath("/") + "datas";
         File folder = new File(dir);
         if (!folder.exists()) {
             folder.mkdirs();
@@ -29,7 +31,7 @@ public class AppUtils {
     }
 
     public static String createVoucherTableIfNotExist(HttpServletRequest request) {
-        String dir = request.getSession().getServletContext().getRealPath("/") + "datas" ;
+        String dir = request.getSession().getServletContext().getRealPath("/") + "datas";
         File folder = new File(dir);
         if (!folder.exists()) {
             folder.mkdirs();
@@ -39,7 +41,7 @@ public class AppUtils {
     }
 
     public static String createScreenTableIfNotExist(HttpServletRequest request) {
-        String dir = request.getSession().getServletContext().getRealPath("/") + "datas" ;
+        String dir = request.getSession().getServletContext().getRealPath("/") + "datas";
         File folder = new File(dir);
         if (!folder.exists()) {
             folder.mkdirs();
@@ -53,27 +55,32 @@ public class AppUtils {
     }
 
     public static String getStockUid(StockPo stockPo) {
-        return String.format("%d%d%s", stockPo.getCategory(), stockPo.getType(), stockPo.getVoucherUid());
+        return String.format("%d-%s", stockPo.getType(), stockPo.getVoucherUid());
     }
 
-    public static String getStockUid(Integer category, Integer type, String voucherUid) {
-        return String.format("%d%d%s", category, type, voucherUid);
+    public static String getStockUid(Integer type, String voucherUid) {
+        return String.format("%d-%s", type, voucherUid);
     }
 
-    public static String getMac() {
-        String mac = "";
-        try {
-            InetAddress address = InetAddress.getLocalHost();
-            NetworkInterface ni = NetworkInterface.getByInetAddress(address);
-            byte[] macs = ni.getHardwareAddress();
-            Formatter formatter = new Formatter();
-            for (int i = 0; i < macs.length; i++) {
-                mac = formatter.format(Locale.getDefault(), "%02X%s", macs[i], i < macs.length - 1 ? "-" : "").toString();
-            }
-        } catch (Exception e) {
-        }
-        return mac;
+    public static String getNowStr() {
+        Date date = new Date();
+        return sdf.format(date);
     }
+
+//    public static String getMac() {
+//        String mac = "";
+//        try {
+//            InetAddress address = InetAddress.getLocalHost();
+//            NetworkInterface ni = NetworkInterface.getByInetAddress(address);
+//            byte[] macs = ni.getHardwareAddress();
+//            Formatter formatter = new Formatter();
+//            for (int i = 0; i < macs.length; i++) {
+//                mac = formatter.format(Locale.getDefault(), "%02X%s", macs[i], i < macs.length - 1 ? "-" : "").toString();
+//            }
+//        } catch (Exception e) {
+//        }
+//        return mac;
+//    }
 
 //    public static String getIpAdrress(HttpServletRequest request) {
 //        String ip = request.getHeader("X-Real-IP");

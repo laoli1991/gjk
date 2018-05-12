@@ -1,10 +1,7 @@
 package com.jk.bans;
 
 import com.google.common.base.Objects;
-import com.google.common.collect.ComparisonChain;
 import com.jk.utils.AppUtils;
-
-import java.util.Date;
 
 
 /**
@@ -12,8 +9,8 @@ import java.util.Date;
  * @Date: 2018/5/6 19:43
  * @Description:
  */
-public class StockPo implements Comparable<StockPo> {
-    private String stockUid;
+public class StockRequest {
+    private Integer category;
     private String voucherUid;
     private Integer voucherType;
     private String voucherName;
@@ -27,18 +24,13 @@ public class StockPo implements Comparable<StockPo> {
     private String heCount;
     private String allCount;
     private String amount;
-    private String createTime;
 
-    public StockPo() {
-        this.createTime = AppUtils.getNowStr();
-        this.stockUid = AppUtils.getStockUid(this);
+    public Integer getCategory() {
+        return category;
     }
 
-    public StockPo(Integer type, String voucherUid) {
-        this.voucherUid = voucherUid;
-        this.type = type;
-        this.stockUid = AppUtils.getStockUid(this);
-        this.createTime = AppUtils.getNowStr();
+    public void setCategory(Integer category) {
+        this.category = category;
     }
 
     public String getVoucherUid() {
@@ -143,44 +135,5 @@ public class StockPo implements Comparable<StockPo> {
 
     public void setTypeDesc(String typeDesc) {
         this.typeDesc = typeDesc;
-    }
-
-    public String getStockUid() {
-        if (stockUid == null) {
-            stockUid = AppUtils.getStockUid(this);
-        }
-        return stockUid;
-    }
-
-    public void setStockUid(String stockUid) {
-        this.stockUid = stockUid;
-    }
-
-    public String getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(String createTime) {
-        this.createTime = createTime;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        StockPo stockPo = (StockPo) o;
-        return Objects.equal(stockUid, stockPo.stockUid);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(stockUid);
-    }
-
-    public int compareTo(StockPo other) {
-        return ComparisonChain.start()
-                .compare(other.voucherAmount, this.voucherAmount)
-                .compare(this.type, other.type)
-                .result();
     }
 }

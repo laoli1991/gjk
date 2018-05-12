@@ -2,6 +2,7 @@ package com.jk.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.jk.bans.VoucherResponse;
 import com.jk.dao.ScreenDao;
 import com.jk.dao.StockDao;
 import com.jk.dao.VoucherDao;
@@ -46,9 +47,17 @@ public class AppService {
         return voucherDao.getVoucherPos(request, type);
     }
 
-    public List<VoucherPo> addVoucherPo(HttpServletRequest request, String dec, String name, Double amount, Integer type) {
+    public VoucherResponse addVoucherPo(HttpServletRequest request, String dec, String name, Double amount, Integer type) {
+        VoucherResponse voucherResponse = new VoucherResponse();
         VoucherPo voucherPo = new VoucherPo(AppUtils.generateUId(), dec, name, amount, type);
-        return voucherDao.addVoucherPo(request, voucherPo);
+        if (voucherDao.findVoucherPo(request, voucherPo)) {
+            voucherResponse.setCode(1);
+            voucherResponse.setVoucherPos(voucherDao.getVoucherList(request));
+        } else {
+            voucherResponse.setCode(0);
+            voucherResponse.setVoucherPos(voucherDao.addVoucherPo(request, voucherPo));
+        }
+        return voucherResponse;
     }
 
     public List<VoucherPo> removeVoucherPo(HttpServletRequest request, String uId) {
@@ -69,6 +78,7 @@ public class AppService {
     }
 
     public List<StockPo> addStockPo(HttpServletRequest request, StockPo stockPo) {
+        stockPo.setStockUid(AppUtils.getStockUid(stockPo));
         return stockDao.addStockPo(request, stockPo);
     }
 

@@ -42,13 +42,38 @@ public class VoucherDao {
     public synchronized List<VoucherPo> addVoucherPo(HttpServletRequest request, VoucherPo voucherPo) {
         try {
             List<VoucherPo> vouchers = getVoucherList(request);
-            vouchers.add(voucherPo);
+            boolean find = Boolean.FALSE;
+            for (VoucherPo po : vouchers) {
+                if (po.getName().equals(voucherPo.getName())) {
+                    find = Boolean.TRUE;
+                    break;
+                }
+            }
+            if (!find) {
+                vouchers.add(voucherPo);
+            }
             File file = new File(AppUtils.createVoucherTableIfNotExist(request));
             Files.write(JSONObject.toJSONString(vouchers), file, Charsets.UTF_8);
         } catch (Exception e) {
             ERROR.error(e.getMessage());
         }
         return getVoucherList(request);
+    }
+
+    public synchronized Boolean findVoucherPo(HttpServletRequest request, VoucherPo voucherPo) {
+        Boolean find = Boolean.FALSE;
+        try {
+            List<VoucherPo> vouchers = getVoucherList(request);
+            for (VoucherPo po : vouchers) {
+                if (po.getName().equals(voucherPo.getName())) {
+                    find = Boolean.TRUE;
+                    break;
+                }
+            }
+        } catch (Exception e) {
+            ERROR.error(e.getMessage());
+        }
+        return find;
     }
 
     public synchronized List<VoucherPo> removeVoucherPo(HttpServletRequest request, String uId) {
