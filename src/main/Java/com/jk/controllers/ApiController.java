@@ -1,8 +1,12 @@
 package com.jk.controllers;
 
+import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Maps;
 import com.jk.bean.BandScreenRequest;
 import com.jk.bean.BandScreenResponse;
+import com.jk.bean.MsgDto;
+import com.jk.bean.MsgPo;
+import com.jk.bean.ScreenMapperStock;
 import com.jk.bean.ScreenPo;
 import com.jk.bean.ScreenRequest;
 import com.jk.bean.StockPo;
@@ -11,6 +15,7 @@ import com.jk.bean.VoucherPo;
 import com.jk.bean.VoucherResponse;
 import com.jk.service.AppService;
 import com.jk.utils.AppUtils;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -80,7 +85,7 @@ public class ApiController {
 
     @RequestMapping("/add-screen")
     @ResponseBody
-    public Map<String, String> addScreen(HttpServletRequest request, @RequestBody ScreenRequest screenRequest) {
+    public Map<String, Object> addScreen(HttpServletRequest request, @RequestBody ScreenRequest screenRequest) {
         ScreenPo oldScreenPo = appService.getScreenPoByMacAddress(request, screenRequest.getMacAddress());
         if (oldScreenPo == null) {
             appService.addScreenPo(request, screenRequest.getMacAddress(), request.getRemoteAddr(), null);
@@ -88,9 +93,19 @@ public class ApiController {
             oldScreenPo.setUpdateTime(AppUtils.getNowStr());
             appService.updateScreenPoByMacAddress(request, oldScreenPo);
         }
-        Map<String, String> response = Maps.newHashMap();
+        Map<String, Object> response = Maps.newHashMap();
         response.put("code", "1");
         response.put("ipAddress", request.getRemoteAddr());
+        if (screenRequest.getFresh() == 1) {
+            List<MsgPo> msgPos = appService.getMsgPos(request, "");
+            if (CollectionUtils.isNotEmpty(msgPos)) {
+                for (MsgPo msgPo : msgPos) {
+                    if (screenRequest.getMacAddress().equals(msgPo.getMacAddress())) {
+                        response.put("msgDto", JSONObject.toJSON(msgPo.getMsgDto()));
+                    }
+                }
+            }
+        }
         return response;
     }
 
@@ -122,5 +137,25 @@ public class ApiController {
             return bandScreenResponse;
         }
     }
+
+    @RequestMapping("/screen-stock-list")
+    @ResponseBody
+    public List<ScreenMapperStock> getScreenMapperStocks(HttpServletRequest request) {
+        return appService.getScreenMapperStocks(request);
+    }
+
+    @RequestMapping("/msgpo-list")
+    @ResponseBody
+    public List<MsgPo> getMsgPos(HttpServletRequest request, @RequestParam(value = "commonInfo", required = false) String commonInfo) {
+        return appService.getMsgPos(request, commonInfo);
+    }
+
+    @RequestMapping("/send-msg")
+    @ResponseBody
+    public Boolean sendMsg(HttpServletRequest request, @RequestParam(value = "commonInfo", required = false) String commonInfo) {
+        appService.sendMsg(request, commonInfo);
+        return Boolean.TRUE;
+    }
+
 
 }

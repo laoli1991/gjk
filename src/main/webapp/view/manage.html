@@ -29,9 +29,9 @@
                     <div class="form-group">
                         <div class="col-sm-8">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">附加信息</label>
+                                <label class="col-sm-3 control-label">附加展示信息</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" ng-model="fujia"
+                                    <input type="text" class="form-control" ng-model="commonInfo"
                                            placeholder="">
                                 </div>
                             </div>
@@ -39,7 +39,7 @@
                         <div class="col-sm-4">
                             <div class="form-group" style="margin-bottom:0">
                                 <div class="text-center">
-                                    <button class="btn btn-primary btn-lg" ng-click="searchCurrency(jdate)">
+                                    <button class="btn btn-primary btn-lg" ng-click="sendMsg(commonInfo)">
                                         全部提交
                                     </button>
                                 </div>

@@ -64,8 +64,6 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     };
 
 
-
-
     $scope.getVoucher1List();
     $scope.getVoucher2List();
     $scope.getstockList();
@@ -168,7 +166,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                 "voucherName": zw.voucher.name,
                 "type": zw.type.idx,
                 "typeDesc": zw.type.desc,
-                "voucherAmount":zw.voucher.amount
+                "voucherAmount": zw.voucher.amount
             }
         }).success(function (req) {
             console.log(req);
@@ -203,7 +201,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                 "voucherName": yb.voucher.name,
                 "type": yb.type.idx,
                 "typeDesc": yb.type.desc,
-                "voucherAmount":yb.voucher.amount
+                "voucherAmount": yb.voucher.amount
             }
         }).success(function (req) {
             console.log(req);
@@ -239,6 +237,24 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             });
     };
 
+
+    $scope.sendMsg = function (commonInfo) {
+        console.log(commonInfo);
+        if(commonInfo == null || commonInfo == undefined){
+            commonInfo = "" ;
+        }
+        var deferred = $q.defer();
+        $http.get("../api/send-msg?commonInfo="+commonInfo)
+            .success(function (data) {
+                swal("同步成功", "", "success");
+                deferred.resolve(data);
+            })
+            .error(function (data) {
+                deferred.reject(data);
+            });
+        return deferred.promise;
+
+    };
 
     $scope.mustDouble = function clearNoNum(obj, attr) {
         obj[attr] = obj[attr].replace(/[^\d.]/g, "");  //清除“数字”和“.”以外的字符

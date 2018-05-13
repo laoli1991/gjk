@@ -2,6 +2,9 @@ package com.jk.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
+import com.jk.bean.MsgDto;
+import com.jk.bean.MsgPo;
+import com.jk.bean.ScreenMapperStock;
 import com.jk.bean.VoucherResponse;
 import com.jk.dao.ScreenDao;
 import com.jk.dao.StockDao;
@@ -12,12 +15,14 @@ import com.jk.bean.VoucherPo;
 import com.jk.utils.AppUtils;
 import com.jk.bean.ScreenVo;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
@@ -117,26 +122,101 @@ public class AppService {
         return screenVos;
     }
 
-    public void sendAll(HttpServletRequest request) {
-        List<ScreenVo> screenVos = getScreenVos(request);
-        if (CollectionUtils.isNotEmpty(screenVos)) {
-            for (ScreenVo screenVo : screenVos) {
-                String ipAddress = screenVo.getIpAddress();
-                send(ipAddress, JSONObject.toJSONString(screenVo));
+    public List<ScreenMapperStock> getScreenMapperStocks(HttpServletRequest request) {
+        List<ScreenMapperStock> screenMapperStocks = Lists.newArrayList();
+        List<ScreenPo> screenPos = screenDao.getScreenPos(request);
+        Map<String, StockPo> stringStockPoMap = stockDao.getStockUid2StockPo(request);
+        if (CollectionUtils.isNotEmpty(screenPos)) {
+            for (ScreenPo screenPo : screenPos) {
+                if (StringUtils.isNotBlank(screenPo.getStockUid())) {
+                    StockPo stockPo = stringStockPoMap.get(screenPo.getStockUid());
+                    if (stockPo != null) {
+                        ScreenMapperStock msgDto = new ScreenMapperStock();
+                        msgDto.setScreenPo(screenPo);
+                        msgDto.setStockPo(stockPo);
+                        screenMapperStocks.add(msgDto);
+                    }
+                }
             }
         }
+        return screenMapperStocks;
     }
 
+    public List<MsgPo> getMsgPos(HttpServletRequest request, String commonInfo) {
+        List<MsgPo> msgPos = Lists.newArrayList();
+        List<ScreenMapperStock> screenMapperStocks = getScreenMapperStocks(request);
+        if (CollectionUtils.isNotEmpty(screenMapperStocks)) {
+            for (ScreenMapperStock screenMapperStock : screenMapperStocks) {
+                StockPo stockPo = screenMapperStock.getStockPo();
+                ScreenPo screenPo = screenMapperStock.getScreenPo();
+                MsgDto msgDto = new MsgDto();
+                msgDto.setNowTime(AppUtils.getNowStr());
+                if (StringUtils.isNotBlank(commonInfo)) {
+                    msgDto.setCommonInfo(commonInfo);
+                }
+                msgDto.setVoucherName(stockPo.getVoucherName());
+                msgDto.setTypeDesc(stockPo.getTypeDesc());
+                String amount = stockPo.getAmount();
+                if (StringUtils.isNotBlank(amount)) {
+                    BigDecimal num = new BigDecimal(amount);
+                    num = num.divide(new BigDecimal(10000), 2, BigDecimal.ROUND_HALF_UP);
+                    msgDto.setAmount(num.setScale(2, BigDecimal.ROUND_HALF_UP).toString() + "万元");
+                }
+                if (StringUtils.isNotBlank(stockPo.getXiangCount())) {
+                    msgDto.setKey1(stockPo.getXiangCount());
+                }
+                if (stockPo.getType() == 4 || stockPo.getType() == 5) {
+                    msgDto.setValue1("袋");
+                } else {
+                    msgDto.setValue1("箱");
+                }
+                if (stockPo.getType() <= 5) {
+                    BigDecimal num = BigDecimal.ZERO;
+                    boolean find = false;
+                    if (StringUtils.isNotBlank(stockPo.getKunCount())) {
+                        num = new BigDecimal(stockPo.getKunCount());
+                        find = true;
+                    }
+                    if (StringUtils.isNotBlank(stockPo.getBaCount())) {
+                        num = num.add(new BigDecimal(stockPo.getBaCount()).divide(new BigDecimal(10), 1, BigDecimal.ROUND_HALF_UP));
+                        find = true;
+                    }
+                    if (find) {
+                        msgDto.setKey2(num.setScale(1, BigDecimal.ROUND_HALF_UP).toString());
+                    }
+                    msgDto.setValue2("捆");
+                } else {
+                    if (StringUtils.isNotBlank(stockPo.getHeCount())) {
+                        msgDto.setKey2(stockPo.getHeCount());
+                    }
+                    msgDto.setValue2("盒");
+                }
+                MsgPo msgPo = new MsgPo();
+                msgPo.setIpAddress(screenPo.getIpAddress());
+                msgPo.setMacAddress(screenPo.getMacAddress());
+                msgPo.setMsgDto(msgDto);
+                msgPos.add(msgPo);
+            }
+        }
+        return msgPos;
+    }
 
-    private synchronized void send(String ipAddress, String text) {
-        try {
-            DatagramSocket socket = new DatagramSocket();
-            byte[] buf = text.getBytes("UTF-8");
-            DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(ipAddress), 9002);
-            socket.send(packet);
-            socket.close();
-        } catch (Exception e) {
-            ERROR.error(e.getMessage());
+    public synchronized void sendMsg(HttpServletRequest request, String commonInfo) {
+        List<MsgPo> msgPos = getMsgPos(request, commonInfo);
+        if (CollectionUtils.isNotEmpty(msgPos)) {
+            for (MsgPo msgPo : msgPos) {
+                try {
+                    System.out.println(msgPo.getIpAddress());
+                    DatagramSocket socket = new DatagramSocket();
+                    byte[] buf = JSONObject.toJSONString(msgPo.getMsgDto()).getBytes("UTF-8");
+                    DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(msgPo.getIpAddress()), 9002);
+                    socket.send(packet);
+                    socket.close();
+                } catch (Exception e) {
+                    System.out.println(e.getMessage());
+                    ERROR.error(e.getMessage());
+                }
+            }
         }
     }
 

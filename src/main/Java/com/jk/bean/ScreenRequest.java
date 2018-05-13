@@ -8,6 +8,7 @@ package com.jk.bean;
 public class ScreenRequest {
     private String macAddress;
     private String ipAddress;
+    private Integer fresh;
 
     public String getMacAddress() {
         return macAddress;
@@ -23,5 +24,13 @@ public class ScreenRequest {
 
     public void setIpAddress(String ipAddress) {
         this.ipAddress = ipAddress;
+    }
+
+    public Integer getFresh() {
+        return fresh;
+    }
+
+    public void setFresh(Integer fresh) {
+        this.fresh = fresh;
     }
 }
