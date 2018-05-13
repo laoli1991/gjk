@@ -1,10 +1,8 @@
-package com.jk.bans;
+package com.jk.bean;
 
 import com.google.common.base.Objects;
 import com.google.common.collect.ComparisonChain;
 import com.jk.utils.AppUtils;
-
-import java.util.Date;
 
 
 /**

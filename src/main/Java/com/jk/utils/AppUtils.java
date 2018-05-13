@@ -1,9 +1,11 @@
 package com.jk.utils;
 
-import com.jk.bans.StockPo;
+import com.jk.bean.StockPo;
+import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.text.SimpleDateFormat;
@@ -18,7 +20,9 @@ import java.util.UUID;
  */
 public class AppUtils {
 
-    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:ss");
+    private static final Logger ERROR = Logger.getLogger(AppUtils.class);
+
+    private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static String createStockTableIfNotExist(HttpServletRequest request) {
         String dir = request.getSession().getServletContext().getRealPath("/") + "datas";
@@ -27,6 +31,14 @@ public class AppUtils {
             folder.mkdirs();
         }
         String path = request.getSession().getServletContext().getRealPath("/") + "datas" + File.separator + "stock.txt";
+        File file = new File(path);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                ERROR.error(e.getMessage());
+            }
+        }
         return path;
     }
 
@@ -37,6 +49,14 @@ public class AppUtils {
             folder.mkdirs();
         }
         String path = request.getSession().getServletContext().getRealPath("/") + "datas" + File.separator + "voucher.txt";
+        File file = new File(path);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                ERROR.error(e.getMessage());
+            }
+        }
         return path;
     }
 
@@ -47,6 +67,14 @@ public class AppUtils {
             folder.mkdirs();
         }
         String path = request.getSession().getServletContext().getRealPath("/") + "datas" + File.separator + "screen.txt";
+        File file = new File(path);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                ERROR.error(e.getMessage());
+            }
+        }
         return path;
     }
 

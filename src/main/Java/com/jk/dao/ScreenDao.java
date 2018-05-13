@@ -6,7 +6,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import com.jk.bans.ScreenPo;
+import com.jk.bean.ScreenPo;
 import com.jk.utils.AppUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -57,6 +57,15 @@ public class ScreenDao {
         try {
             Map<String, ScreenPo> stringScreenPoMap = getStockUid2ScreenPo(request);
             return stringScreenPoMap.get(macAddress);
+        } catch (Exception e) {
+            ERROR.error(e.getMessage());
+        }
+        return null;
+    }
+
+    public synchronized List<ScreenPo> updateScreenPoByMacAddress(HttpServletRequest request, ScreenPo screenPo) {
+        try {
+            addScreenPo(request, screenPo);
         } catch (Exception e) {
             ERROR.error(e.getMessage());
         }

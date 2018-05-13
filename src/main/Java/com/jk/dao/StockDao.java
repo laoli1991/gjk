@@ -6,7 +6,7 @@ import com.google.common.base.Charsets;
 import com.google.common.base.Joiner;
 import com.google.common.collect.Lists;
 import com.google.common.io.Files;
-import com.jk.bans.StockPo;
+import com.jk.bean.StockPo;
 import com.jk.utils.AppUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -80,10 +80,10 @@ public class StockDao {
         return getStockPos(request);
     }
 
-    public synchronized List<StockPo> removeStockPo(HttpServletRequest request, StockPo stockPo) {
+    public synchronized List<StockPo> removeStockPoBystockUid(HttpServletRequest request, String stockUid) {
         try {
             Map<String, StockPo> stringStockPoMap = getStockUid2StockPo(request);
-            stringStockPoMap.remove(AppUtils.getStockUid(stockPo));
+            stringStockPoMap.remove(stockUid);
             File file = new File(AppUtils.createStockTableIfNotExist(request));
             Files.write(JSONObject.toJSONString(stringStockPoMap), file, Charsets.UTF_8);
         } catch (Exception e) {

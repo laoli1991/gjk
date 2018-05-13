@@ -1,6 +1,4 @@
-package com.jk.bans;
-
-import java.util.Date;
+package com.jk.bean;
 
 /**
  * @Author: liyang117
@@ -11,13 +9,15 @@ public class ScreenPo {
     private String macAddress;
     private String ipAddress;
     private String stockUid;
-    private Date updateTime;
+    private String updateTime;
+
+    public ScreenPo() {
+    }
 
     public ScreenPo(String macAddress, String ipAddress, String stockUid) {
         this.macAddress = macAddress;
         this.ipAddress = ipAddress;
         this.stockUid = stockUid;
-        this.updateTime = new Date();
     }
 
     public String getMacAddress() {
@@ -43,4 +43,14 @@ public class ScreenPo {
     public void setStockUid(String stockUid) {
         this.stockUid = stockUid;
     }
+
+    public String getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(String updateTime) {
+        this.updateTime = updateTime;
+    }
+
+
 }

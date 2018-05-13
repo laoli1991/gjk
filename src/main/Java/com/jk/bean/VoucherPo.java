@@ -1,4 +1,4 @@
-package com.jk.bans;
+package com.jk.bean;
 
 /**
  * @Author: liyang117

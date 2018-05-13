@@ -1,22 +1,23 @@
-package com.jk.bans;
+package com.jk.bean;
 
-import com.google.common.base.Objects;
-import com.jk.utils.AppUtils;
-
+import java.util.Date;
 
 /**
  * @Author: liyang117
- * @Date: 2018/5/6 19:43
+ * @Date: 2018/5/10 20:12
  * @Description:
  */
-public class StockRequest {
+public class ScreenVo {
+    private String macAddress;
+    private String ipAddress;
+    private String stockUid;
+    private Date updateTime;
     private Integer category;
     private String voucherUid;
     private Integer voucherType;
     private String voucherName;
     private Double voucherAmount;
     private Integer type;
-    private String typeDesc;
     private String xiangCount;
     private String kunCount;
     private String baCount;
@@ -24,6 +25,39 @@ public class StockRequest {
     private String heCount;
     private String allCount;
     private String amount;
+
+
+    public String getMacAddress() {
+        return macAddress;
+    }
+
+    public void setMacAddress(String macAddress) {
+        this.macAddress = macAddress;
+    }
+
+    public String getIpAddress() {
+        return ipAddress;
+    }
+
+    public void setIpAddress(String ipAddress) {
+        this.ipAddress = ipAddress;
+    }
+
+    public String getStockUid() {
+        return stockUid;
+    }
+
+    public void setStockUid(String stockUid) {
+        this.stockUid = stockUid;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
+    }
 
     public Integer getCategory() {
         return category;
@@ -127,13 +161,5 @@ public class StockRequest {
 
     public void setAmount(String amount) {
         this.amount = amount;
-    }
-
-    public String getTypeDesc() {
-        return typeDesc;
-    }
-
-    public void setTypeDesc(String typeDesc) {
-        this.typeDesc = typeDesc;
     }
 }

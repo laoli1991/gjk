@@ -54,7 +54,9 @@
                         <tr ng-repeat="row in voucherList track by $index">
                             <td align="center"> {{row.name}}</td>
                             <td align="center"> {{row.desc}}</td>
-                            <td align="center"><a href="" ng-click="removeVoucher(row)">删除</a></td>
+                            <td align="center">
+                                <button class="btn btn-danger" ng-click="removeVoucher(row)">删除</button>
+                            </td>
                         </tr>
                     </table>
                 </div>

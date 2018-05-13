@@ -2,15 +2,15 @@ package com.jk.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.google.common.collect.Lists;
-import com.jk.bans.VoucherResponse;
+import com.jk.bean.VoucherResponse;
 import com.jk.dao.ScreenDao;
 import com.jk.dao.StockDao;
 import com.jk.dao.VoucherDao;
-import com.jk.bans.ScreenPo;
-import com.jk.bans.StockPo;
-import com.jk.bans.VoucherPo;
+import com.jk.bean.ScreenPo;
+import com.jk.bean.StockPo;
+import com.jk.bean.VoucherPo;
 import com.jk.utils.AppUtils;
-import com.jk.bans.ScreenVo;
+import com.jk.bean.ScreenVo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
@@ -68,8 +68,17 @@ public class AppService {
         return screenDao.getScreenPos(request);
     }
 
+    public ScreenPo getScreenPoByMacAddress(HttpServletRequest request, String macAddress) {
+        return screenDao.getScreenPoByMacAddress(request, macAddress);
+    }
+
+    public List<ScreenPo> updateScreenPoByMacAddress(HttpServletRequest request, ScreenPo screenPo) {
+        return screenDao.updateScreenPoByMacAddress(request, screenPo);
+    }
+
     public List<ScreenPo> addScreenPo(HttpServletRequest request, String macAddress, String ipAddress, String stockUid) {
         ScreenPo screenPo = new ScreenPo(macAddress, ipAddress, stockUid);
+        screenPo.setUpdateTime(AppUtils.getNowStr());
         return screenDao.addScreenPo(request, screenPo);
     }
 
@@ -82,8 +91,8 @@ public class AppService {
         return stockDao.addStockPo(request, stockPo);
     }
 
-    public List<StockPo> removeStockPo(HttpServletRequest request, StockPo stockPo) {
-        return stockDao.removeStockPo(request, stockPo);
+    public List<StockPo> removeStockPo(HttpServletRequest request, String stockUid) {
+        return stockDao.removeStockPoBystockUid(request, stockUid);
     }
 
     public List<ScreenVo> getScreenVos(HttpServletRequest request) {

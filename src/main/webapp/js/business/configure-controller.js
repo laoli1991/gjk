@@ -14,7 +14,6 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
         {"desc": "纸币1角", "amount": 0.1, "type": 1, "typeDesc": "纸币"},
         {"desc": "硬币1元", "amount": 1, "type": 2, "typeDesc": "硬币"},
         {"desc": "硬币5角", "amount": 0.5, "type": 2, "typeDesc": "硬币"},
-        {"desc": "硬币2角", "amount": 0.2, "type": 2, "typeDesc": "硬币"},
         {"desc": "硬币1角", "amount": 0.1, "type": 2, "typeDesc": "硬币"}]
 
     $scope.addVoucher = function (voucherName, voucher) {

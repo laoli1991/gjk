@@ -1,4 +1,4 @@
-angular.module('home.controller', ['ngRoute', 'index.controller', 'manage.controller',"configure.controller"])
+angular.module('home.controller', ['ngRoute', 'index.controller', 'manage.controller', "configure.controller", "screen.controller"])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
             .when('/', {
@@ -13,7 +13,9 @@ angular.module('home.controller', ['ngRoute', 'index.controller', 'manage.contro
                 templateUrl: '/view/configure.html',
                 controller: 'configureCtrl'
             })
-            .when('/cc', {templateUrl: '/view/cc.html'})
-
+            .when('/screen', {
+                templateUrl: '/view/screen.html',
+                controller: 'screenCtrl'
+            })
             .otherwise({redirectTo: '/'});
     }]);

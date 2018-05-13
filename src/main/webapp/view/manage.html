@@ -31,8 +31,8 @@
                             <div class="form-group">
                                 <label class="col-sm-3 control-label">附加信息</label>
                                 <div class="col-sm-9">
-                                    <input type="text" class="form-control" ng-model=""
-                                           placeholder="" >
+                                    <input type="text" class="form-control" ng-model="fujia"
+                                           placeholder="">
                                 </div>
                             </div>
                         </div>
@@ -60,6 +60,7 @@
                             <th>盒数</th>
                             <th>金额(元)</th>
                             <th>录入时间</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
                         <tr ng-repeat="stock in stockList">
@@ -71,6 +72,9 @@
                             <td align="center"> {{stock.heCount}}</td>
                             <td align="center"> {{stock.amount}}</td>
                             <td align="center"> {{stock.createTime}}</td>
+                            <td align="center">
+                                <button class="btn btn-danger" ng-click="removeStock(stock.stockUid)">删除</button>
+                            </td>
                         </tr>
                     </table>
                 </div>

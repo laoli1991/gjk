@@ -213,6 +213,33 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     };
 
 
+    $scope.removeStock = function (stockUid) {
+        swal({
+                title: "确定删除吗？",
+                text: "你将无法恢复该记录！",
+                type: "warning",
+                cancelButtonText: '取消',
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定",
+                closeOnConfirm: false
+            },
+            function () {
+                var deferred = $q.defer();
+                $http.get("../api/remove-stock?stockUid=" + stockUid)
+                    .success(function (data) {
+                        $scope.stockList = data;
+                        deferred.resolve(data);
+                        swal("删除！", "该记录已经被删除", "success");
+                    })
+                    .error(function (data) {
+                        deferred.reject(data);
+                    });
+                return deferred.promise;
+            });
+    };
+
+
     $scope.mustDouble = function clearNoNum(obj, attr) {
         obj[attr] = obj[attr].replace(/[^\d.]/g, "");  //清除“数字”和“.”以外的字符
         obj[attr] = obj[attr].replace(/^\./g, "");  //验证第一个字符是数字而不是.

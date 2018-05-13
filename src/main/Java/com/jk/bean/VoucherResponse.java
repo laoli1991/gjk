@@ -1,4 +1,4 @@
-package com.jk.bans;
+package com.jk.bean;
 
 import java.util.List;
 

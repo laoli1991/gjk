@@ -1,10 +1,14 @@
 package com.jk.controllers;
 
-import com.jk.bans.StockPo;
-import com.jk.bans.StockRequest;
-import com.jk.bans.VoucherPo;
-import com.jk.bans.VoucherResponse;
+import com.google.common.collect.Maps;
+import com.jk.bean.ScreenPo;
+import com.jk.bean.ScreenRequest;
+import com.jk.bean.StockPo;
+import com.jk.bean.StockRequest;
+import com.jk.bean.VoucherPo;
+import com.jk.bean.VoucherResponse;
 import com.jk.service.AppService;
+import com.jk.utils.AppUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -15,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Author: liyang117
@@ -64,6 +69,36 @@ public class ApiController {
     @ResponseBody
     public List<StockPo> stockList(HttpServletRequest request) {
         return appService.getStockPos(request);
+    }
+
+    @RequestMapping("/remove-stock")
+    @ResponseBody
+    public List<StockPo> removeStock(HttpServletRequest request, @RequestParam("stockUid") String stockUid) {
+        appService.removeStockPo(request, stockUid);
+        return appService.getStockPos(request);
+    }
+
+    @RequestMapping("/add-screen")
+    @ResponseBody
+    public Map<String, String> addScreen(HttpServletRequest request,
+                                         @RequestBody ScreenRequest screenRequest) {
+        ScreenPo oldScreenPo = appService.getScreenPoByMacAddress(request, screenRequest.getMacAddress());
+        if (oldScreenPo == null) {
+            appService.addScreenPo(request, screenRequest.getMacAddress(), request.getRemoteAddr(), null);
+        } else {
+            oldScreenPo.setUpdateTime(AppUtils.getNowStr());
+            appService.updateScreenPoByMacAddress(request, oldScreenPo);
+        }
+        Map<String, String> response = Maps.newHashMap();
+        response.put("code", "1");
+        response.put("ipAddress", request.getRemoteAddr());
+        return response;
+    }
+
+    @RequestMapping("/screen-list")
+    @ResponseBody
+    public List<ScreenPo> screenList(HttpServletRequest request) {
+        return appService.getScreenPos(request);
     }
 
 }

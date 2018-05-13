@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<body>
+
+<div class="container-fluid">
+    <div class="tab-content">
+
+
+        <div class="tab-pane fade in active"  style="margin-top:20px">
+            <div class="panel panel-default">
+
+                <div class="panel-body">
+
+                    <br><br>
+
+                    <table ng-table="totalTables" class="table table-bordered table-hover">
+                        <thead>
+                        <tr>
+                            <th>MAC地址</th>
+                            <th>IP地址</th>
+                            <th>最近心跳时间</th>
+                            <th>显示类型</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tr ng-repeat="row in screenList track by $index">
+                            <td align="center">{{row.macAddress}}</td>
+                            <td align="center">{{row.ipAddress}}</td>
+                            <td align="center">{{row.updateTime}}</td>
+                            <td align="center">{{row.stockUid}}</td>
+                            <button class="btn btn-danger" ng-click="removeVoucher(row)">删除</button>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+
+<footer class="cm-footer"><span class="pull-left"></span><span class="pull-right">技术支持：贵州新启程档案服务有限责任公司</span></footer>
+
+</body>
+</html>
