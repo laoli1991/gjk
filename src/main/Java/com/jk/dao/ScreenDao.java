@@ -65,11 +65,11 @@ public class ScreenDao {
 
     public synchronized List<ScreenPo> updateScreenPoByMacAddress(HttpServletRequest request, ScreenPo screenPo) {
         try {
-            addScreenPo(request, screenPo);
+            return addScreenPo(request, screenPo);
         } catch (Exception e) {
             ERROR.error(e.getMessage());
         }
-        return null;
+        return new ArrayList<ScreenPo>();
     }
 
     public synchronized List<ScreenPo> addScreenPo(HttpServletRequest request, ScreenPo screenPo) {
@@ -84,10 +84,10 @@ public class ScreenDao {
         return getScreenPos(request);
     }
 
-    public synchronized List<ScreenPo> removeScreenPo(HttpServletRequest request, ScreenPo screenPo) {
+    public synchronized List<ScreenPo> removeScreenPo(HttpServletRequest request, String macAddress) {
         try {
             Map<String, ScreenPo> stringScreenPoMap = getStockUid2ScreenPo(request);
-            stringScreenPoMap.remove(screenPo.getMacAddress());
+            stringScreenPoMap.remove(macAddress);
             File file = new File(AppUtils.createScreenTableIfNotExist(request));
             Files.write(JSONObject.toJSONString(stringScreenPoMap), file, Charsets.UTF_8);
         } catch (Exception e) {

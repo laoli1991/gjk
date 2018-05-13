@@ -1,6 +1,8 @@
 package com.jk.controllers;
 
 import com.google.common.collect.Maps;
+import com.jk.bean.BandScreenRequest;
+import com.jk.bean.BandScreenResponse;
 import com.jk.bean.ScreenPo;
 import com.jk.bean.ScreenRequest;
 import com.jk.bean.StockPo;
@@ -51,8 +53,7 @@ public class ApiController {
 
     @RequestMapping("/remove-voucher")
     @ResponseBody
-    public List<VoucherPo> removeVoucher(HttpServletRequest request,
-                                         @RequestParam("uId") String uId) {
+    public List<VoucherPo> removeVoucher(HttpServletRequest request, @RequestParam("uId") String uId) {
         return appService.removeVoucherPo(request, uId);
     }
 
@@ -74,14 +75,12 @@ public class ApiController {
     @RequestMapping("/remove-stock")
     @ResponseBody
     public List<StockPo> removeStock(HttpServletRequest request, @RequestParam("stockUid") String stockUid) {
-        appService.removeStockPo(request, stockUid);
-        return appService.getStockPos(request);
+        return appService.removeStockPo(request, stockUid);
     }
 
     @RequestMapping("/add-screen")
     @ResponseBody
-    public Map<String, String> addScreen(HttpServletRequest request,
-                                         @RequestBody ScreenRequest screenRequest) {
+    public Map<String, String> addScreen(HttpServletRequest request, @RequestBody ScreenRequest screenRequest) {
         ScreenPo oldScreenPo = appService.getScreenPoByMacAddress(request, screenRequest.getMacAddress());
         if (oldScreenPo == null) {
             appService.addScreenPo(request, screenRequest.getMacAddress(), request.getRemoteAddr(), null);
@@ -99,6 +98,29 @@ public class ApiController {
     @ResponseBody
     public List<ScreenPo> screenList(HttpServletRequest request) {
         return appService.getScreenPos(request);
+    }
+
+    @RequestMapping("/remove-screen")
+    @ResponseBody
+    public List<ScreenPo> removeScreen(HttpServletRequest request, @RequestParam("macAddress") String macAddress) {
+        return appService.removeScreenPo(request, macAddress);
+    }
+
+    @RequestMapping("/band-screen")
+    @ResponseBody
+    public BandScreenResponse bandScreen(HttpServletRequest request, @RequestBody BandScreenRequest bandScreenRequest) {
+        BandScreenResponse bandScreenResponse = new BandScreenResponse();
+        ScreenPo oldScreenPo = appService.getScreenPoByMacAddress(request, bandScreenRequest.getMacAddress());
+        if (oldScreenPo == null) {
+            bandScreenResponse.setCode(0);
+            return bandScreenResponse;
+        } else {
+            oldScreenPo.setStockUid(AppUtils.getStockUid(bandScreenRequest.getType(), bandScreenRequest.getVoucherUid()));
+            oldScreenPo.setBandStockInfo(bandScreenRequest.getBandStockInfo());
+            bandScreenResponse.setCode(1);
+            bandScreenResponse.setScreenPos(appService.updateScreenPoByMacAddress(request, oldScreenPo));
+            return bandScreenResponse;
+        }
     }
 
 }

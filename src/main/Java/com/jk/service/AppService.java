@@ -68,6 +68,10 @@ public class AppService {
         return screenDao.getScreenPos(request);
     }
 
+    public List<ScreenPo> removeScreenPo(HttpServletRequest request, String macAddress) {
+        return screenDao.removeScreenPo(request, macAddress);
+    }
+
     public ScreenPo getScreenPoByMacAddress(HttpServletRequest request, String macAddress) {
         return screenDao.getScreenPoByMacAddress(request, macAddress);
     }

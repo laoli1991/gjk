@@ -10,6 +10,7 @@ public class ScreenPo {
     private String ipAddress;
     private String stockUid;
     private String updateTime;
+    private String bandStockInfo;
 
     public ScreenPo() {
     }
@@ -52,5 +53,11 @@ public class ScreenPo {
         this.updateTime = updateTime;
     }
 
+    public String getBandStockInfo() {
+        return bandStockInfo;
+    }
 
+    public void setBandStockInfo(String bandStockInfo) {
+        this.bandStockInfo = bandStockInfo;
+    }
 }

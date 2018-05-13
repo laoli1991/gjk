@@ -6,12 +6,47 @@
     <div class="tab-content">
 
 
-        <div class="tab-pane fade in active"  style="margin-top:20px">
+        <div class="tab-pane fade in active" style="margin-top:20px">
             <div class="panel panel-default">
 
                 <div class="panel-body">
+                    <div class="form-group">
+                        <div class="row">
+                            <label class="col-sm-3 control-label">已经选择绑定屏幕</label>
+                            <label class="col-sm-9 control-label"><font color="red">{{toBandInfo}}</font>
+                            </label>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">卷别</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" ng-model="band.voucher"
+                                            ng-options="row.name group by row.typeDesc for row in voucherlist"
+                                            ng-change="chgVoucher(band)"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label">类型</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control" ng-model="band.type"
+                                            ng-options="row.desc for row in bTypes">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group" style="margin-bottom:0">
+                                <div class="text-center">
+                                    <button class="btn btn-primary btn-lg" ng-click="screnBand(band)">
+                                        确认绑定
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <br><br>
+
+                    <br><br><br><br>
 
                     <table ng-table="totalTables" class="table table-bordered table-hover">
                         <thead>
@@ -20,15 +55,23 @@
                             <th>IP地址</th>
                             <th>最近心跳时间</th>
                             <th>显示类型</th>
-                            <th>操作</th>
+                            <th>绑定显示类型</th>
+                            <th>删除</th>
                         </tr>
                         </thead>
                         <tr ng-repeat="row in screenList track by $index">
                             <td align="center">{{row.macAddress}}</td>
                             <td align="center">{{row.ipAddress}}</td>
                             <td align="center">{{row.updateTime}}</td>
-                            <td align="center">{{row.stockUid}}</td>
-                            <button class="btn btn-danger" ng-click="removeVoucher(row)">删除</button>
+                            <td align="center">{{row.bandStockInfo}}</td>
+                            <td align="center">
+                                <button class="btn btn-primary" ng-click="bandmacAddress(row.macAddress,row.ipAddress)">
+                                    选择绑定
+                                </button>
+                            </td>
+                            <td align="center">
+                                <button class="btn btn-danger" ng-click="removeScreen(row.macAddress)">删除</button>
+                            </td>
                         </tr>
                     </table>
                 </div>
