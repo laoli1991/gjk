@@ -7,12 +7,18 @@ package com.jk.bean;
  */
 public class ScreenPo {
     private String macAddress;
+    private Integer port;
     private String ipAddress;
     private String stockUid;
     private String updateTime;
     private String bandStockInfo;
 
     public ScreenPo() {
+    }
+
+    public ScreenPo(String macAddress, String ipAddress) {
+        this.macAddress = macAddress;
+        this.ipAddress = ipAddress;
     }
 
     public ScreenPo(String macAddress, String ipAddress, String stockUid) {
@@ -59,5 +65,13 @@ public class ScreenPo {
 
     public void setBandStockInfo(String bandStockInfo) {
         this.bandStockInfo = bandStockInfo;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
     }
 }

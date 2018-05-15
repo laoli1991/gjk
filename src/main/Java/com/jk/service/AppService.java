@@ -85,9 +85,10 @@ public class AppService {
         return screenDao.updateScreenPoByMacAddress(request, screenPo);
     }
 
-    public List<ScreenPo> addScreenPo(HttpServletRequest request, String macAddress, String ipAddress, String stockUid) {
-        ScreenPo screenPo = new ScreenPo(macAddress, ipAddress, stockUid);
+    public List<ScreenPo> addScreenPo(HttpServletRequest request, String macAddress, Integer port, String ipAddress) {
+        ScreenPo screenPo = new ScreenPo(macAddress, ipAddress);
         screenPo.setUpdateTime(AppUtils.getNowStr());
+        screenPo.setPort(port);
         return screenDao.addScreenPo(request, screenPo);
     }
 
@@ -194,6 +195,7 @@ public class AppService {
                 MsgPo msgPo = new MsgPo();
                 msgPo.setIpAddress(screenPo.getIpAddress());
                 msgPo.setMacAddress(screenPo.getMacAddress());
+                msgPo.setPort(screenPo.getPort());
                 msgPo.setMsgDto(msgDto);
                 msgPos.add(msgPo);
             }
@@ -206,10 +208,9 @@ public class AppService {
         if (CollectionUtils.isNotEmpty(msgPos)) {
             for (MsgPo msgPo : msgPos) {
                 try {
-                    System.out.println(msgPo.getIpAddress());
                     DatagramSocket socket = new DatagramSocket();
                     byte[] buf = JSONObject.toJSONString(msgPo.getMsgDto()).getBytes("UTF-8");
-                    DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(msgPo.getIpAddress()), 9002);
+                    DatagramPacket packet = new DatagramPacket(buf, buf.length, InetAddress.getByName(msgPo.getIpAddress()), msgPo.getPort());
                     socket.send(packet);
                     socket.close();
                 } catch (Exception e) {

@@ -2,13 +2,13 @@ package com.jk.bean;
 
 /**
  * @Author: liyang117
- * @Date: 2018/5/10 20:12
+ * @Date: 2018/5/15 19:53
  * @Description:
  */
-public class ScreenRequest {
+public class AddScreenRequest {
     private String macAddress;
-    private String ipAddress;
     private Integer fresh;
+    private Integer port;
 
     public String getMacAddress() {
         return macAddress;
@@ -18,19 +18,19 @@ public class ScreenRequest {
         this.macAddress = macAddress;
     }
 
-    public String getIpAddress() {
-        return ipAddress;
-    }
-
-    public void setIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
-    }
-
     public Integer getFresh() {
         return fresh;
     }
 
     public void setFresh(Integer fresh) {
         this.fresh = fresh;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
     }
 }

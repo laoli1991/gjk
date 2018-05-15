@@ -8,6 +8,7 @@ package com.jk.bean;
 public class MsgPo {
     private String ipAddress;
     private String macAddress;
+    private Integer port;
     private MsgDto msgDto;
 
     public String getIpAddress() {
@@ -32,5 +33,13 @@ public class MsgPo {
 
     public void setMsgDto(MsgDto msgDto) {
         this.msgDto = msgDto;
+    }
+
+    public Integer getPort() {
+        return port;
+    }
+
+    public void setPort(Integer port) {
+        this.port = port;
     }
 }

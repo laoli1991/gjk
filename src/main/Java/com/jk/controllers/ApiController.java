@@ -1,14 +1,12 @@
 package com.jk.controllers;
 
-import com.alibaba.fastjson.JSONObject;
-import com.google.common.collect.Maps;
+import com.jk.bean.AddScreenReponse;
+import com.jk.bean.AddScreenRequest;
 import com.jk.bean.BandScreenRequest;
 import com.jk.bean.BandScreenResponse;
-import com.jk.bean.MsgDto;
 import com.jk.bean.MsgPo;
 import com.jk.bean.ScreenMapperStock;
 import com.jk.bean.ScreenPo;
-import com.jk.bean.ScreenRequest;
 import com.jk.bean.StockPo;
 import com.jk.bean.StockRequest;
 import com.jk.bean.VoucherPo;
@@ -26,7 +24,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Author: liyang117
@@ -85,28 +82,32 @@ public class ApiController {
 
     @RequestMapping("/add-screen")
     @ResponseBody
-    public Map<String, Object> addScreen(HttpServletRequest request, @RequestBody ScreenRequest screenRequest) {
-        ScreenPo oldScreenPo = appService.getScreenPoByMacAddress(request, screenRequest.getMacAddress());
-        if (oldScreenPo == null) {
-            appService.addScreenPo(request, screenRequest.getMacAddress(), request.getRemoteAddr(), null);
-        } else {
-            oldScreenPo.setUpdateTime(AppUtils.getNowStr());
-            appService.updateScreenPoByMacAddress(request, oldScreenPo);
-        }
-        Map<String, Object> response = Maps.newHashMap();
-        response.put("code", "1");
-        response.put("ipAddress", request.getRemoteAddr());
-        if (screenRequest.getFresh() == 1) {
-            List<MsgPo> msgPos = appService.getMsgPos(request, "");
-            if (CollectionUtils.isNotEmpty(msgPos)) {
-                for (MsgPo msgPo : msgPos) {
-                    if (screenRequest.getMacAddress().equals(msgPo.getMacAddress())) {
-                        response.put("msgDto", JSONObject.toJSON(msgPo.getMsgDto()));
+    public AddScreenReponse addScreen(HttpServletRequest request, @RequestBody AddScreenRequest addScreenRequest) {
+        AddScreenReponse addScreenReponse = new AddScreenReponse();
+        try {
+            ScreenPo oldScreenPo = appService.getScreenPoByMacAddress(request, addScreenRequest.getMacAddress());
+            if (oldScreenPo == null) {
+                appService.addScreenPo(request, addScreenRequest.getMacAddress(), addScreenRequest.getPort(), request.getRemoteAddr());
+            } else {
+                oldScreenPo.setUpdateTime(AppUtils.getNowStr());
+                appService.updateScreenPoByMacAddress(request, oldScreenPo);
+            }
+            addScreenReponse.setCode(1);
+            addScreenReponse.setIpAddress(request.getRemoteAddr());
+            if (addScreenRequest.getFresh() == 1) {
+                List<MsgPo> msgPos = appService.getMsgPos(request, "");
+                if (CollectionUtils.isNotEmpty(msgPos)) {
+                    for (MsgPo msgPo : msgPos) {
+                        if (addScreenRequest.getMacAddress().equals(msgPo.getMacAddress())) {
+                            addScreenReponse.setMsgDto(msgPo.getMsgDto());
+                        }
                     }
                 }
             }
+        } catch (Exception ex) {
+            addScreenReponse.setCode(0);
         }
-        return response;
+        return addScreenReponse;
     }
 
     @RequestMapping("/screen-list")
