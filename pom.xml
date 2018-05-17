@@ -5,8 +5,7 @@
     <artifactId>gjk</artifactId>
     <packaging>war</packaging>
     <version>1.0.0</version>
-    <name>gjk Maven Webapp</name>
-    <url>http://maven.apache.org</url>
+    <name>gjk</name>
     <dependencies>
 
 

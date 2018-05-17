@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,6 +47,7 @@ public class ScreenDao {
             for (Map.Entry<String, ScreenPo> entry : stringScreenPoMap.entrySet()) {
                 screenPos.add(entry.getValue());
             }
+            Collections.sort(screenPos);
             return screenPos;
         } catch (Exception e) {
             ERROR.error(e.getMessage());

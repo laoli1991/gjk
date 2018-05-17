@@ -1,11 +1,13 @@
 package com.jk.bean;
 
+import com.google.common.collect.ComparisonChain;
+
 /**
  * @Author: liyang117
  * @Date: 2018/5/13 15:02
  * @Description:
  */
-public class ScreenMapperStock {
+public class ScreenMapperStock{
     private ScreenPo screenPo;
     private StockPo stockPo;
 
@@ -24,4 +26,5 @@ public class ScreenMapperStock {
     public void setStockPo(StockPo stockPo) {
         this.stockPo = stockPo;
     }
+
 }

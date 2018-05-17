@@ -133,6 +133,8 @@ public class ApiController {
         } else {
             oldScreenPo.setStockUid(AppUtils.getStockUid(bandScreenRequest.getType(), bandScreenRequest.getVoucherUid()));
             oldScreenPo.setBandStockInfo(bandScreenRequest.getBandStockInfo());
+            oldScreenPo.setVoucherAmount(bandScreenRequest.getVoucherAmount());
+            oldScreenPo.setVoucherType(bandScreenRequest.getType());
             bandScreenResponse.setCode(1);
             bandScreenResponse.setScreenPos(appService.updateScreenPoByMacAddress(request, oldScreenPo));
             return bandScreenResponse;

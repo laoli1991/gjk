@@ -1,17 +1,21 @@
 package com.jk.bean;
 
+import com.google.common.collect.ComparisonChain;
+
 /**
  * @Author: liyang117
  * @Date: 2018/5/10 20:12
  * @Description:
  */
-public class ScreenPo {
+public class ScreenPo implements Comparable<ScreenPo> {
     private String macAddress;
     private Integer port;
     private String ipAddress;
     private String stockUid;
     private String updateTime;
     private String bandStockInfo;
+    private Double voucherAmount;
+    private Integer voucherType;
 
     public ScreenPo() {
     }
@@ -74,4 +78,40 @@ public class ScreenPo {
     public void setPort(Integer port) {
         this.port = port;
     }
+
+    public Double getVoucherAmount() {
+        return voucherAmount;
+    }
+
+    public void setVoucherAmount(Double voucherAmount) {
+        this.voucherAmount = voucherAmount;
+    }
+
+    public Integer getVoucherType() {
+        return voucherType;
+    }
+
+    public void setVoucherType(Integer voucherType) {
+        this.voucherType = voucherType;
+    }
+
+    public int compareTo(ScreenPo other) {
+        if (this.voucherType == null && other.getVoucherAmount() != null) {
+            return 1;
+        }
+        if (this.voucherType != null && other.getVoucherAmount() == null) {
+            return -1;
+        }
+        if(this.voucherType == null && other.voucherType == null){
+            return  ComparisonChain.start()
+                    .compare(this.macAddress, other.macAddress)
+                    .result();
+        }
+        return ComparisonChain.start()
+                .compare(other.voucherAmount, this.voucherAmount)
+                .compare(this.voucherType, other.voucherType)
+                .result();
+    }
+
+
 }

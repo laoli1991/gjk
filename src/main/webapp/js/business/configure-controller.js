@@ -7,7 +7,7 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
         {"desc": "纸币50元", "amount": 50, "type": 1, "typeDesc": "纸币"},
         {"desc": "纸币20元", "amount": 20, "type": 1, "typeDesc": "纸币"},
         {"desc": "纸币10元", "amount": 10, "type": 1, "typeDesc": "纸币"},
-        {"desc": "纸币5元", "amount": 50, "type": 1, "typeDesc": "纸币"},
+        {"desc": "纸币5元", "amount": 5, "type": 1, "typeDesc": "纸币"},
         {"desc": "纸币2元", "amount": 2, "type": 1, "typeDesc": "纸币"},
         {"desc": "纸币1元", "amount": 1, "type": 1, "typeDesc": "纸币"},
         {"desc": "纸币5角", "amount": 0.5, "type": 1, "typeDesc": "纸币"},

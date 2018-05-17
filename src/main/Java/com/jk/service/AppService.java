@@ -214,7 +214,6 @@ public class AppService {
                     socket.send(packet);
                     socket.close();
                 } catch (Exception e) {
-                    System.out.println(e.getMessage());
                     ERROR.error(e.getMessage());
                 }
             }

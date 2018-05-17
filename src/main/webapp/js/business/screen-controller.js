@@ -143,10 +143,11 @@ app.controller("screenCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                 "macAddress": $scope.toBandMacAddress,
                 "voucherUid": band.voucher.uId,
                 "type": band.type.idx,
-                "bandStockInfo": "【" + band.voucher.name + "】 " + band.type.desc
+                "bandStockInfo": "【" + band.voucher.name + "】 " + band.type.desc,
+                "voucherAmount":band.voucher.amount,
+                "voucherType":band.voucher.type
             }
         }).success(function (req) {
-            console.log(req);
             if (req.code == 1) {
                 $scope.screenList = req.screenPos;
                 swal("绑定成功！", "", "success");
@@ -154,8 +155,6 @@ app.controller("screenCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             else {
                 swal("绑定失败！", "", "warning");
             }
-            //  $scope.stockList = req.screenList;
-            //
         })
     };
 

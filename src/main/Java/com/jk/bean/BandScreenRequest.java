@@ -12,6 +12,8 @@ public class BandScreenRequest {
     private String voucherUid;
     private Integer type;
     private String bandStockInfo;
+    private Double voucherAmount;
+    private Integer voucherType;
 
     public String getMacAddress() {
         return macAddress;
@@ -43,5 +45,21 @@ public class BandScreenRequest {
 
     public void setBandStockInfo(String bandStockInfo) {
         this.bandStockInfo = bandStockInfo;
+    }
+
+    public Double getVoucherAmount() {
+        return voucherAmount;
+    }
+
+    public void setVoucherAmount(Double voucherAmount) {
+        this.voucherAmount = voucherAmount;
+    }
+
+    public Integer getVoucherType() {
+        return voucherType;
+    }
+
+    public void setVoucherType(Integer voucherType) {
+        this.voucherType = voucherType;
     }
 }

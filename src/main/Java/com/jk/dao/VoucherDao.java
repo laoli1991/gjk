@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -32,6 +33,7 @@ public class VoucherDao {
                 return new ArrayList<VoucherPo>();
             }
             List<VoucherPo> vouchers = JSONObject.parseArray(text, VoucherPo.class);
+            Collections.sort(vouchers);
             return vouchers;
         } catch (Exception e) {
             ERROR.error(e.getMessage());

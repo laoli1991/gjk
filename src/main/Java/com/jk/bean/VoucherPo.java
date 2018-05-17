@@ -1,11 +1,13 @@
 package com.jk.bean;
 
+import com.google.common.collect.ComparisonChain;
+
 /**
  * @Author: liyang117
  * @Date: 2018/5/6 19:03
  * @Description:
  */
-public class VoucherPo {
+public class VoucherPo implements Comparable<VoucherPo>{
     private String uId;
     private String desc;
     private String name;
@@ -58,5 +60,13 @@ public class VoucherPo {
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    @Override
+    public int compareTo(VoucherPo other) {
+        return ComparisonChain.start()
+                .compare(this.type, other.type)
+                .compare(other.amount, this.amount)
+                .result();
     }
 }
