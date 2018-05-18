@@ -1,5 +1,6 @@
 package com.jk.controllers;
 
+import com.alibaba.fastjson.JSONObject;
 import com.jk.bean.AddScreenReponse;
 import com.jk.bean.AddScreenRequest;
 import com.jk.bean.BandScreenRequest;
@@ -90,6 +91,8 @@ public class ApiController {
                 appService.addScreenPo(request, addScreenRequest.getMacAddress(), addScreenRequest.getPort(), request.getRemoteAddr());
             } else {
                 oldScreenPo.setUpdateTime(AppUtils.getNowStr());
+                oldScreenPo.setIpAddress(request.getRemoteAddr());
+                oldScreenPo.setPort(addScreenRequest.getPort());
                 appService.updateScreenPoByMacAddress(request, oldScreenPo);
             }
             addScreenReponse.setCode(1);
@@ -137,6 +140,7 @@ public class ApiController {
             oldScreenPo.setVoucherType(bandScreenRequest.getType());
             bandScreenResponse.setCode(1);
             bandScreenResponse.setScreenPos(appService.updateScreenPoByMacAddress(request, oldScreenPo));
+            appService.sendMsg(request, "");
             return bandScreenResponse;
         }
     }
