@@ -4,7 +4,6 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
 
     $scope.tab1 = true;
     $scope.tab2 = false;
-    $scope.tab3 = false;
 
     $scope.getstockList = function () {
         var deferred = $q.defer();
@@ -23,38 +22,19 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
         if (k == 1) {
             $scope.tab1 = true;
             $scope.tab2 = false;
-            $scope.tab3 = false;
             $scope.getstockList();
         }
         else if (k == 2) {
             $scope.tab1 = false;
             $scope.tab2 = true;
-            $scope.tab3 = false;
-        }
-        else if (k == 3) {
-            $scope.tab1 = false;
-            $scope.tab2 = false;
-            $scope.tab3 = true;
         }
     };
 
-    $scope.getVoucher1List = function () {
+    $scope.getVoucherList = function () {
         var deferred = $q.defer();
-        $http.get("../api/voucher-list?type=1")
+        $http.get("../api/voucher-list")
             .success(function (data) {
-                $scope.voucherZlist = data;
-                deferred.resolve(data);
-            })
-            .error(function (data) {
-                deferred.reject(data);
-            });
-        return deferred.promise;
-    };
-    $scope.getVoucher2List = function () {
-        var deferred = $q.defer();
-        $http.get("../api/voucher-list?type=2")
-            .success(function (data) {
-                $scope.voucherYlist = data;
+                $scope.voucherLis = data;
                 deferred.resolve(data);
             })
             .error(function (data) {
@@ -63,10 +43,40 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
         return deferred.promise;
     };
 
+    // $scope.getVoucher1List = function () {
+    //     var deferred = $q.defer();
+    //     $http.get("../api/voucher-list?type=1")
+    //         .success(function (data) {
+    //             $scope.voucherZlist = data;
+    //             deferred.resolve(data);
+    //         })
+    //         .error(function (data) {
+    //             deferred.reject(data);
+    //         });
+    //     return deferred.promise;
+    // };
+    // $scope.getVoucher2List = function () {
+    //     var deferred = $q.defer();
+    //     $http.get("../api/voucher-list?type=2")
+    //         .success(function (data) {
+    //             $scope.voucherYlist = data;
+    //             deferred.resolve(data);
+    //         })
+    //         .error(function (data) {
+    //             deferred.reject(data);
+    //         });
+    //     return deferred.promise;
+    // };
 
-    $scope.getVoucher1List();
-    $scope.getVoucher2List();
+
+    // $scope.getVoucher1List();
+    // $scope.getVoucher2List();
     $scope.getstockList();
+    $scope.getVoucherList();
+
+    $scope.operatType = [
+        {"desc": "入库", idx: 1},
+        {"desc": "出库", idx: 2}];
 
 
     $scope.ybTypes = [
@@ -76,12 +86,12 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
         {"desc": "已复点", idx: 9},
         {"desc": "未复点", idx: 10}];
 
-    $scope.zwTypes = [
-        {"desc": "完整卷(原封劵)", idx: 1, "typeDesc": "完整卷"},
-        {"desc": "完整卷(已清分)", idx: 2, "typeDesc": "完整卷"},
-        {"desc": "完整卷(未清分)", idx: 3, "typeDesc": "完整卷"},
-        {"desc": "残缺卷(已复点)", idx: 4, "typeDesc": "残缺卷"},
-        {"desc": "残缺卷(未复点)", idx: 5, "typeDesc": "残缺卷"}
+    $scope.voucherTypes = [
+        {"desc": "原封劵", idx: 1, "typeDesc": "完整卷"},
+        {"desc": "已清分", idx: 2, "typeDesc": "完整卷"},
+        {"desc": "未清分", idx: 3, "typeDesc": "完整卷"},
+        {"desc": "已复点", idx: 4, "typeDesc": "残损卷"},
+        {"desc": "未复点", idx: 5, "typeDesc": "残损卷"}
     ];
 
 
@@ -108,6 +118,41 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             $scope.zw.amount += Number($scope.zw.voucher.amount) * $scope.zw.allCount;
         }
 
+    };
+
+    $scope.xiangShow = false;
+    $scope.daiShow = false;
+    $scope.kunShow = false;
+    $scope.baShow = false;
+    $scope.heShow = false;
+
+
+    $scope.chgVoucher = function () {
+        console.log("sdds");
+        console.log($scope.curStock);
+        if ($scope.curStock != undefined && $scope.curStock.type != undefined && $scope.curStock.voucher != undefined) {
+            $scope.xiangShow = false;
+            $scope.daiShow = false;
+            $scope.kunShow = false;
+            $scope.baShow = false;
+            $scope.heShow = false;
+            if($scope.curStock.voucher.type == 1){//纸币
+                if($scope.curStock.type.idx <= 3){//完整卷
+                    $scope.xiangShow = true;
+                    $scope.kunShow = true;
+                    $scope.baShow = true;
+                }
+                else{//残损卷
+                    $scope.daiShow = true;
+                    $scope.kunShow = true;
+                    $scope.baShow = true;
+                }
+            }
+            else {//硬币
+                $scope.xiangShow = true;
+                $scope.heShow = true;
+            }
+        }
     };
 
 
@@ -139,9 +184,9 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     };
 
 
-    $scope.addZwStock = function (zw) {
-        console.log(zw);
-        if (zw == null || zw.type == undefined || zw.voucher == undefined) {
+    $scope.addStock = function (curStock) {
+        console.log(curStock);
+        if (curStock == null || curStock.type == undefined || curStock.voucher == undefined) {
             swal({
                 title: "请填写完整信息",
                 text: "",
@@ -157,16 +202,16 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             method: 'post',
             url: '../api/add-stock',
             data: {
-                "allCount": zw.allCount,
-                "amount": zw.amount,
-                "baCount": zw.baCount,
-                "kunCount": zw.kunCount,
-                "xiangCount": zw.xiangCount,
-                "voucherUid": zw.voucher.uId,
-                "voucherName": zw.voucher.name,
-                "type": zw.type.idx,
-                "typeDesc": zw.type.desc,
-                "voucherAmount": zw.voucher.amount
+                "allCount": curStock.allCount,
+                "amount": curStock.amount,
+                "baCount": curStock.baCount,
+                "kunCount": curStock.kunCount,
+                "xiangCount": curStock.xiangCount,
+                "voucherUid": curStock.voucher.uId,
+                "voucherName": curStock.voucher.name,
+                "type": curStock.type.idx,
+                "typeDesc": curStock.type.desc,
+                "voucherAmount": curStock.voucher.amount
             }
         }).success(function (req) {
             console.log(req);
@@ -240,11 +285,11 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
 
     $scope.sendMsg = function (commonInfo) {
         console.log(commonInfo);
-        if(commonInfo == null || commonInfo == undefined){
-            commonInfo = "" ;
+        if (commonInfo == null || commonInfo == undefined) {
+            commonInfo = "";
         }
         var deferred = $q.defer();
-        $http.get("../api/send-msg?commonInfo="+commonInfo)
+        $http.get("../api/send-msg?commonInfo=" + commonInfo)
             .success(function (data) {
                 swal("同步成功", "", "success");
                 deferred.resolve(data);

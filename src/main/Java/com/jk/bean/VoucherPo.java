@@ -7,19 +7,21 @@ import com.google.common.collect.ComparisonChain;
  * @Date: 2018/5/6 19:03
  * @Description:
  */
-public class VoucherPo implements Comparable<VoucherPo>{
+public class VoucherPo implements Comparable<VoucherPo> {
     private String uId;
     private String desc;
     private String name;
     private Double amount;
     private Integer type;
+    private String typeDesc;
 
-    public VoucherPo(String uId, String desc, String name, Double amount, Integer type) {
+    public VoucherPo(String uId, String desc, String name, Double amount, Integer type, String typeDesc) {
         this.uId = uId;
         this.desc = desc;
         this.name = name;
         this.amount = amount;
         this.type = type;
+        this.typeDesc = typeDesc;
     }
 
     public String getuId() {
@@ -60,6 +62,14 @@ public class VoucherPo implements Comparable<VoucherPo>{
 
     public void setDesc(String desc) {
         this.desc = desc;
+    }
+
+    public String getTypeDesc() {
+        return typeDesc;
+    }
+
+    public void setTypeDesc(String typeDesc) {
+        this.typeDesc = typeDesc;
     }
 
     @Override

@@ -43,9 +43,9 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
         }
         else {
             var deferred = $q.defer();
-            $http.get("../api/add-voucher?desc=" + voucher.desc + "&amount=" + voucher.amount + "&type=" + voucher.type+"&name=" + voucherName)
+            $http.get("../api/add-voucher?desc=" + voucher.desc + "&amount=" + voucher.amount + "&type=" + voucher.type + "&typeDesc=" + voucher.typeDesc +  "&name=" + voucherName)
                 .success(function (data) {
-                    if(data.code == 1){
+                    if (data.code == 1) {
                         swal({
                             title: "已存在该卷别",
                             text: "",

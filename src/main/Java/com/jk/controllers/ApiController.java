@@ -50,8 +50,9 @@ public class ApiController {
                                       @RequestParam("desc") String dec,
                                       @RequestParam("name") String name,
                                       @RequestParam("amount") Double amount,
-                                      @RequestParam("type") Integer type) {
-        return appService.addVoucherPo(request, dec, name, amount, type);
+                                      @RequestParam("type") Integer type,
+                                      @RequestParam("typeDesc") String typeDesc) {
+        return appService.addVoucherPo(request, dec, name, amount, type, typeDesc);
     }
 
     @RequestMapping("/remove-voucher")

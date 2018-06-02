@@ -52,9 +52,9 @@ public class AppService {
         return voucherDao.getVoucherPos(request, type);
     }
 
-    public VoucherResponse addVoucherPo(HttpServletRequest request, String dec, String name, Double amount, Integer type) {
+    public VoucherResponse addVoucherPo(HttpServletRequest request, String dec, String name, Double amount, Integer type, String typeDesc) {
         VoucherResponse voucherResponse = new VoucherResponse();
-        VoucherPo voucherPo = new VoucherPo(AppUtils.generateUId(), dec, name, amount, type);
+        VoucherPo voucherPo = new VoucherPo(AppUtils.generateUId(), dec, name, amount, type, typeDesc);
         if (voucherDao.findVoucherPo(request, voucherPo)) {
             voucherResponse.setCode(1);
             voucherResponse.setVoucherPos(voucherDao.getVoucherList(request));
