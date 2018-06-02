@@ -194,8 +194,8 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                 }
             }
             else{//残损卷
-                if($scope.enterStock.baCount == undefined){
-                    $scope.enterStock.baCount = 0;
+                if($scope.enterStock.daiCount == undefined){
+                    $scope.enterStock.daiCount = 0;
                 }
             }
         }
