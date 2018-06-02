@@ -76,30 +76,15 @@ app.controller("screenCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     };
     $scope.getVoucherList();
 
-    $scope.chgVoucher = function (band) {
-        if (band.voucher.type == 2) {
-            $scope.bTypes = [
-                {"desc": "原封劵", idx: 6},
-                {"desc": "已清分", idx: 7},
-                {"desc": "未清分", idx: 8},
-                {"desc": "已复点", idx: 9},
-                {"desc": "未复点", idx: 10}];
-        }
-        else {
-            $scope.bTypes = [
-                {"desc": "完整卷(原封劵)", idx: 1, "typeDesc": "完整卷"},
-                {"desc": "完整卷(已清分)", idx: 2, "typeDesc": "完整卷"},
-                {"desc": "完整卷(未清分)", idx: 3, "typeDesc": "完整卷"},
-                {"desc": "残缺卷(已复点)", idx: 4, "typeDesc": "残缺卷"},
-                {"desc": "残缺卷(未复点)", idx: 5, "typeDesc": "残缺卷"}
-            ];
-        }
-    };
+    $scope.voucherTypes = [
+        {"desc": "完整卷（原封劵）", idx: 1, "typeDesc": "完整卷"},
+        {"desc": "完整卷（已清分）", idx: 2, "typeDesc": "完整卷"},
+        {"desc": "完整卷（未清分）", idx: 3, "typeDesc": "完整卷"},
+        {"desc": "残损卷（已复点）", idx: 4, "typeDesc": "残损卷"},
+        {"desc": "残损卷（未复点）", idx: 5, "typeDesc": "残损卷"}
+    ];
 
     $scope.screnBand = function (band) {
-        console.log($scope.toBandMacAddress);
-        console.log($scope.toBandIpAddress);
-        console.log(band);
         if ($scope.toBandMacAddress == null || $scope.toBandMacAddress == undefined) {
             swal({
                 title: "请选择要绑定的屏幕！",

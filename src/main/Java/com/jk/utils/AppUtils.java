@@ -1,11 +1,15 @@
 package com.jk.utils;
 
+import com.google.common.primitives.Doubles;
 import com.jk.bean.StockPo;
 import org.apache.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.text.SimpleDateFormat;
@@ -95,79 +99,59 @@ public class AppUtils {
         return sdf.format(date);
     }
 
-//    public static String getMac() {
-//        String mac = "";
-//        try {
-//            InetAddress address = InetAddress.getLocalHost();
-//            NetworkInterface ni = NetworkInterface.getByInetAddress(address);
-//            byte[] macs = ni.getHardwareAddress();
-//            Formatter formatter = new Formatter();
-//            for (int i = 0; i < macs.length; i++) {
-//                mac = formatter.format(Locale.getDefault(), "%02X%s", macs[i], i < macs.length - 1 ? "-" : "").toString();
-//            }
-//        } catch (Exception e) {
-//        }
-//        return mac;
-//    }
-
-//    public static String getIpAdrress(HttpServletRequest request) {
-//        String ip = request.getHeader("X-Real-IP");
-//        if (!StringUtils.isBlank(ip) && !"unknown".equalsIgnoreCase(ip)) {
-//            return ip;
-//        }
-//        ip = request.getHeader("X-Forwarded-For");
-//        if (!StringUtils.isBlank(ip) && !"unknown".equalsIgnoreCase(ip)) {
-//            // 多次反向代理后会有多个IP值，第一个为真实IP。
-//            int index = ip.indexOf(',');
-//            if (index != -1) {
-//                return ip.substring(0, index);
-//            } else {
-//                return ip;
-//            }
-//        } else {
-//            return request.getRemoteAddr();
-//        }
-//
-//    }
-
-    public static InetAddress getLocalHostLANAddress() throws Exception {
-        try {
-            InetAddress candidateAddress = null;
-            // 遍历所有的网络接口
-            for (Enumeration ifaces = NetworkInterface.getNetworkInterfaces(); ifaces.hasMoreElements(); ) {
-                NetworkInterface iface = (NetworkInterface) ifaces.nextElement();
-                // 在所有的接口下再遍历IP
-                for (Enumeration inetAddrs = iface.getInetAddresses(); inetAddrs.hasMoreElements(); ) {
-                    InetAddress inetAddr = (InetAddress) inetAddrs.nextElement();
-                    if (!inetAddr.isLoopbackAddress()) {// 排除loopback类型地址
-                        if (inetAddr.isSiteLocalAddress()) {
-                            // 如果是site-local地址，就是它了
-                            return inetAddr;
-                        } else if (candidateAddress == null) {
-                            // site-local类型的地址未被发现，先记录候选地址
-                            candidateAddress = inetAddr;
-                        }
-                    }
-                }
-            }
-            if (candidateAddress != null) {
-                return candidateAddress;
-            }
-            // 如果没有发现 non-loopback地址.只能用最次选的方案
-            InetAddress jdkSuppliedAddress = InetAddress.getLocalHost();
-            return jdkSuppliedAddress;
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static StockPo subStockPo(StockPo old, StockPo out) {
+        BigInteger nowAllCount = new BigInteger(old.getAllCount()).subtract(new BigInteger(out.getAllCount()));
+        if (nowAllCount.compareTo(BigInteger.ZERO) < 0) {
+            return null;
         }
-        return null;
-    }
+        old.setAllCount(nowAllCount.toString());
+        old.setAmount(BigDecimal.valueOf(old.getVoucherAmount()).multiply(new BigDecimal(nowAllCount)).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+        if (old.getVoucherType() == 1) {//纸币
+            BigInteger xiangOrDaiCount = BigInteger.ZERO;
+            BigInteger kunCount = BigInteger.ZERO;
+            BigInteger baCount = BigInteger.ZERO;
+            //      5角/1角	    1箱/袋 = 25捆	1捆 = 10把	1把 = 100张
+            //      其他	        1箱/袋 = 20捆	1捆 = 10把	1把 = 100张
+            if (Doubles.compare(old.getVoucherAmount(), 0.5) == 0 || Doubles.compare(old.getVoucherAmount(), 0.1) == 0) {
+                xiangOrDaiCount = nowAllCount.divide(BigInteger.valueOf(25 * 10 * 100));
+                nowAllCount = nowAllCount.mod(BigInteger.valueOf(25 * 10 * 100));
+                kunCount = nowAllCount.divide(BigInteger.valueOf(10 * 100));
+                nowAllCount = nowAllCount.mod(BigInteger.valueOf(10 * 100));
+                baCount = nowAllCount.divide(BigInteger.valueOf(100));
+            } else {
+                xiangOrDaiCount = nowAllCount.divide(BigInteger.valueOf(20 * 10 * 100));
+                nowAllCount = nowAllCount.mod(BigInteger.valueOf(20 * 10 * 100));
+                kunCount = nowAllCount.divide(BigInteger.valueOf(10 * 100));
+                nowAllCount = nowAllCount.mod(BigInteger.valueOf(10 * 100));
+                baCount = nowAllCount.divide(BigInteger.valueOf(100));
+            }
 
-    public static void main(String[] args) {
-        try {
-            InetAddress a = getLocalHostLANAddress();
-            System.out.println(a.getHostAddress());
-        } catch (Exception e) {
+            if (old.getType() <= 3) {//完整卷
+                old.setXiangCount(xiangOrDaiCount.toString());
+            } else {//残损卷
+                old.setDaiCount(xiangOrDaiCount.toString());
+            }
+            old.setKunCount(kunCount.toString());
+            old.setBaCount(baCount.toString());
+        } else {//硬币
+            //	    1元	1箱 = 10盒	1盒 = 400枚
+            //      5角	1箱 = 10盒	1盒 = 400枚
+            //      1角	1箱 = 10盒	1盒 = 500枚
+            BigInteger xiangCount = BigInteger.ZERO;
+            BigInteger heCount = BigInteger.ZERO;
+            if (Doubles.compare(old.getVoucherAmount(), 0.1) == 0) {
+                xiangCount = nowAllCount.divide(BigInteger.valueOf(10 * 500));
+                nowAllCount = nowAllCount.mod(BigInteger.valueOf(10 * 500));
+                heCount = nowAllCount.divide(BigInteger.valueOf(500));
+            } else {
+                xiangCount = nowAllCount.divide(BigInteger.valueOf(10 * 400));
+                nowAllCount = nowAllCount.mod(BigInteger.valueOf(10 * 400));
+                heCount = nowAllCount.divide(BigInteger.valueOf(400));
+            }
+            old.setXiangCount(xiangCount.toString());
+            old.setHeCount(heCount.toString());
         }
+        return old;
     }
 
 }

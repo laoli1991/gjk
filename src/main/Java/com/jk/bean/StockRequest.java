@@ -7,6 +7,7 @@ package com.jk.bean;
  * @Description:
  */
 public class StockRequest {
+    private Integer operation ;
     private Integer category;
     private String voucherUid;
     private Integer voucherType;
@@ -132,5 +133,13 @@ public class StockRequest {
 
     public void setTypeDesc(String typeDesc) {
         this.typeDesc = typeDesc;
+    }
+
+    public Integer getOperation() {
+        return operation;
+    }
+
+    public void setOperation(Integer operation) {
+        this.operation = operation;
     }
 }

@@ -96,6 +96,10 @@ public class AppService {
         return stockDao.getStockPos(request);
     }
 
+    public StockPo getStockPoByStock(HttpServletRequest request, StockPo stockPo) {
+        return stockDao.getStockPoByStockUid(request, AppUtils.getStockUid(stockPo));
+    }
+
     public List<StockPo> addStockPo(HttpServletRequest request, StockPo stockPo) {
         stockPo.setStockUid(AppUtils.getStockUid(stockPo));
         return stockDao.addStockPo(request, stockPo);
@@ -161,17 +165,17 @@ public class AppService {
                 if (StringUtils.isNotBlank(amount)) {
                     BigDecimal num = new BigDecimal(amount);
                     num = num.divide(new BigDecimal(10000), 3, BigDecimal.ROUND_HALF_UP);
-                    msgDto.setAmount(num.setScale(3, BigDecimal.ROUND_HALF_UP).toString() + "万元");
+                    msgDto.setAmount("合计： " + num.setScale(3, BigDecimal.ROUND_HALF_UP).toString() + "万元");
                 }
                 if (StringUtils.isNotBlank(stockPo.getXiangCount())) {
                     msgDto.setKey1(stockPo.getXiangCount());
-                }
-                if (stockPo.getType() == 4 || stockPo.getType() == 5) {
-                    msgDto.setValue1("袋");
-                } else {
                     msgDto.setValue1("箱");
                 }
-                if (stockPo.getType() <= 5) {
+                if (StringUtils.isNotBlank(stockPo.getDaiCount())) {
+                    msgDto.setKey1(stockPo.getDaiCount());
+                    msgDto.setValue1("袋");
+                }
+                if (stockPo.getVoucherType() == 1) {//纸币
                     BigDecimal num = BigDecimal.ZERO;
                     boolean find = false;
                     if (StringUtils.isNotBlank(stockPo.getKunCount())) {
@@ -184,10 +188,14 @@ public class AppService {
                     }
                     if (find) {
                         msgDto.setKey2(num.setScale(1, BigDecimal.ROUND_HALF_UP).toString());
+                    } else {
+                        msgDto.setKey2("0");
                     }
                     msgDto.setValue2("捆");
-                } else {
-                    if (StringUtils.isNotBlank(stockPo.getHeCount())) {
+                } else {//银币
+                    if (StringUtils.isBlank(stockPo.getHeCount())) {
+                        msgDto.setKey2("0");
+                    } else {
                         msgDto.setKey2(stockPo.getHeCount());
                     }
                     msgDto.setValue2("盒");

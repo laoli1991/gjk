@@ -1,6 +1,7 @@
 package com.jk.controllers;
 
 import com.alibaba.fastjson.JSONObject;
+import com.google.common.primitives.Ints;
 import com.jk.bean.AddScreenReponse;
 import com.jk.bean.AddScreenRequest;
 import com.jk.bean.BandScreenRequest;
@@ -10,11 +11,13 @@ import com.jk.bean.ScreenMapperStock;
 import com.jk.bean.ScreenPo;
 import com.jk.bean.StockPo;
 import com.jk.bean.StockRequest;
+import com.jk.bean.StockResponse;
 import com.jk.bean.VoucherPo;
 import com.jk.bean.VoucherResponse;
 import com.jk.service.AppService;
 import com.jk.utils.AppUtils;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.List;
 
 /**
@@ -63,11 +68,51 @@ public class ApiController {
 
     @RequestMapping("/add-stock")
     @ResponseBody
-    public List<StockPo> addStockPo(HttpServletRequest request,
+    public StockResponse addStockPo(HttpServletRequest request,
                                     @RequestBody StockRequest stockRequest) {
         StockPo stockPo = new StockPo();
         BeanUtils.copyProperties(stockRequest, stockPo);
-        return appService.addStockPo(request, stockPo);
+        if (Ints.compare(1, stockRequest.getOperation()) == 0) {//入库
+            StockResponse stockResponse = new StockResponse();
+            stockResponse.setCode(1); //入库成功
+            stockResponse.setStockPos(appService.addStockPo(request, stockPo));
+            return stockResponse;
+        }
+        if (Ints.compare(2, stockRequest.getOperation()) == 0) {//尝试出库
+            StockResponse stockResponse = new StockResponse();
+            StockPo oldStockPo = appService.getStockPoByStock(request, stockPo);
+            if (oldStockPo == null) {
+                stockResponse.setCode(2); //出库失败，找不到入库记录
+            } else {
+                if (new BigInteger(oldStockPo.getAllCount()).compareTo(new BigInteger(stockRequest.getAllCount())) < 0) {//找到入库记录,但是出库比入库多
+                    stockResponse.setCode(3);
+                } else {//合法出库
+                    stockResponse.setCode(4);
+                    StockPo curStockPo = AppUtils.subStockPo(oldStockPo , stockPo);
+                    stockResponse.setCurStockPo(curStockPo);
+                }
+            }
+            return stockResponse;
+        }
+        if (Ints.compare(3, stockRequest.getOperation()) == 0) {//确认出库
+            StockResponse stockResponse = new StockResponse();
+            StockPo oldStockPo = appService.getStockPoByStock(request, stockPo);
+            if (oldStockPo == null) {
+                stockResponse.setCode(2); //出库失败，找不到入库记录
+            } else {
+                if (new BigInteger(oldStockPo.getAllCount()).compareTo(new BigInteger(stockRequest.getAllCount())) < 0) {//找到入库记录,但是出库比入库多
+                    stockResponse.setCode(3);
+                } else {//合法出库
+                    stockResponse.setCode(5);
+                    StockPo curStockPo = AppUtils.subStockPo(oldStockPo , stockPo);
+                    stockResponse.setCurStockPo(curStockPo);
+                    stockResponse.setStockPos(appService.addStockPo(request, curStockPo));
+                    appService.sendMsg(request, "");
+                }
+            }
+            return stockResponse;
+        }
+        return null;
     }
 
     @RequestMapping("/stock-list")
