@@ -21,7 +21,7 @@ public class StockPo implements Comparable<StockPo> {
     private String xiangCount;
     private String kunCount;
     private String baCount;
-    private String daCount;
+    private String daiCount;
     private String heCount;
     private String allCount;
     private String amount;
@@ -103,12 +103,12 @@ public class StockPo implements Comparable<StockPo> {
         this.baCount = baCount;
     }
 
-    public String getDaCount() {
-        return daCount;
+    public String getDaiCount() {
+        return daiCount;
     }
 
-    public void setDaCount(String daCount) {
-        this.daCount = daCount;
+    public void setDaiCount(String daiCount) {
+        this.daiCount = daiCount;
     }
 
     public String getHeCount() {

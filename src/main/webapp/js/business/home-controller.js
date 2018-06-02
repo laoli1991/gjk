@@ -1,9 +1,9 @@
-angular.module('home.controller', ['ngRoute', 'index.controller', 'manage.controller', "configure.controller", "screen.controller"])
+angular.module('home.controller', ['ngRoute', 'manage.controller', "configure.controller", "screen.controller"])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
             .when('/', {
-                template: '',
-                controller: 'indexCtrl'
+                template: '/view/manage.html',
+                controller: 'manageCtrl'
             })
             .when('/manage', {
                 templateUrl: '/view/manage.html',
