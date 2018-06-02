@@ -231,41 +231,6 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
         })
     };
 
-    $scope.addYbStock = function (yb) {
-        console.log(yb);
-        if (yb == null || yb.type == undefined || yb.voucher == undefined) {
-            swal({
-                title: "请填写完整信息",
-                text: "",
-                type: "warning",
-                showCancelButton: false,
-                confirmButtonColor: "#DD6B55",
-                confirmButtonText: "关闭",
-                closeOnConfirm: false
-            });
-            return;
-        }
-        $http({
-            method: 'post',
-            url: '../api/add-stock',
-            data: {
-                "allCount": yb.allCount,
-                "amount": yb.amount,
-                "heCount": yb.heCount,
-                "xiangCount": yb.xiangCount,
-                "voucherUid": yb.voucher.uId,
-                "voucherName": yb.voucher.name,
-                "type": yb.type.idx,
-                "typeDesc": yb.type.desc,
-                "voucherAmount": yb.voucher.amount
-            }
-        }).success(function (req) {
-            console.log(req);
-            $scope.stockList = req;
-            swal("录入成功！", "", "success");
-        })
-    };
-
 
     $scope.removeStock = function (stockUid) {
         swal({
