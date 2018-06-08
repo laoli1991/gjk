@@ -55,11 +55,8 @@ public class ApiController {
             BeanUtils.copyProperties(po, vo);
             String unitInfo = "";
             if (po.getType() == 1) {
-                if (po.getXiang2Kun() != null) {
-                    unitInfo = "1箱=" + po.getXiang2Kun() + "捆";
-                } else if (po.getDai2Kun() != null) {
-                    unitInfo = "1袋=" + po.getDai2Kun() + "捆";
-                }
+                unitInfo = "1箱 = " + po.getXiang2Kun() + "捆";
+                unitInfo += "</br>1袋 = " + po.getDai2Kun() + "捆";
                 unitInfo += "</br>1捆 = " + po.getKun2Ba() + "把";
                 unitInfo += "</br>1把 = " + po.getBa2Zhang() + "张";
             } else {
