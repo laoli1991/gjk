@@ -127,7 +127,8 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             //      5角/1角	    1箱/袋 = 25捆	1捆 = 10把	1把 = 100张
             //      其他	        1箱/袋 = 20捆	1捆 = 10把	1把 = 100张
             if (curStock.type.idx <= 1) {//完整券 原封券
-                    curStock.allCount += Number(curStock.xiangCount) * curStock.voucher.xiang2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang;//箱->张
+                if (curStock.voucher.amount == 0.5 || curStock.voucher.amount == 0.1) {
+                    curStock.allCount += Number(curStock.xiangCount) * 25 * 10 * 100;//箱->张
                 }
                 else {
                     curStock.allCount += Number(curStock.xiangCount) * 20 * 10 * 100;//箱->张
