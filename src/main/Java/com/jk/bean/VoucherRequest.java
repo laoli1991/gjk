@@ -7,7 +7,7 @@ import com.google.common.collect.ComparisonChain;
  * @Date: 2018/5/6 19:03
  * @Description:
  */
-public class VoucherPo implements Comparable<VoucherPo> {
+public class VoucherRequest {
     private String uId;
     private String desc;
     private String name;
@@ -21,16 +21,7 @@ public class VoucherPo implements Comparable<VoucherPo> {
     private Long xiang2He;
     private Long he2Mei;
 
-    public VoucherPo() {
-    }
-
-    public VoucherPo(String uId, String desc, String name, Double amount, Integer type, String typeDesc) {
-        this.uId = uId;
-        this.desc = desc;
-        this.name = name;
-        this.amount = amount;
-        this.type = type;
-        this.typeDesc = typeDesc;
+    public VoucherRequest() {
     }
 
     public String getuId() {
@@ -127,13 +118,5 @@ public class VoucherPo implements Comparable<VoucherPo> {
 
     public void setHe2Mei(Long he2Mei) {
         this.he2Mei = he2Mei;
-    }
-
-    @Override
-    public int compareTo(VoucherPo other) {
-        return ComparisonChain.start()
-                .compare(this.type, other.type)
-                .compare(other.amount, this.amount)
-                .result();
     }
 }

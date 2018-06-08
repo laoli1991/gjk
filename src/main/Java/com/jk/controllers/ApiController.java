@@ -1,6 +1,6 @@
 package com.jk.controllers;
 
-import com.alibaba.fastjson.JSONObject;
+import com.google.common.collect.Lists;
 import com.google.common.primitives.Ints;
 import com.jk.bean.AddScreenReponse;
 import com.jk.bean.AddScreenRequest;
@@ -13,11 +13,14 @@ import com.jk.bean.StockPo;
 import com.jk.bean.StockRequest;
 import com.jk.bean.StockResponse;
 import com.jk.bean.VoucherPo;
-import com.jk.bean.VoucherResponse;
+import com.jk.bean.VoucherRequest;
+import com.jk.bean.VoucherVo;
+import com.jk.enums.OperateRequestEnums;
+import com.jk.enums.OperateResponseEnums;
 import com.jk.service.AppService;
 import com.jk.utils.AppUtils;
+import com.jk.utils.StockUtils;
 import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +30,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.List;
 
@@ -45,19 +47,39 @@ public class ApiController {
 
     @RequestMapping("/voucher-list")
     @ResponseBody
-    public List<VoucherPo> voucherList(HttpServletRequest request, @RequestParam(value = "type", required = false) Integer type) {
-        return appService.getVoucherPos(request, type);
+    public List<VoucherVo> voucherList(HttpServletRequest request, @RequestParam(value = "type", required = false) Integer type) {
+        List<VoucherPo> voucherPoList = appService.getVoucherPos(request, type);
+        List<VoucherVo> voucherVoList = Lists.newArrayList();
+        for (VoucherPo po : voucherPoList) {
+            VoucherVo vo = new VoucherVo();
+            BeanUtils.copyProperties(po, vo);
+            String unitInfo = "";
+            if (po.getType() == 1) {
+                if (po.getXiang2Kun() != null) {
+                    unitInfo = "1箱=" + po.getXiang2Kun() + "捆";
+                } else if (po.getDai2Kun() != null) {
+                    unitInfo = "1袋=" + po.getDai2Kun() + "捆";
+                }
+                unitInfo += "</br>1捆 = " + po.getKun2Ba() + "把";
+                unitInfo += "</br>1把 = " + po.getBa2Zhang() + "张";
+            } else {
+                unitInfo += "1箱 = " + po.getXiang2He() + "盒";
+                unitInfo += "</br>1盒 = " + po.getHe2Mei() + "枚";
+            }
+            vo.setUnitInfo(unitInfo);
+            voucherVoList.add(vo);
+        }
+        return voucherVoList;
     }
 
     @RequestMapping("/add-voucher")
     @ResponseBody
-    public VoucherResponse addVoucher(HttpServletRequest request,
-                                      @RequestParam("desc") String dec,
-                                      @RequestParam("name") String name,
-                                      @RequestParam("amount") Double amount,
-                                      @RequestParam("type") Integer type,
-                                      @RequestParam("typeDesc") String typeDesc) {
-        return appService.addVoucherPo(request, dec, name, amount, type, typeDesc);
+    public Integer addVoucher(HttpServletRequest request,
+                              @RequestBody VoucherRequest voucherRequest) {
+        VoucherPo voucherPo = new VoucherPo();
+        BeanUtils.copyProperties(voucherRequest, voucherPo);
+        voucherPo.setuId(AppUtils.generateUId());
+        return appService.addVoucherPo(request, voucherPo);
     }
 
     @RequestMapping("/remove-voucher")
@@ -72,39 +94,49 @@ public class ApiController {
                                     @RequestBody StockRequest stockRequest) {
         StockPo stockPo = new StockPo();
         BeanUtils.copyProperties(stockRequest, stockPo);
-        if (Ints.compare(1, stockRequest.getOperation()) == 0) {//入库
+        if (Ints.compare(OperateRequestEnums.RUKU_ADD.getOperate(), stockRequest.getOperation()) == 0) {//入库 新增
             StockResponse stockResponse = new StockResponse();
-            stockResponse.setCode(1); //入库成功
-            stockResponse.setStockPos(appService.addStockPo(request, stockPo));
+            stockResponse.setCode(OperateResponseEnums.RUKU_SUCCESS.getCode()); //入库成功
+            StockPo oldStockPo = appService.getStockPoByStock(request, stockPo);
+            StockPo curStockPo = StockUtils.addStockPo(oldStockPo, stockPo);
+            stockResponse.setStockPos(appService.addStockPo(request, curStockPo));
+            appService.sendMsg(request, "");
             return stockResponse;
         }
-        if (Ints.compare(2, stockRequest.getOperation()) == 0) {//尝试出库
+        if (Ints.compare(OperateRequestEnums.RUKU_COVER.getOperate(), stockRequest.getOperation()) == 0) {//入库 覆盖
+            StockResponse stockResponse = new StockResponse();
+            stockResponse.setCode(OperateResponseEnums.RUKU_SUCCESS.getCode()); //入库成功
+            stockResponse.setStockPos(appService.addStockPo(request, stockPo));
+            appService.sendMsg(request, "");
+            return stockResponse;
+        }
+        if (Ints.compare(OperateRequestEnums.CHUKU_TRY.getOperate(), stockRequest.getOperation()) == 0) {//尝试出库
             StockResponse stockResponse = new StockResponse();
             StockPo oldStockPo = appService.getStockPoByStock(request, stockPo);
             if (oldStockPo == null) {
-                stockResponse.setCode(2); //出库失败，找不到入库记录
+                stockResponse.setCode(OperateResponseEnums.CHUKU_FAILED_NOT_FIND_RUKU.getCode()); //出库失败，找不到入库记录
             } else {
                 if (new BigInteger(oldStockPo.getAllCount()).compareTo(new BigInteger(stockRequest.getAllCount())) < 0) {//找到入库记录,但是出库比入库多
-                    stockResponse.setCode(3);
+                    stockResponse.setCode(OperateResponseEnums.CHUKU_FAILED_BIGGER_THEN_RUKU.getCode());
                 } else {//合法出库
-                    stockResponse.setCode(4);
-                    StockPo curStockPo = AppUtils.subStockPo(oldStockPo , stockPo);
+                    stockResponse.setCode(OperateResponseEnums.CHUKU_TRY_SUCCESS.getCode());
+                    StockPo curStockPo = StockUtils.subStockPo(oldStockPo, stockPo);
                     stockResponse.setCurStockPo(curStockPo);
                 }
             }
             return stockResponse;
         }
-        if (Ints.compare(3, stockRequest.getOperation()) == 0) {//确认出库
+        if (Ints.compare(OperateRequestEnums.CHUKU_CONFIRM.getOperate(), stockRequest.getOperation()) == 0) {//确认出库
             StockResponse stockResponse = new StockResponse();
             StockPo oldStockPo = appService.getStockPoByStock(request, stockPo);
             if (oldStockPo == null) {
-                stockResponse.setCode(2); //出库失败，找不到入库记录
+                stockResponse.setCode(OperateResponseEnums.CHUKU_FAILED_NOT_FIND_RUKU.getCode()); //出库失败，找不到入库记录
             } else {
                 if (new BigInteger(oldStockPo.getAllCount()).compareTo(new BigInteger(stockRequest.getAllCount())) < 0) {//找到入库记录,但是出库比入库多
-                    stockResponse.setCode(3);
+                    stockResponse.setCode(OperateResponseEnums.CHUKU_FAILED_BIGGER_THEN_RUKU.getCode());
                 } else {//合法出库
-                    stockResponse.setCode(5);
-                    StockPo curStockPo = AppUtils.subStockPo(oldStockPo , stockPo);
+                    stockResponse.setCode(OperateResponseEnums.CHUKU_SUCCESS.getCode());
+                    StockPo curStockPo = StockUtils.subStockPo(oldStockPo, stockPo);
                     stockResponse.setCurStockPo(curStockPo);
                     stockResponse.setStockPos(appService.addStockPo(request, curStockPo));
                     appService.sendMsg(request, "");

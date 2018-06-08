@@ -1,55 +1,39 @@
 <div class="container-fluid">
+    <br>
+    <br>
+    <nav class="cm-navbar cm-navbar-default cm-navbar-slideup">
+        <div class="cm-flex">
+            <div class="nav-tabs-container">
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="" data-toggle="tab" ng-click="tabShow(1)">所有券别</a></li>
+                    <li><a href="" data-toggle="tab" ng-click="tabShow(2)">新增券别</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
+<div class="container-fluid">
     <div class="tab-content">
 
 
-        <div class="tab-pane fade in active" id="tab1" style="margin-top:20px">
+        <div class="tab-pane fade in active" id="tab1" style="margin-top:20px" ng-show="tab1">
             <div class="panel panel-default">
 
                 <div class="panel-body">
 
-                    <div class="form-group">
-                        <div class="col-sm-5">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">卷别</label>
-                                <div class="col-sm-10">
-                                    <input type="text" class="form-control" ng-model="voucherName"
-                                           placeholder="卷别">
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-4">
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label">金额</label>
-                                <div class="col-sm-10">
-                                    <select class="form-control" ng-model="voucher"
-                                            ng-options="row.desc group by row.typeDesc for row in vouchers"></select>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-3">
-                            <div class="form-group" style="margin-bottom:0">
-                                <div class="text-center">
-                                    <button class="btn btn-primary btn-lg" ng-click="addVoucher(voucherName,voucher)">
-                                        增加
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <br><br>
-
                     <table ng-table="totalTables" class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th>劵别</th>
+                            <th>券别</th>
                             <th>金额</th>
+                            <th>换算关系</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tr ng-repeat="row in voucherList track by $index">
                             <td align="center"> {{row.name}}</td>
                             <td align="center"> {{row.desc}}</td>
+                            <td align="center" ng-bind-html="row.unitInfo | to_trusted"></td>
                             <td align="center">
                                 <button class="btn btn-danger" ng-click="removeVoucher(row)">删除</button>
                             </td>
@@ -60,9 +44,100 @@
 
         </div>
 
+        <div class="tab-pane fade in active" id="tab2" style="margin-top:20px" ng-show="tab2">
+            <div class="panel panel-default">
+                <div class="panel-heading"></div>
+                <div class="panel-body">
+                    <form class="form-horizontal">
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">券别</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-model="voucherPo.voucherName">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">金额</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" ng-model="voucherPo.voucher"
+                                        ng-options="row.desc group by row.typeDesc for row in vouchers"
+                                        ng-change="chgAddVoucher(voucherPo)">
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group" ng-show="showXiang2Kun">
+                            <label class="col-sm-2 control-label">1箱=</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-model="voucherPo.xiang2Kun" placeholder="捆"
+                                       ng-keyup="mustInt(voucherPo , 'xiang2Kun')">
+                            </div>
+                            <label>捆</label>
+                        </div>
+
+                        <div class="form-group" ng-show="showDai2Kun">
+                            <label class="col-sm-2 control-label">1袋=</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-model="voucherPo.dai2Kun" placeholder="捆"
+                                       ng-keyup="mustInt(voucherPo , 'dai2Kun')">
+                            </div>
+                            <label>捆</label>
+                        </div>
+
+                        <div class="form-group" ng-show="showKun2Ba">
+                            <label class="col-sm-2 control-label">1捆=</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-model="voucherPo.kun2Ba" placeholder="把"
+                                       ng-keyup="mustInt(voucherPo , 'kun2Ba')">
+                            </div>
+                            <label>把</label>
+                        </div>
+
+                        <div class="form-group" ng-show="showBa2Zhang">
+                            <label class="col-sm-2 control-label">1把=</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-model="voucherPo.ba2Zhang" placeholder="张"
+                                       ng-keyup="mustInt(voucherPo , 'ba2Zhang')">
+                            </div>
+                            <label>张</label>
+                        </div>
+
+                        <div class="form-group" ng-show="showXiang2He">
+                            <label class="col-sm-2 control-label">1箱=</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-model="voucherPo.xiang2He" placeholder="盒"
+                                       ng-keyup="mustInt(voucherPo , 'xiang2He')">
+                            </div>
+                            <label>盒</label>
+                        </div>
+
+                        <div class="form-group" ng-show="showHe2Mei">
+                            <label class="col-sm-2 control-label">1盒=</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" ng-model="voucherPo.he2Mei" placeholder="枚"
+                                       ng-keyup="mustInt(voucherPo , 'he2Mei')">
+                            </div>
+                            <label>枚</label>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom:0">
+                            <div class="text-center">
+                                <button class="btn btn-primary btn-lg" ng-click="addVoucher(voucherPo)">
+                                    增加
+                                </button>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
     </div>
-</div>
 
 
-<footer class="cm-footer"><span class="pull-left"></span><span class="pull-right">技术支持：贵州新启程档案服务有限责任公司</span></footer>
-
+    <footer class="cm-footer"><span class="pull-left"></span><span class="pull-right">技术支持：贵州新启程档案服务有限责任公司</span>
+    </footer>

@@ -5,15 +5,14 @@ import com.google.common.collect.Lists;
 import com.jk.bean.MsgDto;
 import com.jk.bean.MsgPo;
 import com.jk.bean.ScreenMapperStock;
-import com.jk.bean.VoucherResponse;
+import com.jk.bean.ScreenPo;
+import com.jk.bean.ScreenVo;
+import com.jk.bean.StockPo;
+import com.jk.bean.VoucherPo;
 import com.jk.dao.ScreenDao;
 import com.jk.dao.StockDao;
 import com.jk.dao.VoucherDao;
-import com.jk.bean.ScreenPo;
-import com.jk.bean.StockPo;
-import com.jk.bean.VoucherPo;
 import com.jk.utils.AppUtils;
-import com.jk.bean.ScreenVo;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -52,17 +51,13 @@ public class AppService {
         return voucherDao.getVoucherPos(request, type);
     }
 
-    public VoucherResponse addVoucherPo(HttpServletRequest request, String dec, String name, Double amount, Integer type, String typeDesc) {
-        VoucherResponse voucherResponse = new VoucherResponse();
-        VoucherPo voucherPo = new VoucherPo(AppUtils.generateUId(), dec, name, amount, type, typeDesc);
+    public Integer addVoucherPo(HttpServletRequest request, VoucherPo voucherPo) {
         if (voucherDao.findVoucherPo(request, voucherPo)) {
-            voucherResponse.setCode(1);
-            voucherResponse.setVoucherPos(voucherDao.getVoucherList(request));
+            return 0;
         } else {
-            voucherResponse.setCode(0);
-            voucherResponse.setVoucherPos(voucherDao.addVoucherPo(request, voucherPo));
+            voucherDao.addVoucherPo(request, voucherPo);
+            return 1;
         }
-        return voucherResponse;
     }
 
     public List<VoucherPo> removeVoucherPo(HttpServletRequest request, String uId) {

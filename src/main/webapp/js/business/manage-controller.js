@@ -69,11 +69,11 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     $scope.getVoucherList();
 
     $scope.voucherTypes = [
-        {"desc": "完整卷（原封劵）", idx: 1, "typeDesc": "完整卷"},
-        {"desc": "完整卷（已清分）", idx: 2, "typeDesc": "完整卷"},
-        {"desc": "完整卷（未清分）", idx: 3, "typeDesc": "完整卷"},
-        {"desc": "残损卷（已复点）", idx: 4, "typeDesc": "残损卷"},
-        {"desc": "残损卷（未复点）", idx: 5, "typeDesc": "残损卷"}
+        {"desc": "完整券（原封劵）", idx: 1, "typeDesc": "完整券"},
+        {"desc": "完整券（已清分）", idx: 2, "typeDesc": "完整券"},
+        {"desc": "完整券（未清分）", idx: 3, "typeDesc": "完整券"},
+        {"desc": "残损券（已复点）", idx: 4, "typeDesc": "残损券"},
+        {"desc": "残损券（未复点）", idx: 5, "typeDesc": "残损券"}
     ];
 
     $scope.xiangShow = false;
@@ -101,7 +101,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             curStock.heCount = undefined;
 
             if(curStock.voucher.type == 1){//纸币
-                if(curStock.type.idx <= 3){//完整卷
+                if(curStock.type.idx <= 1){//完整券 原封券
                     $scope.xiangShow = true;
                     $scope.kunShow = true;
                     $scope.baShow = true;

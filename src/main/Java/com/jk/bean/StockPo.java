@@ -16,6 +16,12 @@ public class StockPo implements Comparable<StockPo> {
     private Integer voucherType;
     private String voucherName;
     private Double voucherAmount;
+    private Long voucherXiang2Kun;
+    private Long voucherDai2Kun;
+    private Long voucherKun2Ba;
+    private Long voucherBa2Zhang;
+    private Long voucherXiang2He;
+    private Long voucherHe2Mei;
     private Integer type;
     private String typeDesc;
     private String xiangCount;
@@ -160,6 +166,54 @@ public class StockPo implements Comparable<StockPo> {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    public Long getVoucherXiang2Kun() {
+        return voucherXiang2Kun;
+    }
+
+    public void setVoucherXiang2Kun(Long voucherXiang2Kun) {
+        this.voucherXiang2Kun = voucherXiang2Kun;
+    }
+
+    public Long getVoucherDai2Kun() {
+        return voucherDai2Kun;
+    }
+
+    public void setVoucherDai2Kun(Long voucherDai2Kun) {
+        this.voucherDai2Kun = voucherDai2Kun;
+    }
+
+    public Long getVoucherKun2Ba() {
+        return voucherKun2Ba;
+    }
+
+    public void setVoucherKun2Ba(Long voucherKun2Ba) {
+        this.voucherKun2Ba = voucherKun2Ba;
+    }
+
+    public Long getVoucherBa2Zhang() {
+        return voucherBa2Zhang;
+    }
+
+    public void setVoucherBa2Zhang(Long voucherBa2Zhang) {
+        this.voucherBa2Zhang = voucherBa2Zhang;
+    }
+
+    public Long getVoucherXiang2He() {
+        return voucherXiang2He;
+    }
+
+    public void setVoucherXiang2He(Long voucherXiang2He) {
+        this.voucherXiang2He = voucherXiang2He;
+    }
+
+    public Long getVoucherHe2Mei() {
+        return voucherHe2Mei;
+    }
+
+    public void setVoucherHe2Mei(Long voucherHe2Mei) {
+        this.voucherHe2Mei = voucherHe2Mei;
     }
 
     @Override
