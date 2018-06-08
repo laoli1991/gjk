@@ -161,10 +161,10 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
             }
         }).success(function (req) {
             if (req == 1) {
-                swal("绑定成功！", "", "success");
+                swal("增加成功！", "", "success");
             }
             else {
-                swal("绑定失败！", "", "warning");
+                swal("增加失败！", "", "warning");
             }
         })
 
