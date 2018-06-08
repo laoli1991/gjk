@@ -100,13 +100,13 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             curStock.baCount = undefined;
             curStock.heCount = undefined;
 
-            if(curStock.voucher.type == 1){//纸币
-                if(curStock.type.idx <= 1){//完整券 原封券
+            if (curStock.voucher.type == 1) {//纸币
+                if (curStock.type.idx <= 1) {//完整券 原封券
                     $scope.xiangShow = true;
                     $scope.kunShow = true;
                     $scope.baShow = true;
                 }
-                else{//残损卷
+                else {//残损卷
                     $scope.daiShow = true;
                     $scope.kunShow = true;
                     $scope.baShow = true;
@@ -123,16 +123,13 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     $scope.chgAmount = function (curStock) {
         console.log(curStock);
         curStock.allCount = Number(0);
-        if(curStock.voucher.type == 1){//纸币
+        if (curStock.voucher.type == 1) {//纸币
             //      5角/1角	    1箱/袋 = 25捆	1捆 = 10把	1把 = 100张
             //      其他	        1箱/袋 = 20捆	1捆 = 10把	1把 = 100张
             if (curStock.type.idx <= 1) {//完整券 原封券
-                if (curStock.voucher.amount == 0.5 || curStock.voucher.amount == 0.1) {
-                    curStock.allCount += Number(curStock.xiangCount) * 25 * 10 * 100;//箱->张
-                }
-                else {
-                    curStock.allCount += Number(curStock.xiangCount) * 20 * 10 * 100;//箱->张
-                }
+                curStock.allCount += Number(curStock.xiangCount) * curStock.voucher.xiang2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang;//箱->张
+            } else {
+                curStock.allCount += Number(curStock.xiangCount) * curStock.voucher.dai2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang;//箱->张
             }
             if (curStock.daiCount != undefined && curStock.daiCount != null) {
                 if (curStock.voucher.amount == 0.5 || curStock.voucher.amount == 0.1) {
@@ -182,7 +179,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
         }
     };
 
-    $scope.addStock = function (curStock , operation) {
+    $scope.addStock = function (curStock, operation) {
         console.log(curStock);
         if (curStock == undefined || curStock.type == undefined || curStock.voucher == undefined || curStock.amount == undefined || curStock.amount == 0) {
             swal({
@@ -196,29 +193,29 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             });
             return;
         }
-        if(curStock.voucher.type == 1){//纸币
-            if(curStock.kunCount == undefined){
+        if (curStock.voucher.type == 1) {//纸币
+            if (curStock.kunCount == undefined) {
                 curStock.kunCount = 0;
             }
-            if(curStock.baCount == undefined){
+            if (curStock.baCount == undefined) {
                 curStock.baCount = 0;
             }
-            if(curStock.type.idx <= 3){//完整卷
-                if(curStock.xiangCount == undefined){
+            if (curStock.type.idx <= 3) {//完整卷
+                if (curStock.xiangCount == undefined) {
                     curStock.xiangCount = 0;
                 }
             }
-            else{//残损卷
-                if(curStock.daiCount == undefined){
+            else {//残损卷
+                if (curStock.daiCount == undefined) {
                     curStock.daiCount = 0;
                 }
             }
         }
         else {//硬币
-            if(curStock.xiangCount == undefined){
+            if (curStock.xiangCount == undefined) {
                 curStock.xiangCount = 0;
             }
-            if(curStock.heCount == undefined){
+            if (curStock.heCount == undefined) {
                 curStock.heCount = 0;
             }
         }
@@ -226,7 +223,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             method: 'post',
             url: '../api/add-stock',
             data: {
-                "operation" : operation,
+                "operation": operation,
                 "allCount": curStock.allCount,
                 "amount": curStock.amount,
                 "baCount": curStock.baCount,
@@ -243,7 +240,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             }
         }).success(function (req) {
             console.log(req);
-            if(operation == 1){//入库
+            if (operation == 1) {//入库
                 $scope.stockList = req.stockPos;
                 swal({
                     title: "入库成功",
@@ -256,7 +253,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                 });
             }
             else {//出库
-                if(req.code == 2){
+                if (req.code == 2) {
                     swal({
                         title: "没有对应入库记录",
                         text: "出库失败",
@@ -267,7 +264,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                         closeOnConfirm: false
                     });
                 }
-                else if(req.code == 3){
+                else if (req.code == 3) {
                     swal({
                         title: "库存不足",
                         text: "出库失败",
@@ -278,7 +275,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                         closeOnConfirm: false
                     });
                 }
-                else if(req.code == 4){
+                else if (req.code == 4) {
                     swal({
                             title: "确定出库吗？",
                             text: " ",
@@ -290,10 +287,10 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                             closeOnConfirm: false
                         },
                         function () {
-                            $scope.addStock(curStock , 3);
+                            $scope.addStock(curStock, 3);
                         });
                 }
-                else if(req.code == 5){//出库成功
+                else if (req.code == 5) {//出库成功
                     $scope.stockList = req.stockPos;
                     swal({
                         title: "出库成功",
@@ -366,7 +363,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     };
 
     $scope.mustInt = function clearNoNum(obj, attr) {
-        if(obj[attr] != undefined){
+        if (obj[attr] != undefined) {
             obj[attr] = obj[attr].replace(/[^\d]/g, "");  //清除“数字”和“.”以外的字符
         }
     };

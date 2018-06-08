@@ -11,6 +11,13 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
         $scope.showBa2Zhang = false;
         $scope.showXiang2He = false;
         $scope.showHe2Mei = false;
+        $scope.xiang2Kun = undefined;
+        $scope.dai2Kun = undefined;
+        $scope.kun2Ba = undefined;
+        $scope.ba2Zhang = undefined;
+        $scope.xiang2He = undefined;
+        $scope.he2Mei = undefined;
+        $scope.voucherPo = undefined;
         if (k == 1) {
             $scope.getVoucherList();
             $scope.tab1 = true;

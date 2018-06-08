@@ -81,8 +81,27 @@ public class ApiController {
 
     @RequestMapping("/remove-voucher")
     @ResponseBody
-    public List<VoucherPo> removeVoucher(HttpServletRequest request, @RequestParam("uId") String uId) {
-        return appService.removeVoucherPo(request, uId);
+    public List<VoucherVo> removeVoucher(HttpServletRequest request, @RequestParam("uId") String uId) {
+        appService.removeVoucherPo(request, uId);
+        List<VoucherPo> voucherPoList = appService.getVoucherPos(request , null);
+        List<VoucherVo> voucherVoList = Lists.newArrayList();
+        for (VoucherPo po : voucherPoList) {
+            VoucherVo vo = new VoucherVo();
+            BeanUtils.copyProperties(po, vo);
+            String unitInfo = "";
+            if (po.getType() == 1) {
+                unitInfo = "1箱 = " + po.getXiang2Kun() + "捆";
+                unitInfo += "</br>1袋 = " + po.getDai2Kun() + "捆";
+                unitInfo += "</br>1捆 = " + po.getKun2Ba() + "把";
+                unitInfo += "</br>1把 = " + po.getBa2Zhang() + "张";
+            } else {
+                unitInfo += "1箱 = " + po.getXiang2He() + "盒";
+                unitInfo += "</br>1盒 = " + po.getHe2Mei() + "枚";
+            }
+            vo.setUnitInfo(unitInfo);
+            voucherVoList.add(vo);
+        }
+        return voucherVoList;
     }
 
     @RequestMapping("/add-stock")
