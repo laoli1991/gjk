@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigInteger;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -66,6 +67,7 @@ public class ApiController {
             vo.setUnitInfo(unitInfo);
             voucherVoList.add(vo);
         }
+        Collections.sort(voucherVoList);
         return voucherVoList;
     }
 
@@ -101,6 +103,7 @@ public class ApiController {
             vo.setUnitInfo(unitInfo);
             voucherVoList.add(vo);
         }
+        Collections.sort(voucherVoList);
         return voucherVoList;
     }
 

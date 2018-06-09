@@ -7,7 +7,7 @@ import com.google.common.collect.ComparisonChain;
  * @Date: 2018/5/6 19:03
  * @Description:
  */
-public class VoucherVo {
+public class VoucherVo implements Comparable<VoucherVo> {
     private String uId;
     private String desc;
     private String name;
@@ -136,5 +136,13 @@ public class VoucherVo {
 
     public void setUnitInfo(String unitInfo) {
         this.unitInfo = unitInfo;
+    }
+
+    @Override
+    public int compareTo(VoucherVo other) {
+        return ComparisonChain.start()
+                .compare(this.type, other.type)
+                .compare(other.amount, this.amount)
+                .result();
     }
 }

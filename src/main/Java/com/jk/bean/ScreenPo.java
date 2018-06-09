@@ -108,8 +108,8 @@ public class ScreenPo implements Comparable<ScreenPo> {
                     .result();
         }
         return ComparisonChain.start()
-                .compare(other.voucherAmount, this.voucherAmount)
                 .compare(this.voucherType, other.voucherType)
+                .compare(other.voucherAmount, this.voucherAmount)
                 .result();
     }
 

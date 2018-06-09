@@ -229,10 +229,11 @@ public class StockPo implements Comparable<StockPo> {
         return Objects.hashCode(stockUid);
     }
 
+    @Override
     public int compareTo(StockPo other) {
         return ComparisonChain.start()
+                .compare(this.voucherType, other.voucherType)
                 .compare(other.voucherAmount, this.voucherAmount)
-                .compare(this.type, other.type)
                 .result();
     }
 }
