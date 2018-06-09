@@ -159,9 +159,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
 
 
     $scope.preAddStock = function (opeStock, operation) {
-        curStock = JSON.parse(JSON.stringify(opeStock));
-        console.log(curStock);
-        if (curStock == undefined || curStock.type == undefined || curStock.voucher == undefined || curStock.amount == undefined || curStock.amount == 0) {
+        if (opeStock == undefined || opeStock.type == undefined || opeStock.voucher == undefined || opeStock.amount == undefined || opeStock.amount == 0) {
             swal({
                 title: "请填写完整信息",
                 text: "",
@@ -173,6 +171,8 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             });
             return;
         }
+        curStock = JSON.parse(JSON.stringify(opeStock));
+        console.log(curStock);
         info = "";
         info = info + "<font color='red'> 券别： " + curStock.voucher.name + " </font><br>";
         info = info + "<font color='red'> 类型： " + curStock.type.desc + " </font><br>";
@@ -224,8 +224,18 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             curStock.heCount = nowAllCount / (curStock.voucher.he2Mei);//枚->箱
             curStock.heCount = parseInt(curStock.heCount);
         }
+        opInfo = "";
+        if(operation == 0){
+            opInfo = "复核【入库-新增】"
+        }
+        else if(operation == 1){
+            opInfo = "复核【入库-覆盖】"
+        }
+        else if(operation == 2){
+            opInfo = "复核【出库】"
+        }
         swal({
-                title: '复核',
+                title: opInfo,
                 type: 'info',
                 text: info,
                 html: true,
