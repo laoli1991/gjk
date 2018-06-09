@@ -39,21 +39,20 @@ public class StockUtils {
             BigInteger daiCount = BigInteger.ZERO;
             BigInteger kunCount = BigInteger.ZERO;
             BigInteger baCount = BigInteger.ZERO;
-            if (old.getVoucherXiang2Kun() != null) {
+            if (old.getType() <= 1) {//完整券 原封券
+                old.setXiangCount(xiangCount.toString());
                 xiangCount = nowAllCount.divide(BigInteger.valueOf(old.getVoucherXiang2Kun() * old.getVoucherKun2Ba() * old.getVoucherBa2Zhang()));
                 nowAllCount = nowAllCount.mod(BigInteger.valueOf(old.getVoucherXiang2Kun() * old.getVoucherKun2Ba() * old.getVoucherBa2Zhang()));
-            } else if (old.getVoucherDai2Kun() != null) {
+                old.setXiangCount(xiangCount.toString());
+            } else {
+                old.setDaiCount(daiCount.toString());
                 daiCount = nowAllCount.divide(BigInteger.valueOf(old.getVoucherDai2Kun() * old.getVoucherKun2Ba() * old.getVoucherBa2Zhang()));
                 nowAllCount = nowAllCount.mod(BigInteger.valueOf(old.getVoucherDai2Kun() * old.getVoucherKun2Ba() * old.getVoucherBa2Zhang()));
+                old.setDaiCount(daiCount.toString());
             }
             kunCount = nowAllCount.divide(BigInteger.valueOf(old.getVoucherKun2Ba() * old.getVoucherBa2Zhang()));
             nowAllCount = nowAllCount.mod(BigInteger.valueOf(old.getVoucherKun2Ba() * old.getVoucherBa2Zhang()));
             baCount = nowAllCount.divide(BigInteger.valueOf(old.getVoucherBa2Zhang()));
-            if (old.getType() <= 1) {//完整券 原封券
-                old.setXiangCount(xiangCount.toString());
-            } else {
-                old.setDaiCount(daiCount.toString());
-            }
             old.setKunCount(kunCount.toString());
             old.setBaCount(baCount.toString());
         } else {//硬币
