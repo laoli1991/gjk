@@ -52,7 +52,7 @@
                             <th>类型</th>
                             <th>箱（袋）数</th>
                             <th>捆数</th>
-                            <th>把数</th>
+                            <!--<th>把数</th>-->
                             <th>盒数</th>
                             <th>金额(元)</th>
                             <th>录入时间</th>
@@ -64,7 +64,7 @@
                             <td align="center"> {{stock.typeDesc}}</td>
                             <td align="center"> {{stock.xiangCount||stock.daiCount}}</td>
                             <td align="center"> {{stock.kunCount}}</td>
-                            <td align="center"> {{stock.baCount}}</td>
+                            <!--<td align="center"> {{stock.baCount}}</td>-->
                             <td align="center"> {{stock.heCount}}</td>
                             <td align="center"> {{stock.amount}}</td>
                             <td align="center"> {{stock.createTime}}</td>
@@ -133,14 +133,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group" ng-show="baShow">
-                                        <label class="col-sm-2 control-label">把数</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" ng-model="enterStock.baCount"
-                                                   ng-keyup="mustInt(enterStock , 'baCount')"
-                                                   placeholder="" ng-change="chgAmount(enterStock)">
-                                        </div>
-                                    </div>
+                                    <!--<div class="form-group" ng-show="baShow">-->
+                                        <!--<label class="col-sm-2 control-label">把数</label>-->
+                                        <!--<div class="col-sm-8">-->
+                                            <!--<input type="text" class="form-control" ng-model="enterStock.baCount"-->
+                                                   <!--ng-keyup="mustInt(enterStock , 'baCount')"-->
+                                                   <!--placeholder="" ng-change="chgAmount(enterStock)">-->
+                                        <!--</div>-->
+                                    <!--</div>-->
 
                                     <div class="form-group" ng-show="heShow">
                                         <label class="col-sm-2 control-label">盒数</label>
@@ -234,14 +234,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group" ng-show="baShow">
-                                        <label class="col-sm-2 control-label">把数</label>
-                                        <div class="col-sm-8">
-                                            <input type="text" class="form-control" ng-model="outStock.baCount"
-                                                   ng-keyup="mustInt(outStock , 'baCount')"
-                                                   placeholder="" ng-change="chgAmount(outStock)">
-                                        </div>
-                                    </div>
+                                    <!--<div class="form-group" ng-show="baShow">-->
+                                        <!--<label class="col-sm-2 control-label">把数</label>-->
+                                        <!--<div class="col-sm-8">-->
+                                            <!--<input type="text" class="form-control" ng-model="outStock.baCount"-->
+                                                   <!--ng-keyup="mustInt(outStock , 'baCount')"-->
+                                                   <!--placeholder="" ng-change="chgAmount(outStock)">-->
+                                        <!--</div>-->
+                                    <!--</div>-->
 
                                     <div class="form-group" ng-show="heShow">
                                         <label class="col-sm-2 control-label">盒数</label>

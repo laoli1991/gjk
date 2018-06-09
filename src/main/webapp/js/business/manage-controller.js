@@ -192,7 +192,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             info = info + "<font color='red'> 捆数： " + curStock.kunCount + " </font><br>";
             curStock.baCount = nowAllCount / (curStock.voucher.ba2Zhang);//张->把
             curStock.baCount = parseInt(curStock.baCount);
-            info = info + "<font color='red'> 把数： " + curStock.baCount + " </font><br>";
+            // info = info + "<font color='red'> 把数： " + curStock.baCount + " </font><br>";
             info = info + "<font color='red'> 金额： " + curStock.amount + "  元</font><br>";
         }
         else if (curStock.voucher.type == 2) {
