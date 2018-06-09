@@ -77,11 +77,11 @@ app.controller("screenCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     $scope.getVoucherList();
 
     $scope.voucherTypes = [
-        {"desc": "完整卷（原封劵）", idx: 1, "typeDesc": "完整卷"},
-        {"desc": "完整卷（已清分）", idx: 2, "typeDesc": "完整卷"},
-        {"desc": "完整卷（未清分）", idx: 3, "typeDesc": "完整卷"},
-        {"desc": "残损卷（已复点）", idx: 4, "typeDesc": "残损卷"},
-        {"desc": "残损卷（未复点）", idx: 5, "typeDesc": "残损卷"}
+        {"desc": "完整券（原封劵）", idx: 1, "typeDesc": "完整券"},
+        {"desc": "完整券（已清分）", idx: 2, "typeDesc": "完整券"},
+        {"desc": "完整券（未清分）", idx: 3, "typeDesc": "完整券"},
+        {"desc": "残损券（已复点）", idx: 4, "typeDesc": "残损券"},
+        {"desc": "残损券（未复点）", idx: 5, "typeDesc": "残损券"}
     ];
 
     $scope.screnBand = function (band) {
@@ -99,7 +99,7 @@ app.controller("screenCtrl", ["$scope", "$http", "NgTableParams", "$q", function
         }
         if (band == null || band.voucher == null || band.voucher == undefined) {
             swal({
-                title: "请选择要绑定的卷别！",
+                title: "请选择要绑定的券别！",
                 text: "",
                 type: "warning",
                 showCancelButton: false,
@@ -111,7 +111,7 @@ app.controller("screenCtrl", ["$scope", "$http", "NgTableParams", "$q", function
         }
         if (band == null || band.type == null || band.type == undefined) {
             swal({
-                title: "请选择要绑定的卷别类型！",
+                title: "请选择要绑定的券别类型！",
                 text: "",
                 type: "warning",
                 showCancelButton: false,

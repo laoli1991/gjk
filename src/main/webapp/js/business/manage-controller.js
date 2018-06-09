@@ -106,7 +106,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                     $scope.kunShow = true;
                     $scope.baShow = true;
                 }
-                else {//残损卷
+                else {//残损券
                     $scope.daiShow = true;
                     $scope.kunShow = true;
                     $scope.baShow = true;
@@ -200,12 +200,12 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             if (curStock.baCount == undefined) {
                 curStock.baCount = 0;
             }
-            if (curStock.type.idx <= 3) {//完整卷
+            if (curStock.type.idx <= 3) {//完整券
                 if (curStock.xiangCount == undefined) {
                     curStock.xiangCount = 0;
                 }
             }
-            else {//残损卷
+            else {//残损券
                 if (curStock.daiCount == undefined) {
                     curStock.daiCount = 0;
                 }

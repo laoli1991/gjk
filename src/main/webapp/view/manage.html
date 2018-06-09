@@ -48,7 +48,7 @@
                     <table ng-table="totalTables" class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th>卷别</th>
+                            <th>券别</th>
                             <th>类型</th>
                             <th>箱（袋）数</th>
                             <th>捆数</th>
@@ -89,7 +89,7 @@
                                 <form class="form-horizontal">
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">卷别</label>
+                                        <label class="col-sm-2 control-label">券别</label>
                                         <div class="col-sm-8">
                                             <select class="form-control" ng-model="enterStock.voucher"
                                                     ng-options="row.name group by row.typeDesc for row in voucherLis"
@@ -187,7 +187,7 @@
                                 <form class="form-horizontal">
 
                                     <div class="form-group">
-                                        <label class="col-sm-2 control-label">卷别</label>
+                                        <label class="col-sm-2 control-label">券别</label>
                                         <div class="col-sm-8">
                                             <select class="form-control" ng-model="outStock.voucher"
                                                     ng-options="row.name group by row.typeDesc for row in voucherLis"

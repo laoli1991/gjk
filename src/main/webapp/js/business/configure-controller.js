@@ -94,7 +94,7 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
         console.info(voucherPo);
         if (voucherPo == null || voucherPo == undefined || voucherPo.voucherName == undefined) {
             swal({
-                title: "卷别不能为空",
+                title: "券别不能为空",
                 text: "",
                 type: "warning",
                 showCancelButton: false,
@@ -180,7 +180,7 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
     $scope.removeVoucher = function (voucher) {
         swal({
                 title: "确定删除吗？",
-                text: "你将无法恢复该卷别！",
+                text: "你将无法恢复该券别！",
                 type: "warning",
                 cancelButtonText: '取消',
                 showCancelButton: true,
@@ -194,7 +194,7 @@ app.controller("configureCtrl", ["$scope", "$http", "NgTableParams", "$q", funct
                     .success(function (data) {
                         $scope.voucherList = data;
                         deferred.resolve(data);
-                        swal("删除！", "卷别【" + voucher.name + "】已经被删除", "success");
+                        swal("删除！", "券别【" + voucher.name + "】已经被删除", "success");
                     })
                     .error(function (data) {
                         deferred.reject(data);
