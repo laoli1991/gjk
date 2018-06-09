@@ -177,12 +177,12 @@ public class AppService {
                         num = new BigDecimal(stockPo.getKunCount());
                         find = true;
                     }
-                    if (StringUtils.isNotBlank(stockPo.getBaCount())) {
-                        num = num.add(new BigDecimal(stockPo.getBaCount()).divide(new BigDecimal(10), 1, BigDecimal.ROUND_HALF_UP));
-                        find = true;
-                    }
+//                    if (StringUtils.isNotBlank(stockPo.getBaCount())) {
+//                        num = num.add(new BigDecimal(stockPo.getBaCount()).divide(new BigDecimal(10), 1, BigDecimal.ROUND_HALF_UP));
+//                        find = true;
+//                    }
                     if (find) {
-                        msgDto.setKey2(num.setScale(1, BigDecimal.ROUND_HALF_UP).toString());
+                        msgDto.setKey2(num.setScale(0, BigDecimal.ROUND_HALF_UP).toString());
                     } else {
                         msgDto.setKey2("0");
                     }
