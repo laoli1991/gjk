@@ -158,7 +158,8 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     };
 
 
-    $scope.preAddStock = function (curStock, operation) {
+    $scope.preAddStock = function (opeStock, operation) {
+        curStock = JSON.parse(JSON.stringify(opeStock));
         console.log(curStock);
         if (curStock == undefined || curStock.type == undefined || curStock.voucher == undefined || curStock.amount == undefined || curStock.amount == 0) {
             swal({
@@ -173,38 +174,55 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             return;
         }
         info = "";
+        info = info + "<font color='red'> 券别： " + curStock.voucher.name + " </font><br>";
+        info = info + "<font color='red'> 类型： " + curStock.type.desc + " </font><br>";
         if (curStock.voucher.type == 1) {//纸币
             nowAllCount = curStock.allCount;
             if (curStock.type.idx <= 1) {//完整券 原封券
+                if (curStock.xiangCount == null || curStock.xiangCount == undefined || curStock.xiangCount.length == 0) {
+                    curStock.xiangCount = 0;
+                }
+                info = info + "<font color='red'> 箱数： " + curStock.xiangCount + " </font><br>";
                 curStock.xiangCount = nowAllCount / (curStock.voucher.xiang2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang);//张->箱
                 curStock.xiangCount = parseInt(curStock.xiangCount);
                 nowAllCount = nowAllCount % (curStock.voucher.xiang2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang);
-                info = "<font color='red'> 箱数： " + curStock.xiangCount + " </font><br>";
             } else {
+                if (curStock.daiCount == null || curStock.daiCount == undefined || curStock.daiCount.length == 0) {
+                    curStock.daiCount = 0;
+                }
+                info = info + "<font color='red'> 袋数： " + curStock.daiCount + " </font><br>";
                 curStock.daiCount = nowAllCount / (curStock.voucher.dai2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang);//张->袋
                 curStock.daiCount = parseInt(curStock.daiCount);
                 nowAllCount = nowAllCount % (curStock.voucher.dai2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang);
-                info = "<font color='red'> 袋数： " + curStock.daiCount + " </font><br>";
             }
+            if (curStock.kunCount == null || curStock.kunCount == undefined || curStock.kunCount.length == 0) {
+                curStock.kunCount = 0;
+            }
+            info = info + "<font color='red'> 捆数： " + curStock.kunCount + " </font><br>";
+            // info = info + "<font color='red'> 把数： " + curStock.baCount + " </font><br>";
+            info = info + "<font color='red'> 金额： " + curStock.amount + "  元</font><br>";
             curStock.kunCount = nowAllCount / (curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang);//张->捆
             nowAllCount = nowAllCount % (curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang);
             curStock.kunCount = parseInt(curStock.kunCount);
-            info = info + "<font color='red'> 捆数： " + curStock.kunCount + " </font><br>";
             curStock.baCount = nowAllCount / (curStock.voucher.ba2Zhang);//张->把
             curStock.baCount = parseInt(curStock.baCount);
-            // info = info + "<font color='red'> 把数： " + curStock.baCount + " </font><br>";
-            info = info + "<font color='red'> 金额： " + curStock.amount + "  元</font><br>";
         }
         else if (curStock.voucher.type == 2) {
+            if (curStock.xiangCount == null || curStock.xiangCount == undefined || curStock.xiangCount.length == 0) {
+                curStock.xiangCount = 0;
+            }
+            if (curStock.heCount == null || curStock.heCount == undefined || curStock.heCount.length == 0) {
+                curStock.heCount = 0;
+            }
+            info = "<font color='red'> 箱数： " + curStock.xiangCount + " </font><br>";
+            info = info + "<font color='red'> 盒数： " + curStock.heCount + " </font><br>";
+            info = info + "<font color='red'> 金额： " + curStock.amount + "  元</font><br>";
             nowAllCount = curStock.allCount;
             curStock.xiangCount = nowAllCount / (curStock.voucher.xiang2He * curStock.voucher.he2Mei);//枚->箱
             curStock.xiangCount = parseInt(curStock.xiangCount);
-            info = "<font color='red'> 箱数： " + curStock.xiangCount + " </font><br>";
             nowAllCount = nowAllCount % (curStock.voucher.xiang2He * curStock.voucher.he2Mei);
             curStock.heCount = nowAllCount / (curStock.voucher.he2Mei);//枚->箱
             curStock.heCount = parseInt(curStock.heCount);
-            info = info + "<font color='red'> 盒数： " + curStock.heCount + " </font><br>";
-            info = info + "<font color='red'> 金额： " + curStock.amount + "  元</font><br>";
         }
         swal({
                 title: '复核',
