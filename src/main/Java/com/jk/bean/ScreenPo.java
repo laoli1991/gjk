@@ -96,20 +96,8 @@ public class ScreenPo implements Comparable<ScreenPo> {
     }
 
     public int compareTo(ScreenPo other) {
-        if (this.voucherType == null && other.getVoucherAmount() != null) {
-            return 1;
-        }
-        if (this.voucherType != null && other.getVoucherAmount() == null) {
-            return -1;
-        }
-        if(this.voucherType == null && other.voucherType == null){
-            return  ComparisonChain.start()
-                    .compare(this.macAddress, other.macAddress)
-                    .result();
-        }
-        return ComparisonChain.start()
-                .compare(this.voucherType, other.voucherType)
-                .compare(other.voucherAmount, this.voucherAmount)
+        return  ComparisonChain.start()
+                .compare(this.macAddress, other.macAddress)
                 .result();
     }
 
