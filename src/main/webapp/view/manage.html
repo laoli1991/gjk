@@ -8,6 +8,7 @@
                     <li class="active"><a href="" data-toggle="tab" ng-click="tabShow(1)">库存(查询|删除|提交)</a></li>
                     <li><a href="" data-toggle="tab" ng-click="tabShow(2)">入库</a></li>
                     <li><a href="" data-toggle="tab" ng-click="tabShow(3)">出库</a></li>
+                    <li><a href="" data-toggle="tab" ng-click="tabShow(4)">更正</a></li>
                 </ul>
             </div>
         </div>
@@ -134,12 +135,12 @@
                                     </div>
 
                                     <!--<div class="form-group" ng-show="baShow">-->
-                                        <!--<label class="col-sm-2 control-label">把数</label>-->
-                                        <!--<div class="col-sm-8">-->
-                                            <!--<input type="text" class="form-control" ng-model="enterStock.baCount"-->
-                                                   <!--ng-keyup="mustInt(enterStock , 'baCount')"-->
-                                                   <!--placeholder="" ng-change="chgAmount(enterStock)">-->
-                                        <!--</div>-->
+                                    <!--<label class="col-sm-2 control-label">把数</label>-->
+                                    <!--<div class="col-sm-8">-->
+                                    <!--<input type="text" class="form-control" ng-model="enterStock.baCount"-->
+                                    <!--ng-keyup="mustInt(enterStock , 'baCount')"-->
+                                    <!--placeholder="" ng-change="chgAmount(enterStock)">-->
+                                    <!--</div>-->
                                     <!--</div>-->
 
                                     <div class="form-group" ng-show="heShow">
@@ -162,12 +163,9 @@
 
                                     <div class="form-group" style="margin-bottom:0">
                                         <div class="text-center">
-                                            <button class="btn btn-primary btn-lg" ng-click="preAddStock(enterStock , 1)">
-                                                覆盖
-                                            </button>
-                                            &nbsp;&nbsp;
-                                            <button class="btn btn-primary btn-lg" ng-click="preAddStock(enterStock , 0)">
-                                                新增
+                                            <button class="btn btn-primary btn-lg"
+                                                    ng-click="preAddStock(enterStock , 0)">
+                                                入库
                                             </button>
                                         </div>
                                     </div>
@@ -236,12 +234,12 @@
                                     </div>
 
                                     <!--<div class="form-group" ng-show="baShow">-->
-                                        <!--<label class="col-sm-2 control-label">把数</label>-->
-                                        <!--<div class="col-sm-8">-->
-                                            <!--<input type="text" class="form-control" ng-model="outStock.baCount"-->
-                                                   <!--ng-keyup="mustInt(outStock , 'baCount')"-->
-                                                   <!--placeholder="" ng-change="chgAmount(outStock)">-->
-                                        <!--</div>-->
+                                    <!--<label class="col-sm-2 control-label">把数</label>-->
+                                    <!--<div class="col-sm-8">-->
+                                    <!--<input type="text" class="form-control" ng-model="outStock.baCount"-->
+                                    <!--ng-keyup="mustInt(outStock , 'baCount')"-->
+                                    <!--placeholder="" ng-change="chgAmount(outStock)">-->
+                                    <!--</div>-->
                                     <!--</div>-->
 
                                     <div class="form-group" ng-show="heShow">
@@ -266,6 +264,104 @@
                                         <div class="text-center">
                                             <button class="btn btn-primary btn-lg" ng-click="preAddStock(outStock , 2)">
                                                 出库
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-pane fade in active" id="tab4" style="margin-top:20px" ng-show="tab4">
+            <div class="panel panel-default">
+                <div class="row cm-fix-height">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading"></div>
+                            <div class="panel-body">
+                                <form class="form-horizontal">
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">券别</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" ng-model="enterStock.voucher"
+                                                    ng-options="row.name group by row.typeDesc for row in voucherLis"
+                                                    ng-change="chgCurStock(enterStock)"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">类型</label>
+                                        <div class="col-sm-8">
+                                            <select class="form-control" ng-model="enterStock.type"
+                                                    ng-options="row.desc group by row.typeDesc for row in voucherTypes"
+                                                    ng-change="chgCurStock(enterStock)"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-show="xiangShow">
+                                        <label class="col-sm-2 control-label">箱数</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="enterStock.xiangCount"
+                                                   ng-keyup="mustInt(enterStock , 'xiangCount')"
+                                                   placeholder="" ng-change="chgAmount(enterStock)">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-show="daiShow">
+                                        <label class="col-sm-2 control-label">袋数</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="enterStock.daiCount"
+                                                   ng-keyup="mustInt(enterStock , 'daiCount')"
+                                                   placeholder="" ng-change="chgAmount(enterStock)">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" ng-show="kunShow">
+                                        <label class="col-sm-2 control-label">捆数</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="enterStock.kunCount"
+                                                   ng-keyup="mustInt(enterStock , 'kunCount')"
+                                                   placeholder="" ng-change="chgAmount(enterStock)">
+                                        </div>
+                                    </div>
+
+                                    <!--<div class="form-group" ng-show="baShow">-->
+                                    <!--<label class="col-sm-2 control-label">把数</label>-->
+                                    <!--<div class="col-sm-8">-->
+                                    <!--<input type="text" class="form-control" ng-model="enterStock.baCount"-->
+                                    <!--ng-keyup="mustInt(enterStock , 'baCount')"-->
+                                    <!--placeholder="" ng-change="chgAmount(enterStock)">-->
+                                    <!--</div>-->
+                                    <!--</div>-->
+
+                                    <div class="form-group" ng-show="heShow">
+                                        <label class="col-sm-2 control-label">盒数</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="enterStock.heCount"
+                                                   ng-keyup="mustInt(enterStock , 'heCount')"
+                                                   placeholder="" ng-change="chgAmount(enterStock)">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label">金额(元)</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" class="form-control" ng-model="enterStock.amount"
+                                                   disabled="disabled"
+                                                   placeholder="">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group" style="margin-bottom:0">
+                                        <div class="text-center">
+                                            <button class="btn btn-primary btn-lg"
+                                                    ng-click="preAddStock(enterStock , 1)">
+                                                更正
                                             </button>
                                         </div>
                                     </div>

@@ -5,18 +5,21 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     $scope.tab1 = true;
     $scope.tab2 = false;
     $scope.tab3 = false;
+    $scope.tab4 = false;
 
     $scope.tabShow = function (k) {
         if (k == 1) {
             $scope.tab1 = true;
             $scope.tab2 = false;
             $scope.tab3 = false;
+            $scope.tab4 = false;
             $scope.getstockList();
         }
         else if (k == 2) {
             $scope.tab1 = false;
             $scope.tab2 = true;
             $scope.tab3 = false;
+            $scope.tab4 = false;
             $scope.enterStock = undefined;
             $scope.outStock = undefined;
             $scope.xiangShow = false;
@@ -29,6 +32,20 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             $scope.tab1 = false;
             $scope.tab2 = false;
             $scope.tab3 = true;
+            $scope.tab4 = false;
+            $scope.enterStock = undefined;
+            $scope.outStock = undefined;
+            $scope.xiangShow = false;
+            $scope.daiShow = false;
+            $scope.kunShow = false;
+            $scope.baShow = false;
+            $scope.heShow = false;
+        }
+        else if (k == 4) {
+            $scope.tab1 = false;
+            $scope.tab2 = false;
+            $scope.tab3 = false;
+            $scope.tab4 = true;
             $scope.enterStock = undefined;
             $scope.outStock = undefined;
             $scope.xiangShow = false;
