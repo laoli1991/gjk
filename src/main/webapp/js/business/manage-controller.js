@@ -214,7 +214,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             if (curStock.heCount == null || curStock.heCount == undefined || curStock.heCount.length == 0) {
                 curStock.heCount = 0;
             }
-            info = "<font color='red'> 箱数： " + curStock.xiangCount + " </font><br>";
+            info = info +  "<font color='red'> 箱数： " + curStock.xiangCount + " </font><br>";
             info = info + "<font color='red'> 盒数： " + curStock.heCount + " </font><br>";
             info = info + "<font color='red'> 金额： " + curStock.amount + "  元</font><br>";
             nowAllCount = curStock.allCount;
