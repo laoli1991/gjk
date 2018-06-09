@@ -369,20 +369,21 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                     return;
                 }
                 else if (req.code == 4) {
-                    swal({
-                            title: "确定出库吗？",
-                            text: " ",
-                            type: "warning",
-                            cancelButtonText: '取消',
-                            showCancelButton: true,
-                            confirmButtonColor: "#DD6B55",
-                            confirmButtonText: "确定",
-                            closeOnConfirm: false
-                        },
-                        function () {
-                            $scope.addStock(curStock, 3);
-                        });
-                    return;
+                    // swal({
+                    //         title: "确定出库吗？",
+                    //         text: " ",
+                    //         type: "warning",
+                    //         cancelButtonText: '取消',
+                    //         showCancelButton: true,
+                    //         confirmButtonColor: "#DD6B55",
+                    //         confirmButtonText: "确定",
+                    //         closeOnConfirm: false
+                    //     },
+                    //     function () {
+                    //         $scope.addStock(curStock, 3);
+                    //     });
+                    // return;
+                    $scope.addStock(curStock, 3);
                 }
                 else if (req.code == 5) {//出库成功
                     $scope.stockList = req.stockPos;
