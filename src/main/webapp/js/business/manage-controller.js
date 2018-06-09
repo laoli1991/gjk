@@ -243,10 +243,10 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
         }
         opInfo = "";
         if(operation == 0){
-            opInfo = "复核【入库-新增】"
+            opInfo = "复核【入库】"
         }
         else if(operation == 1){
-            opInfo = "复核【入库-覆盖】"
+            opInfo = "复核【更正】"
         }
         else if(operation == 2){
             opInfo = "复核【出库】"
@@ -337,7 +337,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             if (req.code == 1 && operation == 0) {//入库
                 $scope.stockList = req.stockPos;
                 swal({
-                    title: "入库【新增】成功",
+                    title: "入库成功",
                     text: "",
                     type: "success",
                     showCancelButton: false,
@@ -350,7 +350,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             if (req.code == 1 && operation == 1) {//入库
                 $scope.stockList = req.stockPos;
                 swal({
-                    title: "入库【覆盖】成功",
+                    title: "更正成功",
                     text: "",
                     type: "success",
                     showCancelButton: false,
