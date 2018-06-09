@@ -122,64 +122,43 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
 
     $scope.chgAmount = function (curStock) {
         console.log(curStock);
+        if (curStock == null || curStock == undefined || curStock.voucher == null || curStock.voucher == undefined) {
+            return;
+        }
         curStock.allCount = Number(0);
         if (curStock.voucher.type == 1) {//纸币
-            //      5角/1角	    1箱/袋 = 25捆	1捆 = 10把	1把 = 100张
-            //      其他	        1箱/袋 = 20捆	1捆 = 10把	1把 = 100张
             if (curStock.type.idx <= 1) {//完整券 原封券
-                curStock.allCount += Number(curStock.xiangCount) * curStock.voucher.xiang2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang;//箱->张
+                if (curStock.xiangCount != null && curStock.xiangCount != undefined && curStock.xiangCount.length != 0) {
+                    curStock.allCount += Number(curStock.xiangCount) * curStock.voucher.xiang2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang;//箱->张
+                }
             } else {
-                curStock.allCount += Number(curStock.xiangCount) * curStock.voucher.dai2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang;//箱->张
-            }
-            if (curStock.daiCount != undefined && curStock.daiCount != null) {
-                if (curStock.voucher.amount == 0.5 || curStock.voucher.amount == 0.1) {
-                    curStock.allCount += Number(curStock.daiCount) * 25 * 10 * 100;//袋->张
-                }
-                else {
-                    curStock.allCount += Number(curStock.daiCount) * 20 * 10 * 100;//袋->张
+                if (curStock.daiCount != null && curStock.daiCount != undefined && curStock.daiCount.length != 0) {
+                    curStock.allCount += Number(curStock.daiCount) * curStock.voucher.dai2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang;//袋->张
                 }
             }
-            if (curStock.kunCount != undefined && curStock.kunCount != null) {//捆->张
-                curStock.allCount += Number(curStock.kunCount) * 10 * 100;
+            if (curStock.kunCount != null && curStock.kunCount != undefined && curStock.kunCount.length != 0) {
+                curStock.allCount += Number(curStock.kunCount) * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang;//捆->张
             }
-            if (curStock.baCount != undefined && curStock.baCount != null) {//把->张
-                curStock.allCount += Number(curStock.baCount) * 100;
+            if (curStock.baCount != null && curStock.baCount != undefined && curStock.baCount.length != 0) {
+                curStock.allCount += Number(curStock.baCount) * curStock.voucher.ba2Zhang;//把->张
             }
-
             curStock.amount = Number(0);
-            if (curStock.voucher != undefined && curStock.voucher != null) {
-                curStock.amount += Number(curStock.voucher.amount) * curStock.allCount;
-            }
+            curStock.amount += Number(curStock.voucher.amount) * curStock.allCount;
         }
-        else {//硬币
-            //	    1元	1箱 = 10盒	1盒 = 400枚
-            //      5角	1箱 = 10盒	1盒 = 400枚
-            //      1角	1箱 = 10盒	1盒 = 500枚
-            if (curStock.xiangCount != undefined && curStock.xiangCount != null) {
-                if (curStock.voucher.amount == 0.1) {
-                    curStock.allCount += Number(curStock.xiangCount) * 10 * 500;//箱->枚
-                }
-                else {
-                    curStock.allCount += Number(curStock.xiangCount) * 10 * 400;//箱->枚
-                }
+        else if (curStock.voucher.type == 2) {
+            if (curStock.xiangCount != null && curStock.xiangCount != undefined && curStock.xiangCount.length != 0) {
+                curStock.allCount += Number(curStock.xiangCount) * curStock.voucher.xiang2He * curStock.voucher.he2Mei;//箱->枚
             }
-            if (curStock.heCount != undefined && curStock.heCount != null) {
-                if (curStock.voucher.amount == 0.1) {
-                    curStock.allCount += Number(curStock.heCount) * 500;//盒->枚
-                }
-                else {
-                    curStock.allCount += Number(curStock.heCount) * 400;//盒->枚
-                }
+            if (curStock.heCount != null && curStock.heCount != undefined && curStock.heCount.length != 0) {
+                curStock.allCount += Number(curStock.heCount) * curStock.voucher.he2Mei;//箱->枚
             }
-
             curStock.amount = Number(0);
-            if (curStock.voucher != undefined && curStock.voucher != null) {
-                curStock.amount += Number(curStock.voucher.amount) * curStock.allCount;
-            }
+            curStock.amount += Number(curStock.voucher.amount) * curStock.allCount;
         }
     };
 
-    $scope.addStock = function (curStock, operation) {
+
+    $scope.preAddStock = function (curStock, operation) {
         console.log(curStock);
         if (curStock == undefined || curStock.type == undefined || curStock.voucher == undefined || curStock.amount == undefined || curStock.amount == 0) {
             swal({
@@ -193,6 +172,70 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             });
             return;
         }
+        info = "";
+        if (curStock.voucher.type == 1) {//纸币
+            nowAllCount = curStock.allCount;
+            if (curStock.type.idx <= 1) {//完整券 原封券
+                curStock.xiangCount = nowAllCount / (curStock.voucher.xiang2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang);//张->箱
+                curStock.xiangCount = parseInt(curStock.xiangCount);
+                nowAllCount = nowAllCount % (curStock.voucher.xiang2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang);
+                info = "<font color='red'> 箱数： " + curStock.xiangCount + " </font><br>";
+            } else {
+                curStock.daiCount = nowAllCount / (curStock.voucher.dai2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang);//张->袋
+                curStock.daiCount = parseInt(curStock.daiCount);
+                nowAllCount = nowAllCount % (curStock.voucher.dai2Kun * curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang);
+                info = "<font color='red'> 袋数： " + curStock.daiCount + " </font><br>";
+            }
+            curStock.kunCount = nowAllCount / (curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang);//张->捆
+            nowAllCount = nowAllCount % (curStock.voucher.kun2Ba * curStock.voucher.ba2Zhang);
+            curStock.kunCount = parseInt(curStock.kunCount);
+            info = info + "<font color='red'> 捆数： " + curStock.kunCount + " </font><br>";
+            curStock.baCount = nowAllCount / (curStock.voucher.ba2Zhang);//张->把
+            curStock.baCount = parseInt(curStock.baCount);
+            info = info + "<font color='red'> 把数： " + curStock.baCount + " </font><br>";
+            info = info + "<font color='red'> 金额： " + curStock.amount + "  元</font><br>";
+        }
+        else if (curStock.voucher.type == 2) {
+            nowAllCount = curStock.allCount;
+            curStock.xiangCount = nowAllCount / (curStock.voucher.xiang2He * curStock.voucher.he2Mei);//枚->箱
+            curStock.xiangCount = parseInt(curStock.xiangCount);
+            info = "<font color='red'> 箱数： " + curStock.xiangCount + " </font><br>";
+            nowAllCount = nowAllCount % (curStock.voucher.xiang2He * curStock.voucher.he2Mei);
+            curStock.heCount = nowAllCount / (curStock.voucher.he2Mei);//枚->箱
+            curStock.heCount = parseInt(curStock.heCount);
+            info = info + "<font color='red'> 盒数： " + curStock.heCount + " </font><br>";
+            info = info + "<font color='red'> 金额： " + curStock.amount + "  元</font><br>";
+        }
+        swal({
+                title: '复核',
+                type: 'info',
+                text: info,
+                html: true,
+                cancelButtonText: '取消',
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "确定",
+                closeOnConfirm: false
+            },
+            function () {
+                $scope.addStock(curStock, operation);
+            });
+    };
+
+    $scope.addStock = function (curStock, operation) {
+        console.log(curStock);
+        if (curStock == undefined || curStock.type == undefined || curStock.voucher == undefined || curStock.amount == undefined || curStock.amount == 0) {
+            swal({
+                title: "请填写完整信息",
+                text: "",
+                type: "warning",
+                showCancelButton: false,
+                confirmButtonColor: "#DD6B55",
+                confirmButtonText: "关闭",
+                closeOnConfirm: true
+            });
+            return;
+        }
         if (curStock.voucher.type == 1) {//纸币
             if (curStock.kunCount == undefined) {
                 curStock.kunCount = 0;
@@ -200,7 +243,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
             if (curStock.baCount == undefined) {
                 curStock.baCount = 0;
             }
-            if (curStock.type.idx <= 3) {//完整券
+            if (curStock.type.idx <= 1) {//完整券
                 if (curStock.xiangCount == undefined) {
                     curStock.xiangCount = 0;
                 }
@@ -236,14 +279,20 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                 "voucherType": curStock.voucher.type,
                 "type": curStock.type.idx,
                 "typeDesc": curStock.type.desc,
-                "voucherAmount": curStock.voucher.amount
+                "voucherAmount": curStock.voucher.amount,
+                "voucherXiang2Kun": curStock.voucher.xiang2Kun,
+                "voucherDai2Kun": curStock.voucher.dai2Kun,
+                "voucherKun2Ba": curStock.voucher.kun2Ba,
+                "voucherBa2Zhang": curStock.voucher.ba2Zhang,
+                "voucherXiang2He": curStock.voucher.xiang2He,
+                "voucherHe2Mei": curStock.voucher.he2Mei
             }
         }).success(function (req) {
             console.log(req);
-            if (operation == 1) {//入库
+            if (req.code == 1 && operation == 0) {//入库
                 $scope.stockList = req.stockPos;
                 swal({
-                    title: "入库成功",
+                    title: "入库【新增】成功",
                     text: "",
                     type: "success",
                     showCancelButton: false,
@@ -251,6 +300,20 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                     confirmButtonText: "关闭",
                     closeOnConfirm: false
                 });
+                return;
+            }
+            if (req.code == 1 && operation == 1) {//入库
+                $scope.stockList = req.stockPos;
+                swal({
+                    title: "入库【覆盖】成功",
+                    text: "",
+                    type: "success",
+                    showCancelButton: false,
+                    confirmButtonColor: "#3498db",
+                    confirmButtonText: "关闭",
+                    closeOnConfirm: false
+                });
+                return;
             }
             else {//出库
                 if (req.code == 2) {
@@ -263,6 +326,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                         confirmButtonText: "关闭",
                         closeOnConfirm: false
                     });
+                    return;
                 }
                 else if (req.code == 3) {
                     swal({
@@ -274,6 +338,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                         confirmButtonText: "关闭",
                         closeOnConfirm: false
                     });
+                    return;
                 }
                 else if (req.code == 4) {
                     swal({
@@ -289,6 +354,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                         function () {
                             $scope.addStock(curStock, 3);
                         });
+                    return;
                 }
                 else if (req.code == 5) {//出库成功
                     $scope.stockList = req.stockPos;
@@ -301,6 +367,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                         confirmButtonText: "关闭",
                         closeOnConfirm: false
                     });
+                    return;
                 }
             }
 

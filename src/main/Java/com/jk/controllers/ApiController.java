@@ -83,7 +83,7 @@ public class ApiController {
     @ResponseBody
     public List<VoucherVo> removeVoucher(HttpServletRequest request, @RequestParam("uId") String uId) {
         appService.removeVoucherPo(request, uId);
-        List<VoucherPo> voucherPoList = appService.getVoucherPos(request , null);
+        List<VoucherPo> voucherPoList = appService.getVoucherPos(request, null);
         List<VoucherVo> voucherVoList = Lists.newArrayList();
         for (VoucherPo po : voucherPoList) {
             VoucherVo vo = new VoucherVo();
@@ -114,8 +114,12 @@ public class ApiController {
             StockResponse stockResponse = new StockResponse();
             stockResponse.setCode(OperateResponseEnums.RUKU_SUCCESS.getCode()); //入库成功
             StockPo oldStockPo = appService.getStockPoByStock(request, stockPo);
-            StockPo curStockPo = StockUtils.addStockPo(oldStockPo, stockPo);
-            stockResponse.setStockPos(appService.addStockPo(request, curStockPo));
+            if (oldStockPo == null) {
+                stockResponse.setStockPos(appService.addStockPo(request, stockPo));
+            } else {
+                StockPo curStockPo = StockUtils.addStockPo(oldStockPo, stockPo);
+                stockResponse.setStockPos(appService.addStockPo(request, curStockPo));
+            }
             appService.sendMsg(request, "");
             return stockResponse;
         }
