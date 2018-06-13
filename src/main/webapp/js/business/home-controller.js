@@ -2,8 +2,8 @@ angular.module('home.controller', ['ngRoute', 'manage.controller', "configure.co
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider
             .when('/', {
-                template: '/view/manage.html',
-                controller: 'manageCtrl'
+                // template: '/view/manage.html',
+                // controller: 'manageCtrl'
             })
             .when('/manage', {
                 templateUrl: '/view/manage.html',
@@ -17,5 +17,5 @@ angular.module('home.controller', ['ngRoute', 'manage.controller', "configure.co
                 templateUrl: '/view/screen.html',
                 controller: 'screenCtrl'
             })
-            .otherwise({redirectTo: '/'});
+            .otherwise({redirectTo: '/manage'});
     }]);
