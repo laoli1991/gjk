@@ -260,7 +260,7 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                 showCancelButton: true,
                 confirmButtonColor: "#DD6B55",
                 confirmButtonText: "确定",
-                closeOnConfirm: false
+                closeOnConfirm: true
             },
             function () {
                 $scope.addStock(curStock, operation);
