@@ -263,7 +263,8 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                 closeOnConfirm: false
             },
             function () {
-                swal.close();
+                $('.sweet-alert').remove();
+                $('.sweet-overlay').remove();
                 $scope.addStock(curStock, operation);
             });
     };
