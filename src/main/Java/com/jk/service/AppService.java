@@ -159,8 +159,8 @@ public class AppService {
                 String amount = stockPo.getAmount();
                 if (StringUtils.isNotBlank(amount)) {
                     BigDecimal num = new BigDecimal(amount);
-                    num = num.divide(new BigDecimal(10000), 3, BigDecimal.ROUND_HALF_UP);
-                    msgDto.setAmount("合计： " + num.setScale(3, BigDecimal.ROUND_HALF_UP).toString() + "万元");
+                    num = num.divide(new BigDecimal(1000), 2, BigDecimal.ROUND_HALF_UP);
+                    msgDto.setAmount("合计： " + num.setScale(2, BigDecimal.ROUND_HALF_UP).toString() + "千元");
                 }
                 if (StringUtils.isNotBlank(stockPo.getXiangCount())) {
                     msgDto.setKey1(stockPo.getXiangCount());
