@@ -26,17 +26,15 @@
                     <div class="form-group">
                         <div class="col-sm-8">
                             <div class="form-group">
-                                <label class="col-sm-3 control-label">附加展示信息</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control" ng-model="commonInfo"
-                                           placeholder="">
-                                </div>
+                                <label class="col-sm-12 control-label">总金额:{{allSum}}千元</label><br>
+                                <label class="col-sm-12 control-label">完整劵:{{wzSum}}千元</label><br>
+                                <label class="col-sm-12 control-label">残损劵:{{cqSum}}千元</label>
                             </div>
                         </div>
                         <div class="col-sm-4">
                             <div class="form-group" style="margin-bottom:0">
                                 <div class="text-center">
-                                    <button class="btn btn-primary btn-lg" ng-click="sendMsg(commonInfo)">
+                                    <button class="btn btn-primary btn-lg" ng-click="sendMsg()">
                                         全部提交
                                     </button>
                                 </div>

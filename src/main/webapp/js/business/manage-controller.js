@@ -60,7 +60,10 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
         var deferred = $q.defer();
         $http.get("../api/stock-list")
             .success(function (data) {
-                $scope.stockList = data;
+                $scope.stockList = data.stockPos;
+                $scope.allSum = data.allSum;
+                $scope.wzSum = data.wzSum;
+                $scope.cqSum = data.cqSum;
                 deferred.resolve(data);
             })
             .error(function (data) {
@@ -439,7 +442,10 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
                 var deferred = $q.defer();
                 $http.get("../api/remove-stock?stockUid=" + stockUid)
                     .success(function (data) {
-                        $scope.stockList = data;
+                        $scope.stockList = data.stockPos;
+                        $scope.allSum = data.allSum;
+                        $scope.wzSum = data.wzSum;
+                        $scope.cqSum = data.cqSum;
                         deferred.resolve(data);
                         swal("删除！", "该记录已经被删除", "success");
                     })
@@ -451,13 +457,9 @@ app.controller("manageCtrl", ["$scope", "$http", "NgTableParams", "$q", function
     };
 
 
-    $scope.sendMsg = function (commonInfo) {
-        console.log(commonInfo);
-        if (commonInfo == null || commonInfo == undefined) {
-            commonInfo = "";
-        }
+    $scope.sendMsg = function () {
         var deferred = $q.defer();
-        $http.get("../api/send-msg?commonInfo=" + commonInfo)
+        $http.get("../api/send-msg")
             .success(function (data) {
                 swal("同步成功", "", "success");
                 deferred.resolve(data);

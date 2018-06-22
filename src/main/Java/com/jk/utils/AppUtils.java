@@ -27,14 +27,14 @@ public class AppUtils {
     private static final Logger ERROR = Logger.getLogger(AppUtils.class);
 
     private static final SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    private static final String dataDir = PropertiesUtils.getProperty("data.dir");
 
     public static String createStockTableIfNotExist(HttpServletRequest request) {
-        String dir = request.getSession().getServletContext().getRealPath("/") + "datas";
-        File folder = new File(dir);
+        File folder = new File(dataDir);
         if (!folder.exists()) {
             folder.mkdirs();
         }
-        String path = request.getSession().getServletContext().getRealPath("/") + "datas" + File.separator + "stock.txt";
+        String path = String.format("%s%s%s", dataDir, File.separator, "stock.txt");
         File file = new File(path);
         if (!file.exists()) {
             try {
@@ -47,12 +47,11 @@ public class AppUtils {
     }
 
     public static String createVoucherTableIfNotExist(HttpServletRequest request) {
-        String dir = request.getSession().getServletContext().getRealPath("/") + "datas";
-        File folder = new File(dir);
+        File folder = new File(dataDir);
         if (!folder.exists()) {
             folder.mkdirs();
         }
-        String path = request.getSession().getServletContext().getRealPath("/") + "datas" + File.separator + "voucher.txt";
+        String path = String.format("%s%s%s", dataDir, File.separator, "voucher.txt");
         File file = new File(path);
         if (!file.exists()) {
             try {
@@ -65,12 +64,11 @@ public class AppUtils {
     }
 
     public static String createScreenTableIfNotExist(HttpServletRequest request) {
-        String dir = request.getSession().getServletContext().getRealPath("/") + "datas";
-        File folder = new File(dir);
+        File folder = new File(dataDir);
         if (!folder.exists()) {
             folder.mkdirs();
         }
-        String path = request.getSession().getServletContext().getRealPath("/") + "datas" + File.separator + "screen.txt";
+        String path = String.format("%s%s%s", dataDir, File.separator, "screen.txt");
         File file = new File(path);
         if (!file.exists()) {
             try {
@@ -98,5 +96,5 @@ public class AppUtils {
         Date date = new Date();
         return sdf.format(date);
     }
-    
+
 }

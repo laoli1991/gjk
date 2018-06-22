@@ -9,6 +9,7 @@ import com.jk.bean.BandScreenResponse;
 import com.jk.bean.MsgPo;
 import com.jk.bean.ScreenMapperStock;
 import com.jk.bean.ScreenPo;
+import com.jk.bean.StockListResponse;
 import com.jk.bean.StockPo;
 import com.jk.bean.StockRequest;
 import com.jk.bean.StockResponse;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Collections;
 import java.util.List;
@@ -172,14 +174,54 @@ public class ApiController {
 
     @RequestMapping("/stock-list")
     @ResponseBody
-    public List<StockPo> stockList(HttpServletRequest request) {
-        return appService.getStockPos(request);
+    public StockListResponse stockList(HttpServletRequest request) {
+        StockListResponse stockListResponse = new StockListResponse();
+        List<StockPo> stockPos = appService.getStockPos(request);
+        stockListResponse.setStockPos(stockPos);
+        BigDecimal allSum = BigDecimal.ZERO;
+        BigDecimal wzSum = BigDecimal.ZERO;
+        BigDecimal cqSum = BigDecimal.ZERO;
+        for (StockPo stockPo : stockPos) {
+            if (stockPo.getType() <= 3) {//完整
+                wzSum = wzSum.add(new BigDecimal(stockPo.getAmount()));
+            } else {//残缺
+                cqSum = cqSum.add(new BigDecimal(stockPo.getAmount()));
+            }
+            allSum = allSum.add(new BigDecimal(stockPo.getAmount()));
+        }
+        allSum = allSum.divide(new BigDecimal(1000), 2, BigDecimal.ROUND_HALF_UP);
+        stockListResponse.setAllSum(allSum.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+        wzSum = wzSum.divide(new BigDecimal(1000), 2, BigDecimal.ROUND_HALF_UP);
+        stockListResponse.setWzSum(wzSum.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+        cqSum = cqSum.divide(new BigDecimal(1000), 2, BigDecimal.ROUND_HALF_UP);
+        stockListResponse.setCqSum(cqSum.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+        return stockListResponse;
     }
 
     @RequestMapping("/remove-stock")
     @ResponseBody
-    public List<StockPo> removeStock(HttpServletRequest request, @RequestParam("stockUid") String stockUid) {
-        return appService.removeStockPo(request, stockUid);
+    public StockListResponse removeStock(HttpServletRequest request, @RequestParam("stockUid") String stockUid) {
+        StockListResponse stockListResponse = new StockListResponse();
+        List<StockPo> stockPos = appService.removeStockPo(request, stockUid);
+        stockListResponse.setStockPos(stockPos);
+        BigDecimal allSum = BigDecimal.ZERO;
+        BigDecimal wzSum = BigDecimal.ZERO;
+        BigDecimal cqSum = BigDecimal.ZERO;
+        for (StockPo stockPo : stockPos) {
+            if (stockPo.getType() <= 3) {//完整
+                wzSum = wzSum.add(new BigDecimal(stockPo.getAmount()));
+            } else {//残缺
+                cqSum = cqSum.add(new BigDecimal(stockPo.getAmount()));
+            }
+            allSum = allSum.add(new BigDecimal(stockPo.getAmount()));
+        }
+        allSum = allSum.divide(new BigDecimal(1000), 2, BigDecimal.ROUND_HALF_UP);
+        stockListResponse.setAllSum(allSum.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+        wzSum = wzSum.divide(new BigDecimal(1000), 2, BigDecimal.ROUND_HALF_UP);
+        stockListResponse.setWzSum(wzSum.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+        cqSum = cqSum.divide(new BigDecimal(1000), 2, BigDecimal.ROUND_HALF_UP);
+        stockListResponse.setCqSum(cqSum.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+        return stockListResponse;
     }
 
     @RequestMapping("/add-screen")
