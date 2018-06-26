@@ -206,8 +206,31 @@ public class AppService {
         return msgPos;
     }
 
+    public List<MsgPo> getOffStockMsgPos(HttpServletRequest request) {
+        List<MsgPo> msgPos = Lists.newArrayList();
+        List<ScreenPo> screenPos = screenDao.getScreenPos(request);
+        Map<String, StockPo> stringStockPoMap = stockDao.getStockUid2StockPo(request);
+        if (CollectionUtils.isNotEmpty(screenPos)) {
+            for (ScreenPo screenPo : screenPos) {
+                if (StringUtils.isNotBlank(screenPo.getStockUid())) {
+                    StockPo stockPo = stringStockPoMap.get(screenPo.getStockUid());
+                    if (stockPo == null) {
+                        MsgPo msgPo = new MsgPo();
+                        msgPo.setIpAddress(screenPo.getIpAddress());
+                        msgPo.setMacAddress(screenPo.getMacAddress());
+                        msgPo.setPort(screenPo.getPort());
+                        msgPo.setMsgDto(new MsgDto());
+                        msgPos.add(msgPo);
+                    }
+                }
+            }
+        }
+        return msgPos;
+    }
+
     public synchronized void sendMsg(HttpServletRequest request, String commonInfo) {
         List<MsgPo> msgPos = getMsgPos(request, commonInfo);
+        msgPos.addAll(getOffStockMsgPos(request));
         if (CollectionUtils.isNotEmpty(msgPos)) {
             for (MsgPo msgPo : msgPos) {
                 try {
@@ -221,6 +244,9 @@ public class AppService {
                 }
             }
         }
+
     }
+
+
 
 }

@@ -221,6 +221,7 @@ public class ApiController {
         stockListResponse.setWzSum(wzSum.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
         cqSum = cqSum.divide(new BigDecimal(1000), 2, BigDecimal.ROUND_HALF_UP);
         stockListResponse.setCqSum(cqSum.setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+        appService.sendMsg(request, "");
         return stockListResponse;
     }
 
